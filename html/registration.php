@@ -40,7 +40,7 @@ if (login_check($mysqli) == true) {
       <form action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" 
                 method="post" 
                 name="registration_form">
-        <div class="top-row">
+        <!--	<div class="top-row">
           <div class="field-wrap" align="left">
             <label dir="rtl"> שם פרטי<span class="req" dir="rtl">*</span> </label>
             <input type="text" required autocomplete="off" dir="rtl" />
@@ -49,7 +49,7 @@ if (login_check($mysqli) == true) {
             <label > שם משפחה<span class="req">*</span> </label>
             <input type="text"required autocomplete="off"/>
           </div>
-        </div>
+        </div>-->
         <div class="field-wrap">
           <label> שם משתמש<span class="req">*</span> </label>
           <input type="text" name='username' 
