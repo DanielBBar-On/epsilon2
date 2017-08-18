@@ -1,4 +1,5 @@
 <?php
+include_once '../includes/register.inc.php';
 include_once '../includes/db_connect.php';
 include_once '../includes/functions.php';
  
@@ -20,14 +21,14 @@ if (login_check($mysqli) == true) {
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet" href="css/registration/style.css">
 <script type="text/JavaScript" src="js/registration/sha512.js"></script>
-<script type="text/JavaScript" src="js/forms.js"></script>
+<script type="text/JavaScript" src="js/registration/forms.js"></script>
 </head>
 
 <body>
 <div class="form">
 	<?php
         if (!empty($error_msg)) {
-            echo $error_msg;
+            echo "<h1> $error_msg </h1>";
         }
         ?>
   <ul class="tab-group">
