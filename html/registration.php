@@ -25,6 +25,11 @@ if (login_check($mysqli) == true) {
 
 <body>
 <div class="form">
+	<?php
+        if (!empty($error_msg)) {
+            echo $error_msg;
+        }
+        ?>
   <ul class="tab-group">
     <li class="tab active"><a href="#signup">הרשמה</a></li>
     <li class="tab"><a href="#login">התחברות</a></li>
@@ -32,9 +37,11 @@ if (login_check($mysqli) == true) {
   <div class="tab-content">
     <div id="signup" dir="rtl">
       <h1 dir="rtl">דף הרשמה</h1>
-      <form action="/" method="post" dir="rtl">
-        <div class="top-row" dir="rtl">
-          <div class="field-wrap" align="left" dir="rtl">
+      <form action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>" 
+                method="post" 
+                name="registration_form">
+        <!--	<div class="top-row">
+          <div class="field-wrap" align="left">
             <label dir="rtl"> שם פרטי<span class="req" dir="rtl">*</span> </label>
             <input type="text" required autocomplete="off" dir="rtl" />
           </div>
@@ -42,20 +49,32 @@ if (login_check($mysqli) == true) {
             <label > שם משפחה<span class="req">*</span> </label>
             <input type="text"required autocomplete="off"/>
           </div>
-        </div>
+        </div>-->
         <div class="field-wrap">
           <label> שם משתמש<span class="req">*</span> </label>
-          <input type="text"required autocomplete="off"/>
+          <input type="text" name='username' 
+                id='username' required autocomplete="off"/>
         </div>
         <div class="field-wrap">
           <label> דוא״ל<span class="req">*</span> </label>
-          <input type="email"required autocomplete="off"/>
+          <input type="email" name="email" id="email" required autocomplete="off"/>
         </div>
         <div class="field-wrap">
           <label> סיסמה<span class="req">*</span> </label>
-          <input type="password"required autocomplete="off"/>
+          <input type="password" name="password" 
+                             id="password" required autocomplete="off"/>
         </div>
-        <button type="submit" class="button button-block"/>
+        <div class="field-wrap">
+          <label> יהכנס סיסמא בשנית<span class="req">*</span> </label>
+          <input  type="password" name="confirmpwd" 
+          			id="confirmpwd"  required autocomplete="off"/>
+        </div>
+        <button type="submit" class="button button-block" value="Register" 
+                   onclick="return regformhash(this.form,
+                                   this.form.username,
+                                   this.form.email,
+                                   this.form.password,
+                                   this.form.confirmpwd);"/>
         הרשם
         </button>
       </form>
@@ -83,12 +102,13 @@ if (login_check($mysqli) == true) {
                    onclick="formhash(this.form, this.form.password);"> התחבר </button>
         <?php
         if (login_check($mysqli) == true) {
-                        echo '<p>Currently logged ' . $logged . ' as ' . htmlentities($_SESSION['username']) . '.</p>';
+ 						//Todo: do we want to add this cute little messages?
+                        //echo '<p>Currently logged ' . $logged . ' as ' . htmlentities($_SESSION['username']) . '.</p>';
  
-            echo '<p>Do you want to change user? <a href="/includes/logout.php">Log out</a>.</p>';
+            //echo '<p>Do you want to change user? <a href="/includes/logout.php">Log out</a>.</p>';
         } else {
-                        echo '<p>Currently logged ' . $logged . '.</p>';
-                        echo "<p>If you don't have a login, please <a href='register.php'>register</a></p>";
+                        //echo '<p>Currently logged ' . $logged . '.</p>';
+                        //echo "<p>If you don't have a login, please <a href='register.php'>register</a></p>";
                 }
 		?>
       </form>
