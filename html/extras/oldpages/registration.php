@@ -1,7 +1,7 @@
 <?php
-include_once '../includes/register.inc.php';
-include_once '../includes/db_connect.php';
-include_once '../includes/functions.php';
+include_once 'file:///C|/Users/danie/Desktop/epsilon2/includes/register.inc.php';
+include_once 'file:///C|/Users/danie/Desktop/epsilon2/includes/db_connect.php';
+include_once 'file:///C|/Users/danie/Desktop/epsilon2/includes/functions.php';
  
 sec_session_start();
  
@@ -19,9 +19,9 @@ if (login_check($mysqli) == true) {
 <title>Sign-Up/Login Form</title>
 <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet" href="css/registration/style.css">
-<script type="text/JavaScript" src="js/registration/sha512.js"></script>
-<script type="text/JavaScript" src="js/registration/forms.js"></script>
+<link rel="stylesheet" href="../../css/registration/registration_style.css">
+<script type="text/JavaScript" src="../../js/registration/sha512.js"></script>
+<script type="text/JavaScript" src="../../js/registration/forms.js"></script>
 </head>
 
 <body>
@@ -120,6 +120,6 @@ if (login_check($mysqli) == true) {
 </div>
 <!-- /form --> 
 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> 
-<script src="js/registration/index.js"></script>
+<script src="../../js/registration/index.js"></script>
 </body>
 </html>
