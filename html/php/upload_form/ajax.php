@@ -15,10 +15,11 @@ if (isset($_POST['action'])) {
 
 function select() {
     echo "\n The select function is called. \n";
-	$path ='../data/courses/'.($_POST['courseNum']);
+	$path ="../../../data/courses/" . ($_POST['courseNum']);
 	echo $path;
-	if (!file_exists($path)) {
-    	mkdir($path, 0777, true);
+	if (!is_dir($path)) {
+		mkdir($path, 0755, true);
+		print_r(error_get_last());
 	}
     exit;
 }
