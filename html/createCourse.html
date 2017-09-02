@@ -1,3 +1,46 @@
+<?php
+include_once 'php/upload_form/ajax.php';
+ 
+sec_session_start();
+ 
+if (login_check($mysqli) == true) {
+    $logged = 'in';
+} else {
+    $logged = 'out';
+}
+
+define("PATH", "/var/www/epsilon2/data/courses");
+
+$test = "set";
+$_POST["courseNum"] = "test";
+
+
+if (isset($test)) {
+  //get value of inputfield
+  $dir = $_POST['courseNum'];
+  //set the target path ??
+
+$targetfilename = PATH . '/' . $dir;
+
+if (!is_file($dir) && !is_dir($dir)) {
+    mkdir($dir); //create the directory
+    chmod($targetfilename, 0777); //make it writable
+}
+else
+{
+    echo "{$dir} exists and is a valid dir";
+}
+
+function testfun()
+{
+   echo "Your test function on button click is working";
+}
+if(array_key_exists('submit',$_POST)){
+   testfun();
+}
+
+?>
+
 <!DOCTYPE html>
 <html>
 <!-- InstanceBegin template="/Templates/sidebarAfterSignIn.dwt" codeOutsideHTMLIsLocked="false" -->
@@ -80,7 +123,7 @@
         </select>
         
         <!-- first name -->
-        <input type="upload_text" id="fname" placeholder="מספר קורס"></input>
+        <input type="upload_text" id="courseNum" placeholder="מספר קורס"></input>
 
         <!-- last name -->
         <input type="upload_text" id="lname" placeholder="שם הקורס"></input>
@@ -89,10 +132,14 @@
         <textarea type="upload_text" placeholder="סילבוס"></textarea>
 
         <!-- <CTA></CTA> -->
-        <input type="upload_submit" value="Submit"></form>
+        <input type="upload_submit" id="submit" name="submit" value="Submit">
+        <input type="submit" class="button" name="insert" value="insert" />
+		<input type="submit" class="button" name="select" value="select" />
+        </form>
 </div>
   
   </div>
+  <script src="js/upload_form/upload_form_index.js"></script> 
 </body>
   <!-- InstanceEndEditable --> 
   <!-- /#wrapper --> 
