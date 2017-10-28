@@ -1,42 +1,11 @@
 <?php
-include_once 'php/upload_form/ajax.php';
- 
+
 sec_session_start();
  
 if (login_check($mysqli) == true) {
     $logged = 'in';
 } else {
     $logged = 'out';
-}
-
-define("PATH", "/var/www/epsilon2/data/courses");
-
-$test = "set";
-$_POST["courseNum"] = "test";
-
-
-if (isset($test)) {
-  //get value of inputfield
-  $dir = $_POST['courseNum'];
-  //set the target path ??
-
-$targetfilename = PATH . '/' . $dir;
-
-if (!is_file($dir) && !is_dir($dir)) {
-    mkdir($dir); //create the directory
-    chmod($targetfilename, 0777); //make it writable
-}
-else
-{
-    echo "{$dir} exists and is a valid dir";
-}
-
-function testfun()
-{
-   echo "Your test function on button click is working";
-}
-if(array_key_exists('submit',$_POST)){
-   testfun();
 }
 
 ?>
@@ -95,9 +64,9 @@ if(array_key_exists('submit',$_POST)){
   <h1 id="upload_h1">הוסף קורס</h1>
 
 <div id="upload_div">  
-    <form action="">
+    <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
     	<!-- user title -->
-        <select name="country" id="country" placeholder="מספר קורס">
+        <select>
         	<option value="designer">בחר/י פקולטה</option>
             <option value="designer">הפקולטה להנדסה אזרחית וסביבתית</option>
             <option value="front-end-developer">הפקולטה להנדסת מכונות</option>
@@ -123,7 +92,7 @@ if(array_key_exists('submit',$_POST)){
         </select>
         
         <!-- first name -->
-        <input type="upload_text" id="courseNum" placeholder="מספר קורס"></input>
+        <input type="upload_text" name="courseNum" id="courseNum" placeholder="מספר קורס"></input>
 
         <!-- last name -->
         <input type="upload_text" id="lname" placeholder="שם הקורס"></input>
@@ -132,13 +101,12 @@ if(array_key_exists('submit',$_POST)){
         <textarea type="upload_text" placeholder="סילבוס"></textarea>
 
         <!-- <CTA></CTA> -->
-        <input type="upload_submit" id="submit" name="submit" value="Submit">
-        <input type="submit" class="button" name="insert" value="insert" />
-		<input type="submit" class="button" name="select" value="select" />
+        <input type="submit" class="button2" name="action" id="upload_submit" value="select" />
         </form>
 </div>
   
   </div>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="js/upload_form/upload_form_index.js"></script> 
 </body>
   <!-- InstanceEndEditable --> 

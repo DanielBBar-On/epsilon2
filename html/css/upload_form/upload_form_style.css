@@ -54,7 +54,7 @@ input:focus::-webkit-input-placeholder {
   color: transparent;
 }
 
-input[type=upload_submit] {
+#upload_submit {
   width: 100%;
   text-align: center;
   background-color: #668cff;
@@ -70,7 +70,7 @@ input[type=upload_submit] {
   letter-spacing: 1px;
   transition: 0.5s;
 }
-input[type=upload_submit]:hover {
+#upload_submit:hover {
 	text-align: center;
   background-color: #4d79ff;
 }
