@@ -102,7 +102,7 @@ if (login_check($mysqli) == true) {
                              id="password" required autocomplete="off"/>
           </div>
           <div class="field-wrap">
-            <label> יהכנס סיסמא בשנית<span class="req">*</span> </label>
+            <label> הכנס/י סיסמא בשנית<span class="req">*</span> </label>
             <input  type="password" name="confirmpwd" 
           			id="confirmpwd"  required autocomplete="off"/>
           </div>
