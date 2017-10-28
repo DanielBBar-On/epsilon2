@@ -21,7 +21,8 @@
     <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
       <ul class="nav sidebar-nav">
         <li class="sidebar-brand"> <a href="#"> Epsilon </a> </li>
-        <li> <a href="registrationFull.php"><i class="fa fa-fw fa-home"></i>התחבר</a> </li>
+        <li> <a href="registrationFull.php"><i class="fa fa-fw fa-home"></i>דף הבית</a></li>
+        <li> <a href="registrationFull.php"><i class="fa fa-fw fa-sign-in"></i>התחבר</a> </li>
         <form class="navbar-form navbar-center" role="search" id="navBarSearchForm">
           <div class="form-group">
             <input type="text" id="Autocomplete1" class="form-control" placeholder="מצא/י קורסים" style="width:180px !important;">
