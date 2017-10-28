@@ -31,6 +31,7 @@ a:hover {
   border-radius: 4px;
   box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
   direction: rtl;
+  text-align: right;
 }
 
 .tab-group {
@@ -79,9 +80,9 @@ h1 {
 
 label {
   position: absolute;
+  line-height:inherit;
   -webkit-transform: translateY(6px);
           transform: translateY(6px);
-  left: 13px;
   color: rgba(255, 255, 255, 0.5);
   -webkit-transition: all 0.25s ease;
   transition: all 0.25s ease;
