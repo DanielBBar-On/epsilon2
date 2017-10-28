@@ -10,9 +10,7 @@ html {
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
 }
-body {
-  margin: 0;
-}
+
 article,
 aside,
 details,
@@ -1097,9 +1095,9 @@ input,
 button,
 select,
 textarea {
-  font-family: inherit;
-  font-size: inherit;
-  line-height: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
 }
 a {
   color: #337ab7;
