@@ -56,6 +56,7 @@ input:focus::-webkit-input-placeholder {
 
 input[type=upload_submit] {
   width: 100%;
+  text-align: center;
   background-color: #668cff;
   color: white;
   padding: 14px 20px;
