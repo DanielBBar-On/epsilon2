@@ -33,13 +33,24 @@ function create() {
 
         $myfile = fopen("$path/course_info.txt", "w");
         $txt = "<?php\n" .
-                "define(\"COURSE_NUM\", " . ($_POST['courseNum']) . ");\n" .
-                "define(\"COURSE_NAME\", " . ($_POST['courseName']) . ");\n" .
+                "define(\"COURSE_NUM\", \"" . ($_POST['courseNum']) . "\");\n" .
+                "define(\"COURSE_NAME\", \"" . ($_POST['courseName']) . "\");\n" .
                 "?>";
         fwrite($myfile, $txt);
         fclose($myfile);
+
+        create_new_course_html($path);
     }
     exit;
+}
+
+function create_new_course_html($path) {
+    $course_defines = file_get_contents("$path/course_info.txt", FILE_USE_INCLUDE_PATH);
+    $course_page = file_get_contents('../../templates/courseSignedIn.php', FILE_USE_INCLUDE_PATH);
+    $myfile = fopen("../../courses/" . $_POST['courseNum']. ".php", "w");
+    fwrite($myfile, $course_defines);
+    fwrite($myfile, $course_page);
+    fclose($myfile);
 }
 
 function insert() {

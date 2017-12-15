@@ -11,7 +11,7 @@ if (login_check($mysqli) == true) {
 }
 ?>
 <!DOCTYPE html>
-<html><!-- InstanceBegin template="/Templates/sidebarBeforeSignIn.dwt" codeOutsideHTMLIsLocked="false" -->
+<html><!-- InstanceBegin template="/templates/sidebarBeforeSignIn.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
 <!-- InstanceBeginEditable name="doctitle" -->
