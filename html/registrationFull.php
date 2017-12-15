@@ -134,7 +134,7 @@ if (login_check($mysqli) == true) {
             <input type="password" name="password" 
                              id="password" required autocomplete="off"/>
           </div>
-          <p class="forgot"><a href="#">Forgot Password?</a></p>
+          <p class="forgot"><a href="#">שכחתי סיסמא</a></p>
           <button class="button button-block" type="button" 
                    value="Login" 
                    onclick="formhash(this.form, this.form.password);"> התחבר </button>
