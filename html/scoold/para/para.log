@@ -1,0 +1,32 @@
+2017-12-21 10:45:26,408 [INFO ] com.erudika.para.Para - --- Para.initialize() [embedded] ---
+2017-12-21 10:45:27,852 [INFO ] c.erudika.para.core.utils.CoreUtils - Loaded new DAO, Search and Cache implementations - H2DAO$$EnhancerByGuice$$b1b57fc5, LuceneSearch and CaffeineCache.
+2017-12-21 10:45:28,288 [INFO ] c.erudika.para.metrics.MetricsUtils - Found root app 'epsilon' and -1 existing child app(s).
+2017-12-21 10:45:28,289 [INFO ] com.erudika.para.Para - Instance #1 initialized.
+2017-12-21 10:45:28,852 [INFO ] com.erudika.para.ParaServer - Starting ParaServer on ip-172-31-38-23 with PID 10963 (/var/www/epsilon2/html/scoold/para/para-war-1.27.0.war started by root in /var/www/epsilon2/html/scoold/para)
+2017-12-21 10:45:28,854 [INFO ] com.erudika.para.ParaServer - The following profiles are active: embedded
+2017-12-21 10:45:30,089 [INFO ] com.erudika.para.ParaServer - Listening on port 3000...
+2017-12-21 10:45:35,291 [ERROR] o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Embedded servlet container failed to start. Port 3000 was already in use.
+
+Action:
+
+Identify and stop the process that's listening on port 3000 or configure this application to listen on another port.
+
+2017-12-21 10:45:35,306 [INFO ] com.erudika.para.Para - --- Para.destroy() ---
+2017-12-21 10:46:26,072 [INFO ] com.erudika.para.Para - --- Para.initialize() [embedded] ---
+2017-12-21 10:46:27,488 [INFO ] c.erudika.para.core.utils.CoreUtils - Loaded new DAO, Search and Cache implementations - H2DAO$$EnhancerByGuice$$b1b57fc5, LuceneSearch and CaffeineCache.
+2017-12-21 10:46:27,923 [INFO ] c.erudika.para.metrics.MetricsUtils - Found root app 'epsilon' and -1 existing child app(s).
+2017-12-21 10:46:27,924 [INFO ] com.erudika.para.Para - Instance #1 initialized.
+2017-12-21 10:46:28,452 [INFO ] com.erudika.para.ParaServer - Starting ParaServer on ip-172-31-38-23 with PID 10990 (/var/www/epsilon2/html/scoold/para/para-war-1.27.0.war started by root in /var/www/epsilon2/html/scoold/para)
+2017-12-21 10:46:28,453 [INFO ] com.erudika.para.ParaServer - The following profiles are active: embedded
+2017-12-21 10:46:29,631 [INFO ] com.erudika.para.ParaServer - Listening on port 3000...
+2017-12-21 10:46:34,884 [INFO ] com.erudika.para.ParaServer - Started ParaServer in 6.959 seconds (JVM running for 11.797)
+2017-12-21 10:46:57,353 [INFO ] c.erudika.para.persistence.H2Utils - Created H2 table 'epsilon'.
+2017-12-21 10:46:58,718 [INFO ] com.erudika.para.Para - Created new app 'epsilon', sharingTable = false, sharingIndex = false.
