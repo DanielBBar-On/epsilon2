@@ -97,26 +97,10 @@
 </div>
 </div>
 </div>
-<div class="vue-wrapper">
-<div id="vue">
-<div class="search-area">
-  <h1>דיונים</h1>
-  <div class="input-wrapper"> <i class="fa fa-search"></i>
-    <input v-model="searchString" type="text" placeholder="Have a question? Search for answers with keywords"/>
-  </div>
-  <button @click="resetSearch()">נקה</button>
-</div>
-<div class="question" v-for="question in questions | filterBy searchString" track-by="$index" data-color="{{ question.votes | voteColor }}">
-  <div class="votes">
-    <div class="upvote" @click="vote('up', question)"></div>
-    <div class="number-of-votes">{{ question.votes }}</div>
-    <div class="downvote" @click="vote('down', question)"></div>
-  </div>
-  <div class="question-and-answer">
-    <h2 style="color: #000000; direction: rtl;">{{ question.question }}</h2>
-    <p style="color: #000000; direction: rtl">{{ question.answer }}</p>
-  </div>
-</div>
+ <div class="forum_container">
+ <iframe src="http://ec2-52-11-111-48.us-west-2.compute.amazonaws.com:8000/" 
+ frameborder="0" allowfullscreen class="forum"></iframe>
+ </div>
 </body>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="js/show_hide_button/show_hide_button.js"></script>
