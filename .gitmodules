@@ -1,0 +1,6 @@
+[submodule "external/para"]
+	path = external/para
+	url = https://github.com/DanielBBar-On/para.git
+[submodule "external/scoold"]
+	path = external/scoold
+	url = https://github.com/DanielBBar-On/scoold.git
