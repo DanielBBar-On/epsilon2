@@ -186,7 +186,6 @@ function esc_url($url) {
 function insert_to_courses_DB($faculty, $num, $name) {
 	$servername = constant("HOST");
 	$username = constant("USER");
-	echo constant("PASSWORD");
 	$password = constant("PASSWORD");
 	$dbname = constant("DATABASE");
 
@@ -208,5 +207,42 @@ function insert_to_courses_DB($faculty, $num, $name) {
 	}
 
 	$conn->close();
+}
+
+/**
+ * @param string $name of the select field
+ * @param string $value of the select field
+ * @param Generator $data to use as select field option values
+ * @return string HTML of the select element
+ */
+function select($name, $value, Generator $num_gen, Generator $name_gen) {
+    $buffer = sprintf('<select name="%s" style="margin-top:40px">>', htmlspecialchars($name));
+	$numAndName = new MultipleIterator();
+	$numAndName->attachIterator($num_gen);
+	$numAndName->attachIterator($name_gen);
+    foreach ($numAndName as list($num, $name)) {
+		$buffer .= sprintf(
+			'<option%s>%s - %s</option>',
+			$value === $num ? ' selected' : '',
+			htmlspecialchars($num),
+			htmlspecialchars($name)
+		);
+    }
+    $buffer .= "</select>\n";
+    return $buffer;
+}
+
+/**
+ * @param mysqli $mysqli
+ * @param string $query
+ * @param string $field from query result to use as option values
+ * @return Generator
+ */
+function datasource(mysqli $mysqli, $query, $field) {
+    $result = $mysqli->query($query);
+
+    if ($result) foreach ($result as $row) {
+        yield $row[$field];
+    }
 }
 ?>
