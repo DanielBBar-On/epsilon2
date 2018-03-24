@@ -1,4 +1,5 @@
 <?php
+include_once 'includes/courses/functions.php';
 
 var_dump($_POST);
 
@@ -14,9 +15,12 @@ if (isset($_POST['action'])) {
 }
 
 function create() {
-    echo "The select function is called." . "<\br>";
+	$faculty = ($_POST['faculty']);
+	$courseNum = ($_POST['courseNum']);
+	$courseName = ($_POST['courseName']);
+	echo "<br>The select function is called.<br><br><br>";
 	$path ="../../../data/courses/" . ($_POST['courseNum']);
-	echo $path;
+	echo $path . "<br>";
 	if (!is_dir($path)) {
         $success = FALSE;
 		$success = mkdir($path, 0755, true);
@@ -25,9 +29,9 @@ function create() {
         $success = mkdir("$path/hw", 0755, true);
         $success = mkdir("$path/past_exams", 0755, true);
         if($success) {
-            echo "course creation success" . "<\br>";
+            echo "course creation success" . "<br>";
         } else {
-            echo "course creation failure" . "<\br>";
+            echo "course creation failure" . "<br>";
             exit;
         }
 
@@ -39,6 +43,8 @@ function create() {
         fwrite($myfile, $txt);
         fclose($myfile);
 
+		
+		insert_to_courses_DB($faculty, $courseNum, $courseName);
         create_new_course_html($path);
     }
     exit;
@@ -54,7 +60,7 @@ function create_new_course_html($path) {
 }
 
 function insert() {
-    echo "The insert function is called.";
+    echo "The insert function is called.<br>";
     exit;
 }
 ?>

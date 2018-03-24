@@ -66,29 +66,26 @@ if (login_check($mysqli) == true) {
 <div id="upload_div">  
     <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
     	<!-- user title -->
-        <select>
-        	<option value="designer">בחר/י פקולטה</option>
-            <option value="designer">הפקולטה להנדסה אזרחית וסביבתית</option>
-            <option value="front-end-developer">הפקולטה להנדסת מכונות</option>
-            <option value="">הפקולטה להנדסת חשמל</option>
-            <option value="">הפקולטה להנדסה כימית</option>
-            <option value="">הפקולטה להנדסת מזון וביוטכנולוגיה</option>
-            <option value="">הפקולטה להנדסת אוירונוטיקה וחלל</option>
-            <option value="">הפקולטה להנדסת תעשיה וניהול</option>
-            <option value="">הפקולטה למתמטיקה</option>
-            <option value="">הפקולטה לפיזיקה</option>
-            <option value="">הפקולטה לכימיה</option>
-            <option value="">הפקולטה לביולוגיה</option>
-            <option value="">הפקולטה לארכיטקטורה ובינוי ערים</option>
-            <option value="">הפקולטה לחינוך למדע וטכנולוגיה</option>
-            <option value="">הפקולטה למדעי המחשב</option>
-            <option value="">הפקולטה לרפואה</option>
-            <option value="">הפקוטה למדע והנדסה של חומרים</option>
-            <option value="">המחלקה ללימודים הומניסטיים ואמנויות</option>
-            <option value="">הפקולטה להנדסה ביורפואית</option>
-            
-                                                
-
+        <select name="faculty" id="faculty" placeholder="xx">
+            <option value= "">בחר/י פקולטה</option>
+            <option>הפקולטה להנדסה אזרחית וסביבתית</option>
+            <option>הפקולטה להנדסת מכונות</option>
+            <option>הפקולטה להנדסת חשמל</option>
+            <option>הפקולטה להנדסה כימית</option>
+            <option>הפקולטה להנדסת מזון וביוטכנולוגיה</option>
+            <option>הפקולטה להנדסת אוירונוטיקה וחלל</option>
+            <option>הפקולטה להנדסת תעשיה וניהול</option>
+            <option>הפקולטה למתמטיקה</option>
+            <option>הפקולטה לפיזיקה</option>
+            <option>הפקולטה לכימיה</option>
+            <option>הפקולטה לביולוגיה</option>
+            <option>הפקולטה לארכיטקטורה ובינוי ערים</option>
+            <option>הפקולטה לחינוך למדע וטכנולוגיה</option>
+            <option>הפקולטה למדעי המחשב</option>
+            <option>הפקולטה לרפואה</option>
+            <option>הפקוטה למדע והנדסה של חומרים</option>
+            <option>המחלקה ללימודים הומניסטיים ואמנויות</option>
+            <option>הפקולטה להנדסה ביורפואית</option>
         </select>
         
         <!-- first name -->
