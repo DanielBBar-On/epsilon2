@@ -1,6 +1,7 @@
 <?php
 include_once 'psl-config.php';
- 
+
+
 function sec_session_start() {
     $session_name = 'sec_session_id';   // Set a custom session name 
     $secure = SECURE;
@@ -220,6 +221,7 @@ function select($name, $value, Generator $num_gen, Generator $name_gen) {
 	$numAndName = new MultipleIterator();
 	$numAndName->attachIterator($num_gen);
 	$numAndName->attachIterator($name_gen);
+    $buffer .= sprintf('<option value="" disabled selected>בחר/י קורס</option>');
     foreach ($numAndName as list($num, $name)) {
 		$buffer .= sprintf(
 			'<option%s>%s - %s</option>',
@@ -245,4 +247,5 @@ function datasource(mysqli $mysqli, $query, $field) {
         yield $row[$field];
     }
 }
+
 ?>
