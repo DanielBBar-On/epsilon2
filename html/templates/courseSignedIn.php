@@ -1,13 +1,9 @@
 <!DOCTYPE html>
-<html><!-- InstanceBegin template="/templates/sidebarAfterSignIn.dwt" codeOutsideHTMLIsLocked="false" -->
+<html><!-- InstanceBegin template="/Templates/sidebarInCourseFolder.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Epsilon</title>
-
-  <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900">
-
-      <link rel="stylesheet" href="../css/circle_image_button/circle_image_button_style.css">
 <!-- InstanceEndEditable -->
 <link rel="stylesheet" href="../css/bootstrap.css">
 <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
@@ -15,7 +11,18 @@
 <link rel="stylesheet" href="../css/sidebar/sidebar_style.css">
 <link href="../css/flat_ui.min.css" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
- <!-- InstanceEndEditable -->
+
+
+
+  <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,900">
+
+      <link rel="stylesheet" href="../../../css/circle_image_button/circle_image_button_style.css">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+<link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<link rel="stylesheet" href="../css/sidebar/sidebar_style.css">
+<link href="../css/flat_ui.min.css" rel="stylesheet" type="text/css">
+<!-- InstanceEndEditable -->
 </head>
 
 <div>
@@ -34,7 +41,7 @@
           <div class="form-group">
             <input type="text" id="Autocomplete1" class="form-control" placeholder="מצא/י קורסים" style="width:180px !important;">
           </div>
-          <a href="../coursePage.html">
+          <a href="coursePage.html">
           <button type="submit" class="btn btn-default" style="margin-top:5px;">חפש/י</button>
           </a>
         </form>
@@ -49,13 +56,12 @@
     <!-- /#page-content-wrapper --> 
   </div>
   <!-- InstanceBeginEditable name="body" -->
-  <body id="index_body">
-  <h1 align="center"> <?= COURSE_NUM ?> - <?= COURSE_NAME ?></h1>
+  <h1 align="center"> <?= constant("COURSE_NUM") ?> - <?= constant("COURSE_NAME") ?></h1>
    <div class="button-images" style="align-content:center">
         <div class="one_fourth">
         	<div class="button-container">
        		  <a href="#">מבחנים </a>
-           		<img src="../images/iconography/student.png"/>
+           		<img src="../../../images/iconography/student.png"/>
             </div>
         </div>    
           <div class="one_fourth">
@@ -80,8 +86,7 @@
 	<div class="clearboth"></div>
     </div>
   
-    <script src="../js/circle_image_button/circle_image_button_index.js"></script>
-  </body>
+    <script src="../../../js/circle_image_button/circle_image_button_index.js"></script>
   <!-- InstanceEndEditable --> 
   <!-- /#wrapper --> 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 

@@ -43,7 +43,7 @@ template {
 }
 a {
   background-color: transparent;
-}
+  text-decoration: none !important;}
 a:active,
 a:hover {
   outline: 0;

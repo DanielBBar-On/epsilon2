@@ -2,13 +2,13 @@
 /**
  * These are the database login details
  */  
-define("HOST", "localhost");     // The host you want to connect to.
-define("USER", "sec_user");    // The database username. 
-define("PASSWORD", "root");    // The database password. 
-define("DATABASE", "secure_login");    // The database name.
+define("LOGIN_HOST", "localhost");     // The host you want to connect to.
+define("LOGIN_USER", "sec_user");    // The database username. 
+define("LOGIN_PASSWORD", "root");    // The database password. 
+define("LOGIN_DATABASE", "secure_login");    // The database name.
  
-define("CAN_REGISTER", "any");
-define("DEFAULT_ROLE", "member");
+define("LOGIN_CAN_REGISTER", "any");
+define("LOGIN_DEFAULT_ROLE", "member");
  
-define("SECURE", FALSE);    // FOR DEVELOPMENT ONLY!!!!
+define("LOGIN_SECURE", FALSE);    // FOR DEVELOPMENT ONLY!!!!
 ?>

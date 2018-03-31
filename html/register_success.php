@@ -1,6 +1,6 @@
 <?php
-include_once '../includes/db_connect.php';
-include_once '../includes/functions.php';
+include_once '../includes/secure_login/db_connect.php';
+include_once '../includes/secure_login/functions.php';
  
 sec_session_start();
  
@@ -71,7 +71,7 @@ if (login_check($mysqli) == true) {
         ?>
         <h1>ברוכים הבאים!</h1>
         <h1 dir="rtl" align="center">ההרשמה הושלמה בהצלחה. אנא הכניסו מייל וסיסמא על מנת להתחבר</h1>
-        <form action="/includes/process_login.php" method="post" name="login_form">
+        <form action="includes/process_login.php" method="post" name="login_form">
           <div class="field-wrap">
             <label dir="rtl"> אי מייל <span class="req">*</span> </label>
             <input type="text" name="email" required autocomplete="off"/>
@@ -85,7 +85,7 @@ if (login_check($mysqli) == true) {
           <button class="button button-block" type="button" 
                    value="Login" 
                    onclick="formhash(this.form, this.form.password);"> התחבר </button>
-          <?php
+          <?php	
         if (login_check($mysqli) == true) {
  						//Todo: do we want to add this cute little messages?
                         //echo '<p>Currently logged ' . $logged . ' as ' . htmlentities($_SESSION['username']) . '.</p>';

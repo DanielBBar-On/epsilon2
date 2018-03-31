@@ -18,8 +18,8 @@ function create() {
 	$faculty = ($_POST['faculty']);
 	$courseNum = ($_POST['courseNum']);
 	$courseName = ($_POST['courseName']);
-	echo "<br>The select function is called.<br><br><br>";
-	$path ="../../../data/courses/" . ($_POST['courseNum']);
+	echo "<br>The create function is called.<br><br><br>";
+	$path ="../../data/courses/" . ($_POST['courseNum']);
 	echo $path . "<br>";
 	if (!is_dir($path)) {
         $success = FALSE;
@@ -46,14 +46,19 @@ function create() {
 		
 		insert_to_courses_DB($faculty, $courseNum, $courseName);
         create_new_course_html($path);
+        header("Location: ". $path);
+    } else {
+        header("Location: ". $path . "/" . $_POST['courseNum']. ".php?error=COURSEEXISTS");
     }
+
+    header("Location: ". $path . "/". $_POST['courseNum']. ".php"); 
     exit;
 }
 
 function create_new_course_html($path) {
     $course_defines = file_get_contents("$path/course_info.txt", FILE_USE_INCLUDE_PATH);
-    $course_page = file_get_contents('../../templates/courseSignedIn.php', FILE_USE_INCLUDE_PATH);
-    $myfile = fopen("../../courses/" . $_POST['courseNum']. ".php", "w");
+    $course_page = file_get_contents('../../Templates/courseSignedIn.php', FILE_USE_INCLUDE_PATH);
+    $myfile = fopen($path . "/" . $_POST['courseNum']. ".php", "w");
     fwrite($myfile, $course_defines);
     fwrite($myfile, $course_page);
     fclose($myfile);

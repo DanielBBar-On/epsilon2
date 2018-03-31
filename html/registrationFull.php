@@ -1,16 +1,17 @@
 <?php
 include_once '../includes/register.inc.php';
-include_once '../includes/db_connect.php';
-include_once '../includes/functions.php';
+include_once '../includes/secure_login/db_connect.php';
+include_once '../includes/secure_login/functions.php';
  
 sec_session_start();
- 
+
 if (login_check($mysqli) == true) {
     $logged = 'in';
 } else {
     $logged = 'out';
 }
 ?>
+
 <!DOCTYPE html>
 <html><!-- InstanceBegin template="/templates/sidebarBeforeSignIn.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
@@ -124,7 +125,7 @@ if (login_check($mysqli) == true) {
         }
         ?>
         <h1>ברוכים הבאים</h1>
-        <form action="/includes/process_login.php" method="post" name="login_form">
+        <form action="includes/process_login.php" method="post" name="login_form">
           <div class="field-wrap">
             <label dir="rtl"> אי מייל <span class="req">*</span> </label>
             <input type="text" name="email" required autocomplete="off"/>
