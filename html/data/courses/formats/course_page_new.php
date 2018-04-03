@@ -1,10 +1,10 @@
 <?php
-define("COURSE_NUM", "formats");
 
+include_once 'course_info.php';
 include_once '../../../../includes/courses/functions.php';
 include_once '../../../../includes/secure_login/db_connect.php';
 include_once '../../../../includes/secure_login/functions.php';
-include_once '../../../../includes/courses/formats/db_connect.php';
+include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_connect.php';
 
 	// login functions
 	sec_session_start();
@@ -20,8 +20,6 @@ include_once '../../../../includes/courses/formats/db_connect.php';
 	// drop-down functions
 				
 	//set your database handler 
-	/*$db = new mysqli("localhost", "courses", 
-  					 "Ab123456", "sample_course"); */
 					
 	function select($table, $db) {
 		$query = "SELECT num, name FROM " . $table; //SELECT id,cat FROM cat
@@ -29,8 +27,10 @@ include_once '../../../../includes/courses/formats/db_connect.php';
 		
 		$categories = array();
 		
-		while($row = $result->fetch_assoc()){
-			$categories[] = array("id" => $row['num'], "val" => $row['name']);
+		if (!empty($result)) {
+			while ($row = $result->fetch_assoc()){
+				$categories[] = array("id" => $row['num'], "val" => $row['name']);
+			}
 		}
 
 		switch($table) {
@@ -53,14 +53,11 @@ include_once '../../../../includes/courses/formats/db_connect.php';
 			
 	}
 				   
-	$db = new mysqli(constant("HOST"), constant("USER"), 
-  				   constant("PASSWORD"), constant("DATABASE")); 
-				   
-	$jsonLectures = select('lectures', $db);
-	$jsonTutorials = select('tutorials', $db);
-	$jsonHomework = select('homework', $db);
-	$jsonSummaries = select('summaries', $db);
-	$jsonExams = select('exams', $db);
+	$jsonLectures = select('lectures', $my_course_sqli);
+	$jsonTutorials = select('tutorials', $my_course_sqli);
+	$jsonHomework = select('homework', $my_course_sqli);
+	$jsonSummaries = select('summaries', $my_course_sqli);
+	$jsonExams = select('exams', $my_course_sqli);
 ?>
 <!DOCTYPE html>
 <html>

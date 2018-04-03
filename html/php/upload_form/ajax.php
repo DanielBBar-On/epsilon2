@@ -19,51 +19,81 @@ function create() {
 	$courseNum = ($_POST['courseNum']);
 	$courseName = ($_POST['courseName']);
 	echo "<br>The create function is called.<br><br><br>";
-	$path ="../../data/courses/" . ($_POST['courseNum']);
-	echo $path . "<br>";
-	if (!is_dir($path)) {
+	$dataPath ="../../data/courses/" . ($_POST['courseNum']);
+	$includesPath = "../../../includes/courses/" . ($_POST['courseNum']);
+	echo $dataPath . "<br>";
+	if (!is_dir($data_path)) {
         $success = FALSE;
-		$success = mkdir($path, 0755, true);
-        $success = mkdir("$path/lectures", 0755, true);
-        $success = mkdir("$path/tutorials", 0755, true);
-        $success = mkdir("$path/hw", 0755, true);
-        $success = mkdir("$path/past_exams", 0755, true);
+		$success = mkdir($includesPath, 0755, true);
+		$success = mkdir($dataPath, 0755, true);
+        $success = mkdir("$dataPath/lectures", 0755, true);
+        $success = mkdir("$dataPath/tutorials", 0755, true);
+        $success = mkdir("$dataPath/hw", 0755, true);
+        $success = mkdir("$dataPath/past_exams", 0755, true);
         if($success) {
             echo "course creation success" . "<br>";
         } else {
             echo "course creation failure" . "<br>";
             exit;
         }
-
-        $myfile = fopen("$path/course_info.txt", "w");
-        $txt = "<?php\n" .
-                "define(\"COURSE_NUM\", \"" . ($_POST['courseNum']) . "\");\n" .
-                "define(\"COURSE_NAME\", \"" . ($_POST['courseName']) . "\");\n" .
-                "?>";
+		
+        $myfile = fopen("$dataPath/course_info.php", "w");
+        $txt = '<?php
+	define("COURSE_NUM", "' . ($_POST['courseNum']) . '");
+	define("COURSE_NAME", "' . ($_POST['courseName']) . '");
+?>';
         fwrite($myfile, $txt);
         fclose($myfile);
-
 		
 		insert_to_courses_DB($faculty, $courseNum, $courseName);
-        create_new_course_html($path);
-        header("Location: ". $path);
+		create_course_DB($faculty, $courseNum, $courseName);
+        create_new_course_html($dataPath);
+		create_new_psl_config($includesPath);
+		create_new_db_connect($includesPath);
+        header("Location: ". $dataPath . "/". $_POST['courseNum']. ".php");
     } else {
-        header("Location: ". $path . "/" . $_POST['courseNum']. ".php?error=COURSEEXISTS");
-    }
-
-    header("Location: ". $path . "/". $_POST['courseNum']. ".php"); 
+        header("Location: ". $dataPath . "/" . $_POST['courseNum']. ".php?error=COURSEEXISTS");
+	}
     exit;
 }
 
 function create_new_course_html($path) {
-    $course_defines = file_get_contents("$path/course_info.txt", FILE_USE_INCLUDE_PATH);
-    $course_page = file_get_contents('../../Templates/course_page_new.php', FILE_USE_INCLUDE_PATH);
+    $course_page = file_get_contents('../../data/courses/formats/course_page_new.php', FILE_USE_INCLUDE_PATH);
     $myfile = fopen($path . "/" . $_POST['courseNum']. ".php", "w");
-    fwrite($myfile, $course_defines);
     fwrite($myfile, $course_page);
     fclose($myfile);
 }
 
+function create_new_psl_config($path) {
+    $myfile = fopen($path . "/psl-config.php", "w");
+    fwrite($myfile, 
+					'<?php
+	/**
+	 * These are the database login details\n
+	 */
+	define("HOST", "localhost");     // The host you want to connect to.
+	define("USER", "courses");    // The database username.
+	define("PASSWORD", "Ab123456");    // The database password.
+	define("DATABASE", "' .$_POST['courseNum'] . '");    // The database name.
+	define("CAN_REGISTER", "any");
+	define("DEFAULT_ROLE", "member");
+ 
+	define("SECURE", FALSE);    // FOR DEVELOPMENT ONLY!!!!\n
+?>'
+
+	);
+	
+    fclose($myfile);
+}
+
+function create_new_db_connect($path) {
+	$myfile = fopen($path . "/db_connect.php", "w");
+	fwrite($myfile,
+					"<?php
+	include_once 'psl-config.php';   // As functions.php is not included
+	\$my_course_sqli = new mysqli(HOST, USER, PASSWORD, DATABASE);
+?>");
+}
 function insert() {
     echo "The insert function is called.<br>";
     exit;
