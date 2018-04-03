@@ -5,11 +5,10 @@
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Epsilon</title>
 <!-- InstanceEndEditable -->
-<link rel="stylesheet" href="../css/bootstrap.css">
-<!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="../css/sidebar/sidebar_style.css">
-<link href="../css/flat_ui.min.css" rel="stylesheet" type="text/css">
+
 <!-- InstanceBeginEditable name="head" -->
 
 
@@ -91,8 +90,5 @@
   <!-- /#wrapper --> 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
-  <script src="../js/bootstrap.js"></script> 
-  <script src="../js/bootstrap.min.js"></script> 
-  <script src="../js/jquery-1.11.2.min.js"></script> 
 </div>
 <!-- InstanceEnd --></html>

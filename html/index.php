@@ -71,9 +71,9 @@ include_once '../includes/secure_login/functions.php';
 		subcatselect.options[0] = new Option('בחר/י קורס');
 		subcatselect.options[0].disabled = true;
         for(var i = 1; i <= subcatsNum[faculty].length; i++){
-          subcatselect.options[i] = new Option(subcatsNum[faculty][i].val + '-' +
-		  									   subcatsName[faculty][i].val,
-											   subcatsNum[faculty][i].id);
+          subcatselect.options[i] = new Option(subcatsNum[faculty][i-1].val + '-' +
+		  									   subcatsName[faculty][i-1].val,
+											   subcatsNum[faculty][i-1].id);
         }
       }
     </script> 

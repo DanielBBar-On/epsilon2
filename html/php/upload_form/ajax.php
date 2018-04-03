@@ -57,7 +57,7 @@ function create() {
 
 function create_new_course_html($path) {
     $course_defines = file_get_contents("$path/course_info.txt", FILE_USE_INCLUDE_PATH);
-    $course_page = file_get_contents('../../Templates/courseSignedIn.php', FILE_USE_INCLUDE_PATH);
+    $course_page = file_get_contents('../../Templates/course_page_new.php', FILE_USE_INCLUDE_PATH);
     $myfile = fopen($path . "/" . $_POST['courseNum']. ".php", "w");
     fwrite($myfile, $course_defines);
     fwrite($myfile, $course_page);
