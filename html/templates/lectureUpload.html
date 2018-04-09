@@ -18,13 +18,13 @@ if (login_check($mysqli) == true) {
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Epsilon</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet" href="css/upload_form/upload_form_style.css">
+<link rel="stylesheet" href="../../../css/upload_form/upload_form_style.css">
 <!-- InstanceEndEditable -->
-<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="../../../css/bootstrap.css">
 <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/sidebar/sidebar_style.css">
-<link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="../../../css/sidebar/sidebar_style.css">
+<link href="../css/flat_ui.min.css" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" --> <!-- InstanceEndEditable -->
 </head>
 <div>
@@ -43,7 +43,7 @@ if (login_check($mysqli) == true) {
           <div class="form-group">
             <input type="text" id="Autocomplete1" class="form-control" placeholder="מצא/י קורסים" style="width:180px !important;">
           </div>
-          <a href="coursePage.html">
+          <a href="../coursePage.html">
           <button type="submit" class="btn btn-default" style="margin-top:5px;">חפש/י</button>
           </a>
         </form>
@@ -61,45 +61,17 @@ if (login_check($mysqli) == true) {
   <!-- InstanceBeginEditable name="body" -->
 <body id="index_body">
 <div id="upload_body">
-  <h1 id="upload_h1">הוסף קורס</h1>
+  <h1 id="upload_h1">העלאת הרצאה</h1>
 
 <div id="upload_div">  
     <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
-    	<!-- user title -->
-        <select>
-        	<option value="designer">בחר/י פקולטה</option>
-            <option value="designer">הפקולטה להנדסה אזרחית וסביבתית</option>
-            <option value="front-end-developer">הפקולטה להנדסת מכונות</option>
-            <option value="">הפקולטה להנדסת חשמל</option>
-            <option value="">הפקולטה להנדסה כימית</option>
-            <option value="">הפקולטה להנדסת מזון וביוטכנולוגיה</option>
-            <option value="">הפקולטה להנדסת אוירונוטיקה וחלל</option>
-            <option value="">הפקולטה להנדסת תעשיה וניהול</option>
-            <option value="">הפקולטה למתמטיקה</option>
-            <option value="">הפקולטה לפיזיקה</option>
-            <option value="">הפקולטה לכימיה</option>
-            <option value="">הפקולטה לביולוגיה</option>
-            <option value="">הפקולטה לארכיטקטורה ובינוי ערים</option>
-            <option value="">הפקולטה לחינוך למדע וטכנולוגיה</option>
-            <option value="">הפקולטה למדעי המחשב</option>
-            <option value="">הפקולטה לרפואה</option>
-            <option value="">הפקוטה למדע והנדסה של חומרים</option>
-            <option value="">המחלקה ללימודים הומניסטיים ואמנויות</option>
-            <option value="">הפקולטה להנדסה ביורפואית</option>
-            
-                                                
-
-        </select>
         
         <!-- first name -->
-        <input type="upload_text" name="courseNum" id="courseNum" placeholder="מספר קורס"></input>
-
-        <!-- last name -->
-        <input type="upload_text" name="courseName" id="courseName" placeholder="שם הקורס"></input>
-
-        <!-- message -->
-        <textarea type="upload_text" placeholder="סילבוס"></textarea>
-
+        <input type="upload_text" name="courseNum" id="courseNum" placeholder="מספר ההרצאה"></input>
+        
+        <form action="../upload.php" method="post" enctype="multipart/form-data">
+		    <input type="file" name="fileToUpload" id="fileToUpload">
+        </form>
         <!-- <CTA></CTA> -->
         <input type="submit" class="button2" name="action" id="upload_submit" value="create" />
         </form>
@@ -107,15 +79,15 @@ if (login_check($mysqli) == true) {
   
   </div>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script src="js/upload_form/upload_form_index.js"></script> 
+  <script src="../../../js/upload_form/upload_form_index.js"></script> 
 </body>
   <!-- InstanceEndEditable --> 
   <!-- /#wrapper --> 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
-  <script src="js/bootstrap.js"></script> 
-  <script src="js/bootstrap.min.js"></script> 
-  <script src="js/jquery-1.11.2.min.js"></script> 
+  <script src="../../../js/bootstrap.js"></script> 
+  <script src="../../../js/bootstrap.min.js"></script> 
+  <script src="../../../js/jquery-1.11.2.min.js"></script> 
 </div>
 <!-- InstanceEnd -->
 </html>

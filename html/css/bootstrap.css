@@ -43,7 +43,7 @@ template {
 }
 a {
   background-color: transparent;
-}
+  text-decoration: none !important;}
 a:active,
 a:hover {
   outline: 0;
@@ -115,6 +115,7 @@ textarea {
   margin: 0;
   font: inherit;
   color: inherit;
+  margin-top:10px !important;
 }
 button {
   overflow: visible;
@@ -141,6 +142,7 @@ input::-moz-focus-inner {
 }
 input {
   line-height: normal;
+  margin-top:10px;
 }
 input[type="checkbox"],
 input[type="radio"] {
@@ -6631,8 +6633,10 @@ button.close {
 /*spacespacespacespacespacespacespacespacespacespace*/
 
 #index_body {
-	background: url(../images/general/cutbackground.png) no-repeat fixed;
+	background: url(../images/general/notebook-natural-laptop-macbook-162605%20-%20Copy.jpeg) no-repeat fixed;
 	background-size: cover;
+	width: 100%;
+	height: 100%;
 }
 
 span.clear { clear: left; display: block; }
