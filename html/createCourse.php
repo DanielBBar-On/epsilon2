@@ -102,6 +102,8 @@ if (login_check($mysqli) == true) {
 
         <!-- <CTA></CTA> -->
         <input type="submit" class="button2" name="action" id="upload_submit" value="create" />
+        <!-- <CTA></CTA> -->
+        <input type="submit" class="button2" name="action" id="upload_submit" value="remove" />
         </form>
 </div>
   

@@ -1,6 +1,13 @@
 <?php
 include_once 'psl-config.php';
 
+function die_nicely($msg) {
+    echo <<<END
+<div id="critical_error">$msg</div>
+END;
+    exit;
+}
+
 function insert_to_courses_DB($faculty, $num, $name) {
 	$servername = constant("COURSES_HOST");
 	$username = constant("COURSES_USER");
@@ -31,8 +38,9 @@ function insert_to_courses_DB($faculty, $num, $name) {
 	} else {
 		echo "Error: " . $sql . "<br>" . $conn->error;
 	}
-
+	
 	$conn->close();
+
 }
 
 function create_course_DB($faculty, $num, $name) {
@@ -41,22 +49,35 @@ function create_course_DB($faculty, $num, $name) {
 	$password = constant("COURSES_PASSWORD");
 	$dbname = constant("COURSES_DATABASE");
 
-	echo "CREATE COURSE FUNCTION CALLED!" . "<br>";
+	// Create connection
+	$conn = new mysqli($servername, $username, $password);
+	// Check connection
+	if ($conn->connect_error) {
+	    die("Connection failed: " . $conn->connect_error);
+	} 
+
+	// Create database
+	$sql = "CREATE DATABASE `" . $num . "`";
+	if ($conn->query($sql) === TRUE) {
+	    echo "Database created successfully";
+	} else {
+	    return $conn->error;
+	}
+
+	$conn->close();
+
+	$servername = constant("COURSES_HOST");
+	$username = constant("COURSES_USER");
+	$password = constant("COURSES_PASSWORD");
+	$dbname = $num;
+
 	// Create connection
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
+
 	if ($conn->connect_error) {
 		die("Connection failed: " . $conn->connect_error);
 	} 
-
-	//create new DB
-	$sql = "CREATE DATABASE `" . $num . "` /*!40100 DEFAULT CHARACTER SET latin1 */";
-
-	if ($conn->query($sql) === TRUE) {
-		echo "Course" .$num . " DB created successfully";
-	} else {
-		echo "Error: " . $sql . "<br>" . $conn->error;
-	}
 
 	//create lectures table
 	$sql = "CREATE TABLE `lectures` (
@@ -155,9 +176,83 @@ function create_course_DB($faculty, $num, $name) {
 	}
 
 	$conn->close();
+
+	return 0;
 }
 
 
+function insert_lecture_to_DB($num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+					$pos_votes, $neg_votes, $tot_votes, $year, $semester) {
+	//use the courses defines since we are not in the specific course folder (workaround).
+	$servername = constant("COURSES_HOST");
+	$username = constant("COURSES_USER");
+	$password = constant("COURSES_PASSWORD");
+	$dbname = $num;
+
+	echo "FUNCTION CALLED!" . "<br>";
+	// Create connection
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+		die_nicely("Connection failed: " . $conn->connect_error);
+	} 
+
+	$sql = "INSERT INTO lectures (num, name, ADDED_BY_ID, ADDED_BY_EMAIL, path,
+								 pos_votes, neg_votes, tot_votes, year, semester)
+			VALUES ('$num', '$name', '$ADDED_BY_ID', '$ADDED_BY_EMAIL', '$path',
+					'$pos_votes', '$neg_votes', '$tot_votes', $year, '$semester')";
+
+	if ($conn->query($sql) === TRUE) {
+		echo "New record created successfully";
+	} else {
+		echo "Error: " . $sql . "<br>" . $conn->error;
+	}
+
+	$conn->close();
+}
+
+function remove_course_DB($faculty, $num, $name) {
+	$servername = constant("COURSES_HOST");
+	$username = constant("COURSES_USER");
+	$password = constant("COURSES_PASSWORD");
+	$dbname = $num;
+
+	echo "REMOVE COURSE FUNCTION CALLED!" . "<br>";
+	// Create connection
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	// Check connection
+	if ($conn->connect_error) {
+		die_nicely("Connection failed: " . $conn->connect_error);
+	} 
+
+	//create new DB
+	$sql = "DROP DATABASE `" . $num . "`";
+
+	if ($conn->query($sql) === TRUE) {
+		echo "Course" .$num . " DB created successfully";
+	} else {
+		die_nicely("Error: " . $sql . "<br>" . $conn->error);
+	}
+
+	$conn->close();
+
+	$servername = constant("COURSES_HOST");
+	$username = constant("COURSES_USER");
+	$password = constant("COURSES_PASSWORD");
+	$dbname = constant("COURSES_DATABASE");
+
+	$conn = new mysqli($servername, $username, $password, $dbname);
+	//create lectures table
+	$sql = "DELETE FROM courses WHERE num = '" . $num . "'";
+	
+	if ($conn->query($sql) === TRUE) {
+		echo "course record removed successfully from courses table <br>";
+	} else {
+		die_nicely("Error: " . $sql . "<br>" . $conn->error);
+	}
+
+	$conn->close();
+}
 /**
  * @param string $name of the select field
  * @param string $value of the select field

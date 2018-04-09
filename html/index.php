@@ -6,36 +6,35 @@ include_once '../includes/secure_login/functions.php';
 
 	// login functions
 	sec_session_start();
-
 	if (login_check($mysqli) == true) {
 		$logged = 'in';
 	} else {
 		$logged = 'out';
 	}
-
 	// drop-down functions
   $db = new mysqli(constant("COURSES_HOST"), constant("COURSES_USER"), 
   				   constant("COURSES_PASSWORD"), constant("COURSES_DATABASE")); //set your database handler
   $query = "SELECT num, name FROM courses"; //SELECT id,cat FROM cat
   $result = $db->query($query);
-
+  
+  $categories = NULL;
+  
   while($row = $result->fetch_assoc()){
     $categories[] = array("id" => $row['num'], "val" => $row['name']);
   }
-
   $query = "SELECT num, name, faculty FROM courses";
   $result = $db->query($query);
-
+  
+  $subcatsNum = NULL;
+  $subcatsName = NULL;
+  
   while($row = $result->fetch_assoc()){
     $subcatsNum[$row['faculty']][] = array("id" => $row['num'], "val" => $row['num']);
 	$subcatsName[$row['faculty']][] = array("id" => $row['num'], "val" => $row['name']);
   }
-
   $jsonCats = json_encode($categories);
   $jsonsubcatsNum = json_encode($subcatsNum);
   $jsonsubcatsName = json_encode($subcatsName);
-
-
 ?>
 <script src="js/jquery-1.11.2.min.js"></script>
 <!DOCTYPE html>
@@ -71,9 +70,9 @@ include_once '../includes/secure_login/functions.php';
 		subcatselect.options[0] = new Option('בחר/י קורס');
 		subcatselect.options[0].disabled = true;
         for(var i = 1; i <= subcatsNum[faculty].length; i++){
-          subcatselect.options[i] = new Option(subcatsNum[faculty][i-1].val + '-' +
-		  									   subcatsName[faculty][i-1].val,
-											   subcatsNum[faculty][i-1].id);
+          subcatselect.options[i] = new Option(subcatsNum[faculty][i].val + '-' +
+		  									   subcatsName[faculty][i].val,
+											   subcatsNum[faculty][i].id);
         }
       }
     </script> 
