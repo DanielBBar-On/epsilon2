@@ -1,23 +1,41 @@
+<?php
+
+include_once '../../../../../includes/courses/functions.php';
+include_once '../../../../../includes/secure_login/db_connect.php';
+include_once '../../../../../includes/secure_login/functions.php';
+include_once 'file_info.php';
+
+	// login functions
+	sec_session_start();
+	
+	if (login_check($mysqli) == true) {
+		$logged = 'in';
+	} else {
+		header("registrationFull.php");
+		$logged = 'out';
+	}
+
+?>
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
 <title>Epsilon</title>
 
-<link rel="stylesheet" href="../../../css/bootstrap.css">
+<link rel="stylesheet" href="../../../../css/bootstrap.css">
 <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="../../../css/sidebar/sidebar_style.css">
-<link href="../../../css/flat_ui.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="../../../../css/sidebar/sidebar_style.css">
+<link href="../../../../css/flat_ui.min.css" rel="stylesheet" type="text/css">
 
-<link rel="stylesheet" href="../../../css/pdf_viewer/pdf_viewer_style.css">
-<link rel="stylesheet" href="../../../css/show_hide_button/show_hide_style.css">
+<link rel="stylesheet" href="../../../../css/pdf_viewer/pdf_viewer_style.css">
+<link rel="stylesheet" href="../../../../css/show_hide_button/show_hide_style.css">
 <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-<link rel="stylesheet" href="../../../css/forum/forum_style.css">
+<link rel="stylesheet" href="../../../../css/forum/forum_style.css">
 
 </head>
 
-<body id="index_body" style="margin-top:5%;">
+<body id="index_body" onLoad="loadForum();" style="margin-top:5%;">
 <div class="row">
   <div class="col-md-6" id="content">
 <div id="target">
@@ -71,7 +89,8 @@
 	<textarea id="questionText" type="ask_question" placeholder="שאל שאלה"></textarea>
     <br>
     <input type="submit" class="button2" name="action" id="upload_submit" value="ask" onClick="askQuestion()"/>
-        <input type="submit" class="button2" name="saveForum" id="saveForum" value="saveForum" onClick="saveForum();"/>
+    <input type="hidden" name="file_path" value="data\courses\formats">
+        <input type="submit" class="button2" name="action" id="upload_submit" value="send_json" onClick="saveForum()"/>
 </div>
 <div class="vue-wrapper">
 	<div id="vue">
@@ -111,13 +130,13 @@
 </body>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="../../../js/show_hide_button/show_hide_button.js"></script>
+<script src="../../../../js/show_hide_button/show_hide_button.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.js"></script>
-<script src="../../../js/forum/forum_self.js"></script>
+<script src="../../../../js/forum/forum_self.js"></script>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="../../../js/bootstrap.js"></script>
-<script src="../../../js/bootstrap.min.js"></script>
-<script src="../../../js/jquery-1.11.2.min.js"></script>
+<script src="../../../../js/bootstrap.js"></script>
+<script src="../../../../js/bootstrap.min.js"></script>
+<script src="../../../../js/jquery-1.11.2.min.js"></script>
 </html>

@@ -19,14 +19,10 @@ Question.prototype = new Node();
 
 function Answer(id, value) {
     Node.call(this, id, value);
-    this.replies = new DoublyList();
 }
 
 Answer.prototype = new Node();
 
-Answer.prototype.addNewReply = function(node) {
-    this.replies.addToTail(node);
-}
 
 /////////////// List ////////////////
 
@@ -129,7 +125,7 @@ DoublyList.prototype.remove = function(node) {
         // 2nd use-case: there is no second node
         if(node.id === this.tail.id) {
             this.tail = null;
-        } else if (node.next.id == this.tail.id){ //there are only two nodes in the list
+        } else if (node.next.id === this.tail.id){ //there are only two nodes in the list
             this.tail = currentNode.next;
         }
         this.head = currentNode.next;
@@ -272,7 +268,7 @@ QuestionsList.prototype = new DoublyList();
 
 
 //////////// In page functions ///////////
-var questions = new QuestionsList();
+questions = new QuestionsList();
 
 function askQuestion() {
     var textArea = document.getElementById("questionText");
@@ -310,32 +306,98 @@ function downvoteAnswer(questionId, answerId) {
 }
 
 function saveForum(){
-    var json = JSON.stringify(questions);
+    var myJson = JSON.stringify(questions);
 
     var loc = window.location.pathname;
     var dir = loc.substring(0, loc.lastIndexOf('/'));
+    path = "../../" + dir.toString();
 
-        $.ajax({
-            url     : 'savejson.php',
-            method  : 'post',
-            data    : {'myJson' : json, 'path' : dir.toString()},
-            dataType: json,
-            success : function( response ) {
-                alert( response );
-            }
-        });
+    $.ajax({
+        url     : '../../../../php/savejson.php',
+        method  : 'post',
+        data    : {'myJson' : myJson, 'path' : path},
+        success : function( response ) {
+        }
+    });
 }
 
+function parseAnswer(jsonAnswer) {
+    if (jsonAnswer === null) {
+        return null;
+    }
+
+    var answer = new Answer(jsonAnswer.id, jsonAnswer.data);
+    answer.votes = jsonAnswer.votes;
+    if (jsonAnswer.next !== null) {
+        answer.next = parseAnswer(jsonAnswer.next);
+    }
+
+    return answer;
+}
+
+function parseAnswersList(jsonAnswersList) {
+    var answersList = new DoublyList();
+    answersList._length = jsonAnswersList._length;
+    answersList._id_counter = jsonAnswersList._id_counter;
+    answersList.head = parseAnswer(jsonAnswersList.head);
+    answersList.tail = jsonAnswersList.tail;
+
+    return answersList;
+}
+
+function parseQuestion(jsonQuestion, jsonAnswers) {
+
+    if (jsonQuestion === null) {
+        return null;
+    }
+
+    var question = new Question(jsonQuestion.id, jsonQuestion.data);
+    question.votes = jsonQuestion.votes;
+
+    if (jsonQuestion.next !== null) {
+        question.next = parseQuestion(jsonQuestion.next);
+    }
+
+    question.answers = parseAnswersList(jsonQuestion.answers);
+
+    return question;
+
+}
+
+function parseJson(json) {
+    //what if forum is empty?
+    var tempQuestions = new DoublyList();
+    tempQuestions._id_counter = json._id_counter;
+    tempQuestions._length = json._length;
+    if (json.head !== null) {
+        tempQuestions.head = parseQuestion(json.head);
+    }
+    tempQuestions.tail = json.tail;
+
+    return tempQuestions;
+}
 function loadForum(){
 
     var loc = window.location.pathname;
     var dir = loc.substring(0, loc.lastIndexOf('/'));
 
+    var path = "../../../.." + dir.toString();
+
     $.ajax({
+        type: 'GET',
         url: "forum.json",
-        dataType: "json",
-        success: function(response) {
-            questions = JSON.parse(response);
+        async: false,
+        jsonpCallback: 'callback',
+        contentType: "application/json",
+        dataType: 'json',
+        success: function(json) {
+            var newQuestions = parseJson(json);
+            questions = newQuestions;
+        },
+        error: function(xhr,textStatus,err) {
+            alert("error: " + xhr);
+            alert("error: " + textStatus);
+            alert("error: " + err);
         }
     });
 

@@ -17,7 +17,7 @@ if (isset($_POST['action'])) {
 		case 'remove':
 			remove();
 			break;
-		case 'send_josn':
+		case 'send_json':
 			send_json();
 			break;
     }
@@ -109,7 +109,10 @@ function create_new_db_connect($path) {
 }
 
 function upload($courseNum, $type) {
-	$target_dir = "../../data/courses/" . $courseNum . "/" . $type . "/";
+	$filename = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_FILENAME);
+	$file_dir = "data/courses/" . $courseNum . "/" . $type . "/" . $filename . "/";
+	$file_path = $file_dir . basename($_FILES["fileToUpload"]["name"]);
+	$target_dir = "../../data/courses/" . $courseNum . "/" . $type . "/" . $filename . "/";
 	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 	$uploadOk = 1;
 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -135,8 +138,24 @@ function upload($courseNum, $type) {
 		$uploadOk = 0;
 	}
 	
+	$success = mkdir($target_dir , 0755, true);
+	if(!$success) {
+		die_nicely("failed to create directory for file");
+	}
+	
+	$myfile = fopen("$target_dir/file_info.php", "w");
+        $txt = '<?php
+		define("FILE_DIR", "' . $file_dir . '");
+		define("FILE_PATH", "' . $file_path . '");
+		define("FILE_NAME", "' . $filename . '");
+	define("COURSE_NUM", "' . ($_POST['lectureNum']) . '");
+	define("COURSE_NAME", "' . ($_POST['lectureName']) . '");
+?>';
+        fwrite($myfile, $txt);
+        fclose($myfile);
+	
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		insert_lecture_to_DB($num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+		insert_lecture_to_DB($courseNum, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 					$pos_votes, $neg_votes, $tot_votes, $year, $semester);
         echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
     } else {
@@ -184,9 +203,11 @@ function remove() {
 }
 
 function send_json() {
-	$dataPath ="../../data/courses/" . ($_POST['courseNum']);
+	$dataPath = ($_POST['file_path']);
+	header("Location: ". $dataPath);
 	$fp = fopen($path . 'forum.json', 'w');
 	fwrite($fp, $_POST['myJson']);
 	fclose($fp);
+	header("Location: ". $_POST['myJson']);
 }
 ?>

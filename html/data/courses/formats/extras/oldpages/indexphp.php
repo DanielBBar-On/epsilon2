@@ -1,6 +1,6 @@
 <?php
-include_once '../includes/db_connect.php';
-include_once '../includes/functions.php';
+include_once '../../../../../extras/includes/db_connect.php';
+include_once '../../../../../extras/includes/functions.php';
  
 sec_session_start();
  
@@ -14,9 +14,9 @@ if (login_check($mysqli) == true) {
 <html>
     <head>
         <title>Secure Login: Log In</title>
-        <link rel="stylesheet" href="styles/main.css" />
-        <script type="text/JavaScript" src="js/registration/sha512.js"></script> 
-        <script type="text/JavaScript" src="js/forms.js"></script> 
+        <link rel="stylesheet" href="../../../../../extras/oldpages/styles/main.css" />
+        <script type="text/JavaScript" src="../../../../../extras/oldpages/js/registration/sha512.js"></script> 
+        <script type="text/JavaScript" src="../../../../../extras/oldpages/js/forms.js"></script> 
     </head>
     <body>
         <?php
