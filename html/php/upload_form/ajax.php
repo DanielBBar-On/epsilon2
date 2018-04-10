@@ -17,6 +17,9 @@ if (isset($_POST['action'])) {
 		case 'remove':
 			remove();
 			break;
+		case 'send_josn':
+			send_json();
+			break;
     }
 }
 
@@ -180,4 +183,10 @@ function remove() {
 	remove_course_DB($faculty, $courseNum, $courseName);
 }
 
+function send_json() {
+	$dataPath ="../../data/courses/" . ($_POST['courseNum']);
+	$fp = fopen($path . 'forum.json', 'w');
+	fwrite($fp, $_POST['myJson']);
+	fclose($fp);
+}
 ?>
