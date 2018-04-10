@@ -6,16 +6,16 @@
 <!-- InstanceBeginEditable name="doctitle" -->
 <title>Epsilon</title>
 <!-- InstanceEndEditable -->
-<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="../../../css/bootstrap.css">
 <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/sidebar/sidebar_style.css">
-<link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="../../../css/sidebar/sidebar_style.css">
+<link href="../../../css/flat_ui.min.css" rel="stylesheet" type="text/css">
 <!-- InstanceBeginEditable name="head" -->
-<link rel="stylesheet" href="css/pdf_viewer/pdf_viewer_style.css">
-<link rel="stylesheet" href="css/show_hide_button/show_hide_style.css">
+<link rel="stylesheet" href="../../../css/pdf_viewer/pdf_viewer_style.css">
+<link rel="stylesheet" href="../../../css/show_hide_button/show_hide_style.css">
 <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-<link rel="stylesheet" href="css/forum/forum_style.css">
+<link rel="stylesheet" href="../../../css/forum/forum_style.css">
 <!-- InstanceEndEditable -->
 </head>
 <div>
@@ -34,7 +34,7 @@
         <div class="form-group">
           <input type="text" id="Autocomplete1" class="form-control" placeholder="מצא/י קורסים" style="width:180px !important;">
         </div>
-        <a href="coursePage.html">
+        <a href="../../../coursePage.html">
         <button type="submit" class="btn btn-default" style="margin-top:5px;">חפש/י</button>
         </a>
       </form>
@@ -97,22 +97,46 @@
 </div>
 </div>
 </div>
- <div class="forum_container">
+
+<div class="vue-wrapper">
+	<div id="vue">
+		<div class="search-area">
+			<h1>דיונים</h1>
+				<div class="input-wrapper"> <i class="fa fa-search"></i>
+					<input v-model="searchString" type="text" placeholder="Have a question? Search for answers with keywords"/>
+				</div>
+				<button @click="resetSearch()">נקה</button>
+			</div>
+			<div class="question" v-for="question in questions | filterBy searchString" track-by="$index" data-color="{{ question.votes | voteColor }}">
+			<div class="votes">
+				<div class="upvote" @click="vote('up', question)">
+                </div>
+				<div class="number-of-votes">{{ question.votes }}
+                </div>
+				<div class="downvote" @click="vote('down', question)">
+                </div>
+			</div>
+			<div class="question-and-answer">
+				<h2 style="color: #000000; direction: rtl;">{{ question.question }}</h2>
+					<p style="color: #000000; direction: rtl">{{ question.answer }}</p>
+			</div>
+		</div>
+ <!--<div class="forum_container">
  <iframe src="http://ec2-52-11-111-48.us-west-2.compute.amazonaws.com:8000/" 
  frameborder="0" allowfullscreen class="forum"></iframe>
- </div>
+ </div>-->
 </body>
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="js/show_hide_button/show_hide_button.js"></script>
+<script src="../../../js/show_hide_button/show_hide_button.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.js"></script>
-<script src="js/forum/forum.js"></script>
+<script src="../../../js/forum/forum.js"></script>
 <!-- InstanceEndEditable -->
 <!-- /#wrapper -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="js/bootstrap.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery-1.11.2.min.js"></script>
+<script src="../../../js/bootstrap.js"></script>
+<script src="../../../js/bootstrap.min.js"></script>
+<script src="../../../js/jquery-1.11.2.min.js"></script>
 </div>
 <!-- InstanceEnd -->
 </html>
