@@ -102,7 +102,7 @@ DoublyList.prototype.searchNodeById = function(id) {
         message = {failure: 'Could not find node in list'};
 
     // 1st use-case: an invalid position
-    if (length === 0 || id < 0 || id > id_counter) {
+    if (length === 0 || id < 0) {
         console.log(message.failure);
         return null;
     }
@@ -131,9 +131,9 @@ DoublyList.prototype.remove = function(node) {
         deletedNode = null;
 
     // 1st use-case: an invalid position
-    if (length === 0 || node.id < 0 || node.id > this._id_counter) {
+    if (length === 0 || node.id < 0) {
         console.log(message.failure);
-        return message.failure;
+        return null;
     }
 
     // 2nd use-case: the first node is removed
@@ -159,7 +159,7 @@ DoublyList.prototype.remove = function(node) {
                 deletedNode = nodeToDelete;
                 nodeToDelete = null;
 
-                break;
+                return deletedNode;
             }
 
             beforeNodeToDelete = currentNode;
@@ -169,7 +169,7 @@ DoublyList.prototype.remove = function(node) {
 
     this._length--;
 
-    return message.success;
+    return null;
 };
 
 ////////////// voting ////////////
@@ -177,14 +177,14 @@ DoublyList.prototype.remove = function(node) {
 Node.prototype.upvote = function (userId, userName) {
     alert("upvote question " + " userId = " + userId + " userName = " + userName);
 
+    alert("@@@ " +userId);
     var node = this.upvoters.searchNodeById(userId);
-    alert("found node: " + node.id);
     if (node === null) {
         node = new Node(userId, userName);
         this.votes++;
-        this.upvoters.addToTail(node);
-        this.upvoters.printToConsole();
-        this.downvoters.remove(node);
+        if (this.downvoters.remove(node) === null){
+            this.upvoters.addToTail(node);
+        }
     } else {
         alert("You already upvoted this");
     }
@@ -194,12 +194,13 @@ Node.prototype.upvote = function (userId, userName) {
 
 Node.prototype.downvote = function (userId, userName) {
 
-    var node = this.downVoters.searchNodeById(userId);
+    var node = this.downvoters.searchNodeById(userId);
     if (node === null) {
         node = new Node(userId, userName);
         this.votes--;
-        this.downvoters.addToTail(node);
-        this.upvoters.remove(node);
+        if(this.upvoters.remove(node) === null) {
+            this.downvoters.addToTail(node);
+        }
     } else {
         alert("You already downvoted this");
     }
@@ -389,6 +390,40 @@ function downvoteAnswer(questionId, answerId, userId, userName) {
 
 /////////// Parse functions /////////////
 
+function parseVoter(jsonVoter) {
+    if (jsonVoter === null) {
+        return null;
+    }
+
+    var voter = new Node(jsonVoter.id, jsonVoter.data);
+    if (jsonVoter.next !== null) {
+        voter.next = parseVoter(jsonVoter.next);
+    } else {
+        voter.next = null;
+    }
+
+    return voter;
+}
+
+function parseVotersList(jsonVotersList) {
+    if (jsonVotersList === null) {
+        return null;
+    }
+
+    var votersList = new DoublyList();
+    votersList._length = jsonVotersList._length;
+    votersList._id_counter = jsonVotersList._id_counter;
+    if(jsonVotersList.head !== null) {
+        votersList.head = parseVoter(jsonVotersList.head);
+    } else {
+        votersList.head = null;
+    }
+
+    votersList.tail = null;
+
+    return votersList;
+}
+
 function parseAnswer(jsonAnswer) {
     if (jsonAnswer === null) {
         return null;
@@ -400,10 +435,26 @@ function parseAnswer(jsonAnswer) {
         answer.next = parseAnswer(jsonAnswer.next);
     }
 
+    if (jsonAnswer.upvoters !== null) {
+        answer.upvoters = parseVotersList(jsonAnswer.upvoters);
+    } else {
+        answer.upvoters = new DoublyList;
+    }
+
+    if (jsonAnswer.downvoters !== null) {
+        answer.downvoters = parseVotersList(jsonAnswer.downvoters);
+    } else {
+        answer.downvoters = DoublyList();
+    }
+
     return answer;
 }
 
 function parseAnswersList(jsonAnswersList) {
+    if (jsonAnswersList === null) {
+        return null;
+    }
+
     var answersList = new DoublyList();
     answersList._length = jsonAnswersList._length;
     answersList._id_counter = jsonAnswersList._id_counter;
@@ -426,6 +477,19 @@ function parseQuestion(jsonQuestion, jsonAnswers) {
         question.next = parseQuestion(jsonQuestion.next);
     }
 
+    if (jsonQuestion.upvoters !== null) {
+        console.log("parsing upvoters list");
+        question.upvoters = parseVotersList(jsonQuestion.upvoters);
+    } else {
+        question.upvoters = new DoublyList();
+    }
+
+    if (jsonQuestion.downvoters !== null) {
+        question.downvoters = parseVotersList(jsonQuestion.downvoters);
+    } else {
+        question.downvoters = new DoublyList();
+    }
+
     question.answers = parseAnswersList(jsonQuestion.answers);
 
     return question;
@@ -433,8 +497,12 @@ function parseQuestion(jsonQuestion, jsonAnswers) {
 }
 
 function parseJson(json) {
-    //what if forum is empty?
     var tempQuestions = new DoublyList();
+    // what if json is just {}?
+    if (json === null) {
+        return tempQuestions;
+    }
+
     tempQuestions._id_counter = json._id_counter;
     tempQuestions._length = json._length;
     if (json.head !== null) {
@@ -447,7 +515,7 @@ function parseJson(json) {
 
 ////////////// save and load functions - JSON ////////
 
-/*function saveForum(){
+function saveForum(){
     var myJson = JSON.stringify(questions);
 
     var loc = window.location.pathname;
@@ -498,4 +566,4 @@ function loadForum(){
     });
 
     questions.printAllNodes();
-}*/
+}

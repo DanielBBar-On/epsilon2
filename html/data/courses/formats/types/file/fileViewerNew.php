@@ -37,7 +37,7 @@ include_once 'file_info.php';
     
 
 
-    <body id="index_body" onLoad="" style="margin-top:5%;">
+    <body id="index_body" onLoad="loadForum()" style="margin-top:5%;">
 <script type='text/javascript'>
       <?php
         echo "var userId = $jsonUserId; \n";
