@@ -69,10 +69,13 @@ DoublyList.prototype.add = function(node) {
         return;
     }
 
+    var beforeNode = null;
     while (current) {
+        beforeNode = current;
         if (node.votes > current.votes) {
             node.next = current;
-
+            beforeNode.next = node;
+            
             this._id_counter++;
             this._length++;
 
@@ -305,21 +308,7 @@ function downvoteAnswer(questionId, answerId) {
     questions.printAllNodes();
 }
 
-function saveForum(){
-    var myJson = JSON.stringify(questions);
-
-    var loc = window.location.pathname;
-    var dir = loc.substring(0, loc.lastIndexOf('/'));
-    path = "../../" + dir.toString();
-
-    $.ajax({
-        url     : '../../../../php/savejson.php',
-        method  : 'post',
-        data    : {'myJson' : myJson, 'path' : path},
-        success : function( response ) {
-        }
-    });
-}
+/////////// Parse functions /////////////
 
 function parseAnswer(jsonAnswer) {
     if (jsonAnswer === null) {
@@ -376,6 +365,33 @@ function parseJson(json) {
 
     return tempQuestions;
 }
+
+////////////// save and load functions - JSON ////////
+
+function saveForum(){
+    var myJson = JSON.stringify(questions);
+
+    var loc = window.location.pathname;
+    var dir = loc.substring(0, loc.lastIndexOf('/'));
+    path = "../.." + dir.toString();
+
+    alert(path);
+
+    $.ajax({
+        url     : '../../../../../php/savejson.php',
+        method  : 'post',
+        data    : {'myJson' : myJson, 'path' : path},
+        success : function( response ) {
+            alert(response);
+        },
+        error: function(xhr,textStatus,err) {
+            alert("error: " + xhr);
+            alert("error: " + textStatus);
+            alert("error: " + err);
+        }
+    });
+}
+
 function loadForum(){
 
     var loc = window.location.pathname;
@@ -398,6 +414,7 @@ function loadForum(){
             alert("error: " + xhr);
             alert("error: " + textStatus);
             alert("error: " + err);
+            questions = new DoublyList();
         }
     });
 

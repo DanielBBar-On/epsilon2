@@ -1,41 +1,54 @@
-<?php
-
-include_once '../../../../../includes/courses/functions.php';
-include_once '../../../../../includes/secure_login/db_connect.php';
-include_once '../../../../../includes/secure_login/functions.php';
-include_once 'file_info.php';
-
-	// login functions
-	sec_session_start();
-	
-	if (login_check($mysqli) == true) {
-		$logged = 'in';
-	} else {
-		header("registrationFull.php");
-		$logged = 'out';
-	}
-
-?>
-<!doctype html>
+<!DOCTYPE html>
 <html>
+<!-- InstanceBegin template="/templates/sidebarAfterSignIn.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
+<!-- InstanceBeginEditable name="doctitle" -->
 <title>Epsilon</title>
-
-<link rel="stylesheet" href="../../../../css/bootstrap.css">
+<!-- InstanceEndEditable -->
+<link rel="stylesheet" href="../../../../../css/bootstrap.css">
 <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="../../../../css/sidebar/sidebar_style.css">
-<link href="../../../../css/flat_ui.min.css" rel="stylesheet" type="text/css">
-
-<link rel="stylesheet" href="../../../../css/pdf_viewer/pdf_viewer_style.css">
-<link rel="stylesheet" href="../../../../css/show_hide_button/show_hide_style.css">
+<link rel="stylesheet" href="../../../../../css/sidebar/sidebar_style.css">
+<link href="../../../../../css/flat_ui.min.css" rel="stylesheet" type="text/css">
+<!-- InstanceBeginEditable name="head" -->
+<link rel="stylesheet" href="../../../../../css/pdf_viewer/pdf_viewer_style.css">
+<link rel="stylesheet" href="../../../../../css/show_hide_button/show_hide_style.css">
 <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-<link rel="stylesheet" href="../../../../css/forum/forum_style.css">
-
+<link rel="stylesheet" href="../../../../../css/forum/forum_style.css">
+<!-- InstanceEndEditable -->
 </head>
-
-<body id="index_body" onLoad="loadForum();" style="margin-top:5%;">
+<div>
+<div id="wrapper">
+  <div class="overlay"></div>
+  <!-- Sidebar -->
+  <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+    <ul class="nav sidebar-nav">
+      <li class="sidebar-brand"> <a href="#"> Epsilon </a> </li>
+      <li> <a href="#"><i class="fa fa-fw fa-home"></i> דף הבית</a> </li>
+      <li> <a href="#"><i class="fa fa-fw fa-folder"></i> על מנת להתחיל בשימוש, חפש קורס</a> </li>
+      <form class="navbar-form navbar-center" role="search" id="navBarSearchForm">
+        <style>
+#navBarSearchForm input[type=text]   
+</style>
+        <div class="form-group">
+          <input type="text" id="Autocomplete1" class="form-control" placeholder="מצא/י קורסים" style="width:180px !important;">
+        </div>
+        <a href="../../../../../coursePage.html">
+        <button type="submit" class="btn btn-default" style="margin-top:5px;">חפש/י</button>
+        </a>
+      </form>
+    </ul>
+  </nav>
+  <!-- /#sidebar-wrapper -->
+  <!-- Page Content -->
+  <div id="page-content-wrapper">
+    <button type="button" class="hamburger is-closed animated fadeInRight" data-toggle="offcanvas"> <span class="hamb-top"></span> <span class="hamb-middle"></span> <span class="hamb-bottom"></span> </button>
+  </div>
+  <!-- /#page-content-wrapper -->
+</div>
+<!-- InstanceBeginEditable name="body" -->
+<body id="index_body">
 <div class="row">
   <div class="col-md-6" id="content">
 <div id="target">
@@ -85,13 +98,6 @@ include_once 'file_info.php';
 </div>
 </div>
 
-<div style="text-align:center;">
-	<textarea id="questionText" type="ask_question" placeholder="שאל שאלה"></textarea>
-    <br>
-    <input type="submit" class="button2" name="action" id="upload_submit" value="ask" onClick="askQuestion()"/>
-    <input type="hidden" name="file_path" value="data\courses\formats">
-        <input type="submit" class="button2" name="action" id="upload_submit" value="send_json" onClick="saveForum()"/>
-</div>
 <div class="vue-wrapper">
 	<div id="vue">
 		<div class="search-area">
@@ -101,15 +107,7 @@ include_once 'file_info.php';
 				</div>
 				<button @click="resetSearch()">נקה</button>
 			</div>
-            
-            <div id="questions">
-            </div>
-	</div>
-</div>
-            
-          
-            
-			<!--<div class="question" v-for="question in questions | filterBy searchString" track-by="$index" data-color="{{ question.votes | voteColor }}">
+			<div class="question" v-for="question in questions | filterBy searchString" track-by="$index" data-color="{{ question.votes | voteColor }}">
 			<div class="votes">
 				<div class="upvote" @click="vote('up', question)">
                 </div>
@@ -122,21 +120,23 @@ include_once 'file_info.php';
 				<h2 style="color: #000000; direction: rtl;">{{ question.question }}</h2>
 					<p style="color: #000000; direction: rtl">{{ question.answer }}</p>
 			</div>
-		</div>-->
+		</div>
  <!--<div class="forum_container">
  <iframe src="http://ec2-52-11-111-48.us-west-2.compute.amazonaws.com:8000/" 
  frameborder="0" allowfullscreen class="forum"></iframe>
  </div>-->
 </body>
-
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-<script src="../../../../js/show_hide_button/show_hide_button.js"></script>
+<script src="../../../../../js/show_hide_button/show_hide_button.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.21/vue.js"></script>
-<script src="../../../../js/forum/forum_self.js"></script>
-
+<script src="../../../../../js/forum/forum.js"></script>
+<!-- InstanceEndEditable -->
+<!-- /#wrapper -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script src="../../../../js/bootstrap.js"></script>
-<script src="../../../../js/bootstrap.min.js"></script>
-<script src="../../../../js/jquery-1.11.2.min.js"></script>
+<script src="../../../../../js/bootstrap.js"></script>
+<script src="../../../../../js/bootstrap.min.js"></script>
+<script src="../../../../../js/jquery-1.11.2.min.js"></script>
+</div>
+<!-- InstanceEnd -->
 </html>

@@ -108,11 +108,18 @@ function create_new_db_connect($path) {
 ?>");
 }
 
+function create_new_file_html($target_dir, $file_name) {
+    $file_page = file_get_contents('../../data/courses/formats/file/fileViewerNew.php', FILE_USE_INCLUDE_PATH);
+    $myfile = fopen($target_dir . $file_name . ".php", "w");
+    fwrite($myfile, $file_page);
+    fclose($myfile);
+}
+
 function upload($courseNum, $type) {
-	$filename = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_FILENAME);
-	$file_dir = "data/courses/" . $courseNum . "/" . $type . "/" . $filename . "/";
+	$file_name = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_FILENAME);
+	$file_dir = "data/courses/" . $courseNum . "/" . $type . "/" . $file_name . "/";
 	$file_path = $file_dir . basename($_FILES["fileToUpload"]["name"]);
-	$target_dir = "../../data/courses/" . $courseNum . "/" . $type . "/" . $filename . "/";
+	$target_dir = "../../data/courses/" . $courseNum . "/" . $type . "/" . $file_name . "/";
 	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 	$uploadOk = 1;
 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -147,7 +154,8 @@ function upload($courseNum, $type) {
         $txt = '<?php
 		define("FILE_DIR", "' . $file_dir . '");
 		define("FILE_PATH", "' . $file_path . '");
-		define("FILE_NAME", "' . $filename . '");
+		define("FILE", "' .basename($_FILES["fileToUpload"]["name"]) . '");
+		define("FILE_NAME", "' . $file_name . '");
 	define("COURSE_NUM", "' . ($_POST['lectureNum']) . '");
 	define("COURSE_NAME", "' . ($_POST['lectureName']) . '");
 ?>';
@@ -157,6 +165,9 @@ function upload($courseNum, $type) {
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
 		insert_lecture_to_DB($courseNum, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 					$pos_votes, $neg_votes, $tot_votes, $year, $semester);
+					
+		create_new_file_html($target_dir, $file_name);
+		header("Location: ". $target_dir . $file_name . ".php");
         echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
     } else {
         echo "Sorry, there was an error uploading your file.";
