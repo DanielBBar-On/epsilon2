@@ -4,7 +4,7 @@ include_once '../includes/courses/functions.php';
 include_once '../includes/secure_login/db_connect.php';
 include_once '../includes/secure_login/functions.php';
 
-define("FILE_TYPE", "lecture");
+define("FILE_TYPE", "tutorial");
 
 	// login functions
 	sec_session_start();
@@ -107,72 +107,68 @@ define("FILE_TYPE", "lecture");
     </head>
 
     <body id="index_body" onLoad="loadCategories(); getYear()" onLoad="getYear()">
-        <div class="main">
-            <div class="wrapper">
-                <div id="upload_body">
-                    <h1>העלאת הרצאה</h1>
+        <div id="upload_body">
+            <h1>העלאת בחינה</h1>
 
-                    <div id="upload_div">
-                        <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
-                            <!-- user title -->
-                            <select name="faculty" id="faculty">
-                                <option value="" disabled selected>בחר/י פקולטה</option>
-                                <option value="Ezrachit">הפקולטה להנדסה אזרחית וסביבתית</option>
-                                <option value="Mechonot">הפקולטה להנדסת מכונות</option>
-                                <option value="Chashmal">הפקולטה להנדסת חשמל</option>
-                                <option value="Chimit">הפקולטה להנדסה כימית</option>
-                                <option value="Mazon">הפקולטה להנדסת מזון וביוטכנולוגיה</option>
-                                <option value="Chalal">הפקולטה להנדסת אוירונוטיקה וחלל</option>
-                                <option value="Taasiya">הפקולטה להנדסת תעשיה וניהול</option>
-                                <option value="Math">הפקולטה למתמטיקה</option>
-                                <option value="Physics">הפקולטה לפיזיקה</option>
-                                <option value="Chem">הפקולטה לכימיה</option>
-                                <option value="Bio">הפקולטה לביולוגיה</option>
-                                <option value="Arch">הפקולטה לארכיטקטורה ובינוי ערים</option>
-                                <option value="Chinoch">הפקולטה לחינוך למדע וטכנולוגיה</option>
-                                <option value="Madmach">הפקולטה למדעי המחשב</option>
-                                <option value="Medicene">הפקולטה לרפואה</option>
-                                <option value="Chomarim">הפקוטה למדע והנדסה של חומרים</option>
-                                <option value="Human">המחלקה ללימודים הומניסטיים ואמנויות</option>
-                                <option value="Biomed">הפקולטה להנדסה ביורפואית</option>
-                            </select>
+            <div id="upload_div">
+                <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
+                    <!-- user title -->
+                    <select name="faculty" id="faculty">
+                        <option value="" disabled selected>בחר/י פקולטה</option>
+                        <option value="Ezrachit">הפקולטה להנדסה אזרחית וסביבתית</option>
+                        <option value="Mechonot">הפקולטה להנדסת מכונות</option>
+                        <option value="Chashmal">הפקולטה להנדסת חשמל</option>
+                        <option value="Chimit">הפקולטה להנדסה כימית</option>
+                        <option value="Mazon">הפקולטה להנדסת מזון וביוטכנולוגיה</option>
+                        <option value="Chalal">הפקולטה להנדסת אוירונוטיקה וחלל</option>
+                        <option value="Taasiya">הפקולטה להנדסת תעשיה וניהול</option>
+                        <option value="Math">הפקולטה למתמטיקה</option>
+                        <option value="Physics">הפקולטה לפיזיקה</option>
+                        <option value="Chem">הפקולטה לכימיה</option>
+                        <option value="Bio">הפקולטה לביולוגיה</option>
+                        <option value="Arch">הפקולטה לארכיטקטורה ובינוי ערים</option>
+                        <option value="Chinoch">הפקולטה לחינוך למדע וטכנולוגיה</option>
+                        <option value="Madmach">הפקולטה למדעי המחשב</option>
+                        <option value="Medicene">הפקולטה לרפואה</option>
+                        <option value="Chomarim">הפקוטה למדע והנדסה של חומרים</option>
+                        <option value="Human">המחלקה ללימודים הומניסטיים ואמנויות</option>
+                        <option value="Biomed">הפקולטה להנדסה ביורפואית</option>
+                    </select>
 
-                            <select id='course' name="courseNum">
-                                <option value="" disabled selected>בחר/י קורס</option>
-                            </select>
+                    <select id='course' name="courseNum">
+                        <option value="" disabled selected>בחר/י קורס</option>
+                    </select>
 
-                            <!-- file num -->
-                            <input type="upload_text" name="<?php echo FILE_TYPE ?>Num" id="num" placeholder="שבוע מספר"></input>
+                    <!-- file num -->
+                    <input type="upload_text" name="<?php echo FILE_TYPE ?>Num" id="num" placeholder="שבוע מספר"></input>
 
-                            <!-- file num -->
-                            <input type="upload_text" name="<?php echo FILE_TYPE ?>Name" id="num" placeholder="נושא ההרצאה"></input>
+                    <!-- file num -->
+                    <input type="upload_text" name="<?php echo FILE_TYPE ?>Name" id="num" placeholder="נושא ההרצאה"></input>
 
-                            <!-- year -->
-                            <select id="year" name="year"></select>
+                    <!-- year -->
+                    <select id="year" name="year"></select>
 
-                            <select name="semester" id="semester">
-                                <option value="" disabled selected>בחר/י סמסטר</option>
-                                <option value='winter'>חורף</option>
-                                <option value='spring'>אביב</option>
-                                <option value='summer'>קיץ</option>
-                            </select>
+                    <select name="semester" id="semester">
+                        <option value="" disabled selected>בחר/י סמסטר</option>
+                        <option value='winter'>חורף</option>
+                        <option value="spring">אביב</option>
+                        <option value="summer">קיץ</option>
+                    </select>
 
-                            <input type="hidden" name="id" value=< ?php echo '"' . $_SESSION[ 'user_id'] . '"' ?> >
-                            <input type="hidden" name="type" value="<?php echo FILE_TYPE ?>">
+                    <input type="hidden" name="id" value=< ?php echo '"' . $_SESSION[ 'user_id'] . '"' ?> >
+                    <input type="hidden" name="type" value="<?php echo FILE_TYPE ?>">
 
-                            <!-- <CTA></CTA> -->
-                            <input type="file" name="fileToUpload" id="fileToUpload">
-                            <input type="submit" class="button2" name="action" id="upload_submit" value="upload" />
-                        </form>
+                    <!-- <CTA></CTA> -->
+                    <input type="file" name="fileToUpload" id="fileToUpload">
+                    <input type="submit" class="button2" name="action" id="upload_submit" value="upload" />
+                </form>
 
-                    </div>
-
-                </div>
             </div>
+
         </div>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script src="js/upload_form/upload_form_index.js"></script>
     </body>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script src="js/upload_form/upload_form_index.js"></script>
     <!-- /#wrapper -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>

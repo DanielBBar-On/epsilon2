@@ -133,7 +133,7 @@ DoublyList.prototype.remove = function(node) {
     // 1st use-case: an invalid position
     if (length === 0 || node.id < 0) {
         console.log(message.failure);
-        return null;
+        return message.failure;
     }
 
     // 2nd use-case: the first node is removed
@@ -159,7 +159,7 @@ DoublyList.prototype.remove = function(node) {
                 deletedNode = nodeToDelete;
                 nodeToDelete = null;
 
-                return deletedNode;
+                break;
             }
 
             beforeNodeToDelete = currentNode;
@@ -169,22 +169,20 @@ DoublyList.prototype.remove = function(node) {
 
     this._length--;
 
-    return null;
+    return message.success;
 };
 
 ////////////// voting ////////////
 
 Node.prototype.upvote = function (userId, userName) {
-    alert("upvote question " + " userId = " + userId + " userName = " + userName);
-
-    alert("@@@ " +userId);
+    
     var node = this.upvoters.searchNodeById(userId);
     if (node === null) {
         node = new Node(userId, userName);
         this.votes++;
-        if (this.downvoters.remove(node) === null){
-            this.upvoters.addToTail(node);
-        }
+        this.upvoters.addToTail(node);
+        this.upvoters.printToConsole();
+        this.downvoters.remove(node);
     } else {
         alert("You already upvoted this");
     }
@@ -198,9 +196,8 @@ Node.prototype.downvote = function (userId, userName) {
     if (node === null) {
         node = new Node(userId, userName);
         this.votes--;
-        if(this.upvoters.remove(node) === null) {
-            this.downvoters.addToTail(node);
-        }
+        this.downvoters.addToTail(node);
+        this.upvoters.remove(node);
     } else {
         alert("You already downvoted this");
     }
@@ -342,7 +339,6 @@ DoublyList.prototype.printAllNodes = function() {
 
 
 function QuestionsList() {
-    alert("creating new QuestionsList");
     // for future inheritance purposes
 }
 
@@ -366,7 +362,6 @@ function answerQuestion(id){
 }
 
 function upvoteQuestion(questionId, userId, userName) {
-    alert("upvote questions - questionID = " + questionId + " userId = " + userId + " userName = " + userName);
     questions.upvote(questionId, userId, userName);
     questions.printAllNodes();
 }
@@ -522,14 +517,11 @@ function saveForum(){
     var dir = loc.substring(0, loc.lastIndexOf('/'));
     path = "../.." + dir.toString();
 
-    alert(path);
-
     $.ajax({
         url     : '../../../../../php/savejson.php',
         method  : 'post',
         data    : {'myJson' : myJson, 'path' : path},
         success : function( response ) {
-            alert(response);
         },
         error: function(xhr,textStatus,err) {
             alert("error: " + xhr);

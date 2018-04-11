@@ -109,7 +109,7 @@ function create_new_db_connect($path) {
 }
 
 function create_new_file_html($target_dir, $file_name) {
-    $file_page = file_get_contents('../../data/courses/formats/file/fileViewerNew.php', FILE_USE_INCLUDE_PATH);
+    $file_page = file_get_contents('../../data/courses/formats/types/file/fileViewerNew.php', FILE_USE_INCLUDE_PATH);
     $myfile = fopen($target_dir . $file_name . ".php", "w");
     fwrite($myfile, $file_page);
     fclose($myfile);
@@ -125,8 +125,8 @@ function upload($courseNum, $type) {
 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 	
 	$faculty = $_POST['faculty'];
-	$num = $_POST['lectureNum'];
-	$name = $_POST['lectureName'];
+	$num = $_POST[$type . 'Num'];
+	$name = $_POST[$type . 'Name'];
 	$ADDED_BY_ID = $_POST['id'];
 	$ADDED_BY_EMAIL = '@';
 	$path = $target_file;

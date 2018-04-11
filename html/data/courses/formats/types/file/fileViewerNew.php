@@ -44,13 +44,12 @@ include_once 'file_info.php';
         echo "var userName = $jsonUserName; \n";
       ?>
 	  
-	  alert("userId = " + userId);
 	</script>
         <div class="row">
             <div class="col-md-6" id="content">
                 <div id="target">
 
-                    <!-- responsive iframe -->
+                    <!-- responsive <iframe src="" frameborder="0"></iframe> -->
                     <!-- ============== -->
                     <div id="Iframe-Cicis-Menu-To-Go-Answer" class="set-margin-cicis-menu-to-go set-padding-cicis-menu-to-go set-border-cicis-menu-to-go set-box-shadow-cicis-menu-to-go center-block-horiz">
                         <div class="responsive-wrapper 
