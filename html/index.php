@@ -65,14 +65,14 @@ include_once '../includes/secure_login/functions.php';
       function updatesubcats(){
         var catSelect = this;
         var faculty = this.value;
-        var subcatselect = document.getElementById("course");
+        var subcatselect = document.getElementById("courseNum");
         subcatselect.options.length = 0; //delete all options if any present
 		subcatselect.options[0] = new Option('בחר/י קורס');
 		subcatselect.options[0].disabled = true;
         for(var i = 1; i <= subcatsNum[faculty].length; i++){
-          subcatselect.options[i] = new Option(subcatsNum[faculty][i].val + '-' +
-		  									   subcatsName[faculty][i].val,
-											   subcatsNum[faculty][i].id);
+          subcatselect.options[i] = new Option(subcatsNum[faculty][i-1].val + '-' +
+		  									   subcatsName[faculty][i-1].val,
+											   subcatsNum[faculty][i-1].id);
         }
       }
     </script> 
@@ -114,7 +114,7 @@ include_once '../includes/secure_login/functions.php';
   </div>
   <!-- InstanceBeginEditable name="body" -->
   <body id="index_body" style="width:100%; height:100%;" onload='loadCategories()'>
-  <div style="float:right; width:40%; margin-right:35%">
+  <div style="float:right; width:40%; margin-right:10%">
     <div style="text-align:center;"> <img alt="logo" src="images/logo.png" 
       										style="margin-top:0%; width:100%; height:100%;"> </div>
   </div>
@@ -166,10 +166,10 @@ include_once '../includes/secure_login/functions.php';
         
         <!-- user title --> 
         <!--style for select is in the select function-->
-        <select id='course' style="margin-top:40px">
+        <select id='courseNum' name='courseNum' style="margin-top:40px">
           <option value="" disabled selected>בחר/י קורס</option>
         </select>
-        <input type="submit" class="button2" name="action" id="upload_submit" value="חיפוש" 
+        <input type="submit" class="button2" name="action" id="upload_submit" value="search" 
         	   style="margin-top:50px"/>
       </form>
       <?php
@@ -180,6 +180,28 @@ include_once '../includes/secure_login/functions.php';
                 id="upload_submit">הוסף קורס חדש</a></div>
     	<?php } ?>
     </div>
+  </div>
+  <div style="float:right; width:20%; margin-right:5%">
+  	<a href="uploadLecture.php">
+    	<input type="submit" class="button2" name="action" id="upload_submit" value="הוסף הרצאה" 
+        	   					style="margin-top:50px"/>
+    </a>
+    <a href="uploadTutorial.php">
+    	<input type="submit" class="button2" name="action" id="upload_submit" value="הוסף תרגול" 
+        	   					style="margin-top:50px"/>
+    </a>
+    <a href="uploadHomeWork.php">
+    	<input type="submit" class="button2" name="action" id="upload_submit" value="הוסף שיעורי בית" 
+        	   					style="margin-top:50px"/>
+    </a>
+    <a href="uploadSummary.php">
+    	<input type="submit" class="button2" name="action" id="upload_submit" value="הוסף סיכום" 
+        	   					style="margin-top:50px"/>
+    </a>
+    <a href="uploadExam.php">
+    	<input type="submit" class="button2" name="action" id="upload_submit" value="הוסף מבחן" 
+        	   					style="margin-top:50px"/>
+    </a>
   </div>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
   <script src="js/upload_form/upload_form_index.js"></script>

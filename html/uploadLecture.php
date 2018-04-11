@@ -4,6 +4,8 @@ include_once '../includes/courses/functions.php';
 include_once '../includes/secure_login/db_connect.php';
 include_once '../includes/secure_login/functions.php';
 
+define("FILE_TYPE", "lecture");
+
 	// login functions
 	sec_session_start();
 	
@@ -103,8 +105,10 @@ include_once '../includes/secure_login/functions.php';
 </head>
 
 <body id="index_body" onLoad="loadCategories(); getYear()" onLoad="getYear()">
+	<div class = "main">
+		<div class = "wrapper">
 <div id="upload_body">
-  <h1 id="upload_h1">העלאת הרצאה</h1>
+  <h1>העלאת הרצאה</h1>
   
   <div id="upload_div">  
     <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
@@ -136,10 +140,10 @@ include_once '../includes/secure_login/functions.php';
         </select>
       
       <!-- file num -->
-      <input type="upload_text" name="lectureNum" id="num" placeholder="שבוע מספר"></input>
+      <input type="upload_text" name="<?php echo FILE_TYPE ?>Num" id="num" placeholder="שבוע מספר"></input>
       
       <!-- file num -->
-      <input type="upload_text" name="lectureName" id="num" placeholder="נושא ההרצאה"></input>
+      <input type="upload_text" name="<?php echo FILE_TYPE ?>Name" id="num" placeholder="נושא ההרצאה"></input>
       
       <!-- year -->
       <select id="year" name="year"></select>
@@ -147,14 +151,12 @@ include_once '../includes/secure_login/functions.php';
 		<select name="semester" id="semester">
         	<option value="" disabled selected>בחר/י סמסטר</option>
 			<option value='winter'	>חורף</option>
-			<option value="spring"	>אביב</option>
-            <option value="summer"	>קיץ</option>
+			<option value='spring'	>אביב</option>
+            <option value='summer'	>קיץ</option>
 		</select>
-      <!-- message -->
-      <textarea type="upload_text" placeholder="הערות"></textarea>
       
       <input type="hidden" name="id" value= <?php echo '"' . $_SESSION['user_id'] . '"' ?> >
-      <input type="hidden" name="type" value="lectures">
+      <input type="hidden" name="type" value="<?php echo FILE_TYPE ?>s">
       
       <!-- <CTA></CTA> -->
       <input type="file" name="fileToUpload" id="fileToUpload">
@@ -164,9 +166,11 @@ include_once '../includes/secure_login/functions.php';
   </div>
   
 </div>
+</div>
+</div>
+</body>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
   <script src="js/upload_form/upload_form_index.js"></script>
-</body>
   <!-- /#wrapper --> 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 

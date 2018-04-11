@@ -17,8 +17,8 @@ if (isset($_POST['action'])) {
 		case 'remove':
 			remove();
 			break;
-		case 'send_json':
-			send_json();
+		case 'search':
+			search();
 			break;
     }
 }
@@ -213,12 +213,8 @@ function remove() {
 	remove_course_DB($faculty, $courseNum, $courseName);
 }
 
-function send_json() {
-	$dataPath = ($_POST['file_path']);
-	header("Location: ". $dataPath);
-	$fp = fopen($path . 'forum.json', 'w');
-	fwrite($fp, $_POST['myJson']);
-	fclose($fp);
-	header("Location: ". $_POST['myJson']);
+function search () {
+	$dataPath ="../../data/courses/" . ($_POST['courseNum']);
+	header("Location: ". $dataPath . "/". $_POST['courseNum']. ".php");
 }
 ?>
