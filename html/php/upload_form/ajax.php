@@ -57,7 +57,10 @@ if (isset($_POST['action'])) {
 			$file_name = $file[1];
 			$courseNum = ($_POST['courseNum']);
 			searchFile($courseNum, $file_name, $type);
-			break;	
+			break;
+		case 'searchByPath':
+			searchFileByPath($_POST['path']);
+			break;
     }
 }
 
@@ -76,8 +79,8 @@ function create() {
 		$success = mkdir($dataPath, 0755, true);
         $success = mkdir("$dataPath/lectures", 0755, true);
         $success = mkdir("$dataPath/tutorials", 0755, true);
-        $success = mkdir("$dataPath/hw", 0755, true);
-        $success = mkdir("$dataPath/past_exams", 0755, true);
+        $success = mkdir("$dataPath/homework", 0755, true);
+        $success = mkdir("$dataPath/exams", 0755, true);
         if($success) {
             echo "course creation success" . "<br>";
         } else {
@@ -165,11 +168,11 @@ function upload($courseNum, $courseName, $type) {
 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 	
 	$faculty = $_POST['faculty'];
-	$weekNum = $_POST[$type . 'Num'];
+	$week_num = $_POST[$type . 'Num'];
 	$name = $_POST[$type . 'Name'];
 	$ADDED_BY_ID = $_POST['id'];
 	$ADDED_BY_EMAIL = '@';
-	$path = $target_file;
+	$path = $target_dir . $file_name . ".php";
 	$pos_votes = 0;
 	$neg_votes = 0;
 	$tot_votes = $pos_votes - $neg_votes;
@@ -198,7 +201,7 @@ function upload($courseNum, $courseName, $type) {
 		define("FILE_PATH", "' . $file_path . '");
 		define("FILE", "' .basename($_FILES["fileToUpload"]["name"]) . '");
 		define("FILE_NAME", "' . $file_name . '");
-	define("WEEK_NUM", "' . $weekNum . '");
+	define("WEEK_NUM", "' . $week_num . '");
 	define("COURSE_NUM", "' . $courseNum . '");
 	define("COURSE_NAME", "' . $courseName . '");
 ?>';
@@ -206,7 +209,7 @@ function upload($courseNum, $courseName, $type) {
         fclose($myfile);
 	
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		insert_lecture_to_DB($courseNum, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+		insert_lecture_to_DB($courseNum, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 					$pos_votes, $neg_votes, $tot_votes, $year, $semester);
 					
 		create_new_file_html($target_dir, $file_name);
@@ -264,5 +267,9 @@ function searchCourse () {
 function searchFile ($courseNum, $file_name, $type) {
 	$dataPath ="../../data/courses/" . $courseNum;
 	header("Location: ". $dataPath . "/". $type . "/" . $file_name . "/" . $file_name . ".php");
+}
+
+function searchFileByPath ($path) {
+	header("Location: ". $path);
 }
 ?>

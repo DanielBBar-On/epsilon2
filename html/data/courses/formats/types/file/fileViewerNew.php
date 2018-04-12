@@ -16,6 +16,23 @@ include_once 'file_info.php';
 		header("Location: registrationFull.php");
 		$logged = 'out';
 	}
+	
+	//////////// get past versions /////////////
+    // drop-down functions
+       $db = new mysqli(constant("COURSES_HOST"), constant("COURSES_USER"), 
+                         constant("COURSES_PASSWORD"), constant("COURSE_NUM")); //connect to course database
+
+        $query = "SELECT * FROM lectures WHERE num = " . constant("WEEK_NUM"); // get all lecture that are from the same week.
+
+        $result = $db->query($query);
+
+        $categories = NULL;
+
+        while($row = $result->fetch_assoc()){
+			$categories[] = array("id" => $row['path'], "val" => $row['year'] . " - " . $row['semester'] );
+        }
+
+        $jsonCats = json_encode($categories);
 
 ?>
     <!doctype html>
@@ -35,9 +52,23 @@ include_once 'file_info.php';
         <link rel="stylesheet" href="../../../../../css/forum/forum_style.css">
     </head>
     
+ 	<!--javascript-->
+        <script type='text/javascript'>
+            <?php
+                echo "var categories = $jsonCats; \n";
+            ?>
 
+            function loadCategories() {
+                var select = document.getElementById("course");
+                for(var i = 0; i < categories.length; i++) {
+                    console.log(i);
+                  select.options[i] = new Option(categories[i].val,categories[i].id);          
+                }
+            }
+        </script>
+    <!--end javascript-->
 
-    <body id="index_body" onLoad="loadForum()" style="margin-top:5%;">
+    <body id="index_body" onLoad="loadForum(); loadCategories();" style="margin-top:5%;">
     <div style="width: 100%;
 				text-align:center;">
             <span class="container-fluid" style="float:left;
@@ -106,6 +137,13 @@ include_once 'file_info.php';
 	  
 	</script>
     <div id="main">
+        <form action="../../../../../php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
+            <select id='course' name="path">
+                <option value="" disabled selected>בחר/י קורס</option>
+            </select>
+
+            <input type="submit" class="button2" name="action" id="upload_submit" value="searchByPath" />
+                    </form>
             <div style="text-align: center;
 						 vertical-align: middle;
                          margin-right: 20%">

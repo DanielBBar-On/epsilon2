@@ -8,6 +8,8 @@ END;
     exit;
 }
 
+////////////// create new course //////////////////////
+
 function insert_to_courses_DB($faculty, $num, $name) {
 	$servername = constant("COURSES_HOST");
 	$username = constant("COURSES_USER");
@@ -180,8 +182,9 @@ function create_course_DB($faculty, $num, $name) {
 	return 0;
 }
 
+//////////////////// Add files to course //////////////////////////////////
 
-function insert_lecture_to_DB($num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+function insert_lecture_to_DB($num, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 					$pos_votes, $neg_votes, $tot_votes, $year, $semester) {
 	//use the courses defines since we are not in the specific course folder (workaround).
 	$servername = constant("COURSES_HOST");
@@ -199,7 +202,7 @@ function insert_lecture_to_DB($num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 
 	$sql = "INSERT INTO lectures (num, name, ADDED_BY_ID, ADDED_BY_EMAIL, path,
 								 pos_votes, neg_votes, tot_votes, year, semester)
-			VALUES ('$num', '$name', '$ADDED_BY_ID', '$ADDED_BY_EMAIL', '$path',
+			VALUES ('$week_num', '$name', '$ADDED_BY_ID', '$ADDED_BY_EMAIL', '$path',
 					'$pos_votes', '$neg_votes', '$tot_votes', $year, '$semester')";
 
 	if ($conn->query($sql) === TRUE) {
