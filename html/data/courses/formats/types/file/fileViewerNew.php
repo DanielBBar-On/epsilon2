@@ -38,6 +38,66 @@ include_once 'file_info.php';
 
 
     <body id="index_body" onLoad="loadForum()" style="margin-top:5%;">
+    <div style="width: 100%;
+				text-align:center;">
+            <span class="container-fluid" style="float:left;
+										margin-top:5px;">
+			<a  href="index.php">
+			<img src="../../../../../images/logo-white.png" style="width:39.5px;
+												height:auto;
+												padding:10px;">
+												</a>
+				<p style="color:#FCFCFC;">דף הבית</p>
+				</span>
+            <?php
+			if (login_check($mysqli) == false) { ?>
+                <span class="container-fluid" style="float:left;
+												">
+			<a  href="registrationFull.php">
+			<i class="fa fa-sign-in" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"></i>
+												</a>
+				<p style="color:#FCFCFC;">התחברות/הרשמה</p>
+				</span>
+                <?php } else { ?>
+                    <span class="container-fluid" style="float:left;">
+		<a  href="includes/logout.php">
+			<i class="fa fa-sign-out" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"></i>
+												</a>
+				<p style="color:#FCFCFC;">התנתקות</p>
+					</span>
+                    <?php } 
+			if (login_check($mysqli) == true) { ?>
+                        <span class="container-fluid" style="float:left;">
+			<a  href="createCourse.php">
+			<i class="fa fa-graduation-cap" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+												</a>
+				<p style="color:#FCFCFC;">הוספת קורס</p>
+			</span>
+                        <?php }?>
+                            <?php
+			if (login_check($mysqli) == true) { ?>
+                                <span class="container-fluid" style="float:left;">
+			<a  href="uploadLecture.php">
+			<i class="fa fa-book" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+												</a>
+				<p style="color:#FCFCFC;">העלאת קובץ</p>
+			</span>
+                                <?php }?>
+
+        </div>
+        <br>
 <script type='text/javascript'>
       <?php
         echo "var userId = $jsonUserId; \n";
@@ -45,6 +105,14 @@ include_once 'file_info.php';
       ?>
 	  
 	</script>
+    <div id="main">
+            <div style="text-align: center;
+						 vertical-align: middle;
+                         margin-right: 20%">
+            <h1 style="color:#FCFCFC">  <?php echo constant("COURSE_NAME") ?> </h1>
+            <h1 style="color:#FCFCFC;
+            			"> הרצאה של שבוע מס' <?php echo htmlentities(constant("WEEK_NUM")) ?> </h1>
+        </div>
         <div class="row">
             <div class="col-md-6" id="content">
                 <div id="target">
@@ -63,7 +131,7 @@ include_once 'file_info.php';
                     </div>
                 </div>
             </div>
-            <div class="col-md-12" id="question" style="float:right;" align="center">
+            <div class="col-md-12" id="question" style="float:right; margin-top: 5%;" align="center">
                 <script type="text/javascript">
                     function hasClass(ele, cls) {
                         return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
@@ -93,7 +161,6 @@ include_once 'file_info.php';
                 <button class="btn btn-default2 Hide" id="hideshow" value="hide/show" onClick="changeClass()" style="display:none;">הסתר פתרון</button>
             </div>
         </div>
-        </div>
         <div style="text-align:center;">
             <textarea id="questionText" type="ask_question" placeholder="שאל שאלה"></textarea>
             <br>
@@ -112,6 +179,7 @@ include_once 'file_info.php';
                 </div>
                 <div id="questions"> </div>
             </div>
+        </div>
         </div>
     </body>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

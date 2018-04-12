@@ -12,7 +12,10 @@ if (isset($_POST['action'])) {
             create();
             break;
 		case 'upload':
-			upload(($_POST['courseNum']), ($_POST['type']));
+			$course = explode("_",$_POST['courseNum']);
+			$courseNum = $course[0];
+			$courseName = htmlentities($course[1]);
+			upload($courseNum, $courseName, ($_POST['type']));
 			break;
 		case 'remove':
 			remove();
@@ -150,7 +153,9 @@ function create_new_file_html($target_dir, $file_name) {
     fclose($myfile);
 }
 
-function upload($courseNum, $type) {
+///////// file upload //////////////////////
+
+function upload($courseNum, $courseName, $type) {
 	$file_name = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_FILENAME);
 	$file_dir = "data/courses/" . $courseNum . "/" . $type . "/" . $file_name . "/";
 	$file_path = $file_dir . basename($_FILES["fileToUpload"]["name"]);
@@ -160,7 +165,7 @@ function upload($courseNum, $type) {
 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 	
 	$faculty = $_POST['faculty'];
-	$num = $_POST[$type . 'Num'];
+	$weekNum = $_POST[$type . 'Num'];
 	$name = $_POST[$type . 'Name'];
 	$ADDED_BY_ID = $_POST['id'];
 	$ADDED_BY_EMAIL = '@';
@@ -180,6 +185,8 @@ function upload($courseNum, $type) {
 		$uploadOk = 0;
 	}
 	
+	echo "<br>" . $target_dir . "<br>";
+	
 	$success = mkdir($target_dir , 0755, true);
 	if(!$success) {
 		die_nicely("failed to create directory for file");
@@ -191,8 +198,9 @@ function upload($courseNum, $type) {
 		define("FILE_PATH", "' . $file_path . '");
 		define("FILE", "' .basename($_FILES["fileToUpload"]["name"]) . '");
 		define("FILE_NAME", "' . $file_name . '");
-	define("COURSE_NUM", "' . ($_POST['lectureNum']) . '");
-	define("COURSE_NAME", "' . ($_POST['lectureName']) . '");
+	define("WEEK_NUM", "' . $weekNum . '");
+	define("COURSE_NUM", "' . $courseNum . '");
+	define("COURSE_NAME", "' . $courseName . '");
 ?>';
         fwrite($myfile, $txt);
         fclose($myfile);

@@ -13,56 +13,83 @@ if (login_check($mysqli) == true) {
 ?>
 
 <!DOCTYPE html>
-<html><!-- InstanceBegin template="/templates/sidebarBeforeSignIn.dwt" codeOutsideHTMLIsLocked="false" -->
+<html>
 <head>
 <meta charset="UTF-8">
-<!-- InstanceBeginEditable name="doctitle" -->
 <title>Epsilon</title>
-<!-- InstanceEndEditable -->
 <link rel="stylesheet" href="css/bootstrap.css">
 <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 <link rel="stylesheet" href="css/sidebar/sidebar_style.css">
 <link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
-<!-- InstanceBeginEditable name="head" --> 
 <link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet" href="css/registration/registration_style.css">
-<script type="text/JavaScript" src="js/registration/sha512.js"></script> 
-<script type="text/JavaScript" src="js/registration/forms.js"></script> 
-<!-- InstanceEndEditable -->
 </head>
 
-<div>
-  <div id="wrapper">
-    <div class="overlay"></div>
-    <!-- Sidebar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
-      <ul class="nav sidebar-nav">
-        <li class="sidebar-brand"> <a href="#"> Epsilon </a> </li>
-        <li> <a href="registrationFull.php"><i class="fa fa-fw fa-home"></i>דף הבית</a></li>
-        <li> <a href="registrationFull.php"><i class="fa fa-fw fa-sign-in"></i>התחבר</a> </li>
-        <form class="navbar-form navbar-center" role="search" id="navBarSearchForm">
-          <div class="form-group">
-            <input type="text" id="Autocomplete1" class="form-control" placeholder="מצא/י קורסים" style="width:180px !important;">
-          </div>
-          <a href="coursePage.html">
-          <button type="submit" class="btn btn-default" style="margin-top:5px;">חפש/י</button>
-          </a>
-        </form>
-      </ul>
-    </nav>
-    <!-- /#sidebar-wrapper --> 
-    
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-      <button type="button" class="hamburger is-closed animated fadeInRight" data-toggle="offcanvas"> <span class="hamb-top"></span> <span class="hamb-middle"></span> <span class="hamb-bottom"></span> </button>
-    </div>
-    <!-- /#page-content-wrapper --> 
-    
-  </div>
-  <!-- InstanceBeginEditable name="body" -->
-  <body id="index_body">
+<body id="index_body">
+	<!-- icons -->
+    <div style="width: 100%;
+			text-align:center;">
+	<span class="container-fluid" style="float:left;
+                					margin-top:5px;">
+        <a  href="index.php">
+        <img src="images/logo-white.png" style="width:39.5px;
+        									height:auto;
+                                            padding:10px;">
+                                            </a>
+			<p style="color:#FCFCFC;">דף הבית</p>
+            </span>
+	<?php
+        if (login_check($mysqli) == false) { ?>
+        <span class="container-fluid" style="float:left;
+        									">
+        <a  href="registrationFull.php">
+        <i class="fa fa-sign-in" style="font-size:36px;
+    	    								color:#FCFCFC;
+                                            margin:auto;
+                                            padding: 10px;"></i>
+                                            </a>
+			<p style="color:#FCFCFC;">התחברות/הרשמה</p>
+            </span> 
+    <?php } else { ?>
+    <span class="container-fluid" style="float:left;">
+    <a  href="includes/logout.php">
+        <i class="fa fa-sign-out" style="font-size:36px;
+    	    								color:#FCFCFC;
+                                            margin:auto;
+                                            padding: 10px;"></i>
+                                            </a>
+			<p style="color:#FCFCFC;">התנתקות</p>
+                </span>
+    <?php } 
+        if (login_check($mysqli) == true) { ?>
+        <span class="container-fluid" style="float:left;">
+        <a  href="createCourse.php">
+        <i class="fa fa-graduation-cap" style="font-size:36px;
+    	    								color:#FCFCFC;
+                                            margin:auto;
+                                            padding: 10px;"> </i>
+                                            </a>
+			<p style="color:#FCFCFC;">הוספת קורס</p>
+		</span>
+    <?php }?>
+        <?php
+        if (login_check($mysqli) == true) { ?>
+        <span class="container-fluid" style="float:left;">
+        <a  href="uploadLecture.php">
+        <i class="fa fa-book" style="font-size:36px;
+    	    								color:#FCFCFC;
+                                            margin:auto;
+                                            padding: 10px;"> </i>
+                                            </a>
+			<p style="color:#FCFCFC;">העלאת קובץ</p>
+		</span>
+    <?php }?>
+		
+</div>
+  <br>
+  <!-- icons end -->
   <div class="form">
     <?php
         if (!empty($error_msg)) {
@@ -156,16 +183,17 @@ if (login_check($mysqli) == true) {
     <!-- tab-content --> 
     
   </div>
+    </body>
   <!-- /form --> 
   <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script> 
   <script src="js/registration/index.js"></script>
-  </body>
-  <!-- InstanceEndEditable --> 
   <!-- /#wrapper --> 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
   <script src="js/bootstrap.js"></script> 
   <script src="js/bootstrap.min.js"></script> 
   <script src="js/jquery-1.11.2.min.js"></script> 
-</div>
-<!-- InstanceEnd --></html>
+  
+  <script src="js/registration/forms.js"></script>
+  <script src="js/registration/sha512.js"></script>
+</html>

@@ -96,9 +96,10 @@ define("FILE_TYPE", "tutorial");
                 subcatselect.options[0] = new Option('בחר/י קורס');
                 subcatselect.options[0].disabled = true;
                 for (var i = 1; i <= subcatsNum[faculty].length; i++) {
+					var name = subcatsName[faculty][i - 1].val;
                     subcatselect.options[i] = new Option(subcatsNum[faculty][i - 1].val + '-' +
-                        subcatsName[faculty][i - 1].val,
-                        subcatsNum[faculty][i - 1].id);
+                        name.replace(/&quot;/g, '\"'),
+                        subcatsNum[faculty][i - 1].id + '_' + name.replace(/&quot;/g, '\"'));;
                 }
 
             }

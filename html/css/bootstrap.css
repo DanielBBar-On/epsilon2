@@ -5,6 +5,7 @@
  */
 
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+
 html {
   font-family: sans-serif;
   display: table;
@@ -1105,7 +1106,7 @@ body {
 	color: #333;
 	background-color: #ffffff;
 	display: table-cell;
-    vertical-align: middle;
+    /*vertical-align: middle;*/
 }
 input,
 button,
