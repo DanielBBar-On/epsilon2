@@ -18,8 +18,43 @@ if (isset($_POST['action'])) {
 			remove();
 			break;
 		case 'search':
-			search();
+			searchCourse();
 			break;
+		case 'searchLecture':
+			$type = 'lectures';
+			$file = explode("_",$_POST['lectures']);
+			$file_name = $file[1];
+			$courseNum = ($_POST['courseNum']);
+			searchFile($courseNum, $file_name, $type);
+			break;
+		case 'searchTutorial':
+			$type = 'tutorials';
+			$file = explode("_",$_POST['tutorials']);
+			$file_name = $file[1];
+			$courseNum = ($_POST['courseNum']);
+			searchFile($courseNum, $file_name, $type);
+			break;
+		case 'searchHomework':
+			$type = 'homework';
+			$file = explode("_",$_POST['homework']);
+			$file_name = $file[1];
+			$courseNum = ($_POST['courseNum']);
+			searchFile($courseNum, $file_name, $type);
+			break;
+		case 'searchSummaries':
+			$type = 'summaries';
+			$file = explode("_",$_POST['summaries']);
+			$file_name = $file[1];
+			$courseNum = ($_POST['courseNum']);
+			searchFile($courseNum, $file_name, $type);
+			break;
+		case 'searchExams':
+			$type = 'exams';
+			$file = explode("_",$_POST['exams']);
+			$file_name = $file[1];
+			$courseNum = ($_POST['courseNum']);
+			searchFile($courseNum, $file_name, $type);
+			break;	
     }
 }
 
@@ -27,7 +62,7 @@ if (isset($_POST['action'])) {
 function create() {
 	$faculty = ($_POST['faculty']);
 	$courseNum = ($_POST['courseNum']);
-	$courseName = ($_POST['courseName']);
+	$courseName = htmlentities(($_POST["courseName"]));
 	echo "<br>The create function is called.<br><br><br>";
 	$dataPath ="../../data/courses/" . ($_POST['courseNum']);
 	$includesPath = "../../../includes/courses/" . ($_POST['courseNum']);
@@ -50,7 +85,7 @@ function create() {
         $myfile = fopen("$dataPath/course_info.php", "w");
         $txt = '<?php
 	define("COURSE_NUM", "' . ($_POST['courseNum']) . '");
-	define("COURSE_NAME", "' . ($_POST['courseName']) . '");
+	define("COURSE_NAME", "' . $courseName . '");
 ?>';
         fwrite($myfile, $txt);
         fclose($myfile);
@@ -213,8 +248,13 @@ function remove() {
 	remove_course_DB($faculty, $courseNum, $courseName);
 }
 
-function search () {
+function searchCourse () {
 	$dataPath ="../../data/courses/" . ($_POST['courseNum']);
 	header("Location: ". $dataPath . "/". $_POST['courseNum']. ".php");
+}
+
+function searchFile ($courseNum, $file_name, $type) {
+	$dataPath ="../../data/courses/" . $courseNum;
+	header("Location: ". $dataPath . "/". $type . "/" . $file_name . "/" . $file_name . ".php");
 }
 ?>

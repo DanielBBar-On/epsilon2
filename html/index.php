@@ -36,17 +36,16 @@ include_once '../includes/secure_login/functions.php';
   $jsonsubcatsNum = json_encode($subcatsNum);
   $jsonsubcatsName = json_encode($subcatsName);
 ?>
-<script src="js/jquery-1.11.2.min.js"></script>
+
 <!DOCTYPE html>
 <html>
-<!-- InstanceBegin template="/templates/sidebarBeforeSignIn.dwt" codeOutsideHTMLIsLocked="false" -->
 <head>
 <meta charset="UTF-8">
-<!-- InstanceBeginEditable name="doctitle" -->
 <title>Epsilon</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet" href="css/upload_form/upload_form_style.css">
 <link rel="stylesheet" href="css/text_divider/text_divider_style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- Javascripts --> 
 <script type='text/javascript'>
@@ -77,63 +76,78 @@ include_once '../includes/secure_login/functions.php';
       }
     </script> 
 <!-- End Javascripts --> 
-<!-- InstanceEndEditable -->
 <link rel="stylesheet" href="css/bootstrap.css">
 <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
 <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link rel="stylesheet" href="css/sidebar/sidebar_style.css">
+<!--<link rel="stylesheet" href="css/sidebar/sidebar_style.css">-->
 <link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
-<!-- InstanceBeginEditable name="head" --> <!-- InstanceEndEditable -->
 </head>
-<div>
-  <div id="wrapper">
-    <div class="overlay"></div>
-    <!-- Sidebar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
-      <ul class="nav sidebar-nav">
-        <li class="sidebar-brand"> <a href="#"> Epsilon </a> </li>
-        <li> <a href="registrationFull.php"><i class="fa fa-fw fa-home"></i>התחבר</a> </li>
-        <form class="navbar-form navbar-center" role="search" id="navBarSearchForm">
-          <div class="form-group">
-            <input type="text" id="Autocomplete1" class="form-control" placeholder="מצא/י קורסים" style="width:180px !important;">
-          </div>
-          <a href="coursePage.html">
-          <button type="submit" class="btn btn-default" style="margin-top:5px;">חפש/י</button>
-          </a>
-        </form>
-      </ul>
-    </nav>
-    <!-- /#sidebar-wrapper --> 
-    
-    <!-- Page Content -->
-    <div id="page-content-wrapper">
-      <button type="button" class="hamburger is-closed animated fadeInRight" data-toggle="offcanvas"> <span class="hamb-top"></span> <span class="hamb-middle"></span> <span class="hamb-bottom"></span> </button>
-    </div>
-    <!-- /#page-content-wrapper --> 
-    
+
+<body id="index_body" onload='loadCategories()'>
+<div style="width: 100%">
+	<span class="container-fluid" style="float:left;">
+	<?php
+        if (login_check($mysqli) == false) { ?>
+        <a  href="registrationFull.php">
+        <i class="fa fa-sign-in" style="font-size:36px;
+    	    								color:#FCFCFC;
+                                            margin:auto;
+                                            padding: 10px;"></i>
+                                            </a>
+			<p style="color:#FCFCFC;">התחברות/הרשמה</p>     
+    <?php } else { ?>
+    <a  href="includes/logout.php">
+        <i class="fa fa-sign-out" style="font-size:36px;
+    	    								color:#FCFCFC;
+                                            margin:auto;
+                                            padding: 10px;"></i>
+                                            </a>
+			<p style="color:#FCFCFC;">התנתקות</p>
+    <?php } ?>
+    </span>
+    <?php
+        if (login_check($mysqli) == true) { ?>
+        <span class="container-fluid" style="float:left;">
+        <a  href="createCourse.php">
+        <i class="fa fa-graduation-cap" style="font-size:36px;
+    	    								color:#FCFCFC;
+                                            margin:auto;
+                                            padding: 10px;"> </i>
+                                            </a>
+			<p style="color:#FCFCFC;">הוספת קורס</p>
+		</span>
+    <?php }?>
+        <?php
+        if (login_check($mysqli) == true) { ?>
+        <span class="container-fluid" style="float:left;">
+        <a  href="uploadLecture.php">
+        <i class="fa fa-book" style="font-size:36px;
+    	    								color:#FCFCFC;
+                                            margin:auto;
+                                            padding: 10px;"> </i>
+                                            </a>
+			<p style="color:#FCFCFC;">העלאת קובץ</p>
+		</span>
+    <?php }?>
+		
+</div>
+  <br>
+  <div style="width:100%;">
   </div>
-  <!-- InstanceBeginEditable name="body" -->
-  <body id="index_body" style="width:100%; height:100%;" onload='loadCategories()'>
-  <div style="float:right; width:40%; margin-right:10%">
-    <div style="text-align:center;"> <img alt="logo" src="images/logo.png" 
+  <div style="float:right;
+  			width:40%;
+            margin-right:10%;
+            vertical-align:central;">
+    <div style="text-align:center;"> 
+    <img alt="logo" src="images/logo.png" 
       										style="margin-top:0%; width:100%; height:100%;"> </div>
   </div>
   <div style="float:right;
-  			  width:20%; 
+  			  width:30%; 
               height:100vh;
               margin-top:0%">
-  <?php
-        if (login_check($mysqli) == false) { ?>
-    <div> <a  href="registrationFull.php"
-            	style="margin-top:20px;" type="submit" class="button2" name="action" 
-                id="upload_submit">התחברות/הרשמה</a> </div>
-    <p class="or-divider italic" dir="rtl">או</p>
-    <?php } else { ?>
-    	    <div> <a  href="includes/logout.php"
-            	style="margin-top:20px;" type="submit" class="button2" name="action" 
-                id="upload_submit">התנתקות</a> </div>
-            <p class="or-divider italic" dir="rtl">או</p>
-    <?php } ?>
+    
+    <!--<p class="or-divider italic" dir="rtl">או</p>-->
     <div id="upload_div" style="height:inherit;">
       <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data" 
         				style="
@@ -169,19 +183,13 @@ include_once '../includes/secure_login/functions.php';
         <select id='courseNum' name='courseNum' style="margin-top:40px">
           <option value="" disabled selected>בחר/י קורס</option>
         </select>
-        <input type="submit" class="button2" name="action" id="upload_submit" value="search" 
-        	   style="margin-top:50px"/>
-      </form>
-      <?php
-        if (login_check($mysqli) == true) { ?>
-    	<p class="or-divider italic" dir="rtl">או</p>
-    	<div> <a  href="createCourse.php"
-            	type="submit" class="button2" name="action" 
-                id="upload_submit">הוסף קורס חדש</a></div>
-    	<?php } ?>
+        <button type="submit" class="button2" name="action" id="upload_submit" value="search"
+        		style="margin-top:50px;
+                	direction:rtl;"/>חיפוש</button>
+      </form>	
     </div>
   </div>
-  <div style="float:right; width:20%; margin-right:5%">
+  <!--<div style="float:right; width:20%; margin-right:5%">
   	<a href="uploadLecture.php">
     	<input type="submit" class="button2" name="action" id="upload_submit" value="הוסף הרצאה" 
         	   					style="margin-top:50px"/>
@@ -202,17 +210,16 @@ include_once '../includes/secure_login/functions.php';
     	<input type="submit" class="button2" name="action" id="upload_submit" value="הוסף מבחן" 
         	   					style="margin-top:50px"/>
     </a>
-  </div>
+  </div>-->
+	</body>
+  <script src="js/jquery-1.11.2.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
   <script src="js/upload_form/upload_form_index.js"></script>
-  </body>
-  <!-- InstanceEndEditable --> 
+
   <!-- /#wrapper --> 
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
   <script src="js/bootstrap.js"></script> 
   <script src="js/bootstrap.min.js"></script> 
   <script src="js/jquery-1.11.2.min.js"></script> 
-</div>
-<!-- InstanceEnd -->
 </html>

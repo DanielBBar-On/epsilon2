@@ -70,7 +70,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
 
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
         <link rel="stylesheet" href="../../../css/upload_form/upload_form_style.css">
-        <!--<link rel="stylesheet" href="../../../css/text_divider/text_divider_style.css">
+        <link rel="stylesheet" href="../../../css/ios/ios_style.css">
+        <link rel="stylesheet" href="../../../css/text_divider/text_divider_style.css">
 
 <!-- Javascripts -->
         <script type='text/javascript'>
@@ -92,7 +93,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                     /*alert("i is:");
                     alert(i);
                     alert(lecturesCategories[i].id);*/
-                    lecturesSelect.options[i] = new Option(lecturesCategories[i - 1].val, lecturesCategories[i - 1].id);
+                    lecturesSelect.options[i] = new Option(lecturesCategories[i - 1].val, lecturesCategories[i - 1].id + "_" + lecturesCategories[i - 1].val);
                 }
 
                 var tutorialsSelect = document.getElementById('tutorials');
@@ -100,7 +101,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 tutorialsSelect.options[0].disabled = true;
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= tutorialsCategories.length; i++) {
-                    tutorialsSelect.options[i] = new Option(tutorialsCategories[i - 1].val, tutorialsCategories[i - 1].id);
+                    tutorialsSelect.options[i] = new Option(tutorialsCategories[i - 1].val, tutorialsCategories[i - 1].id + "_" + tutorialsCategories[i - 1].val);
                 }
 
                 var homeworkSelect = document.getElementById('homework');
@@ -108,7 +109,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 homeworkSelect.options[0].disabled = true;
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= homeworkCategories.length; i++) {
-                    homeworkSelect.options[i] = new Option(homeworkCategories[i - 1].val, homeworkCategories[i - 1].id);
+                    homeworkSelect.options[i] = new Option(homeworkCategories[i - 1].val, homeworkCategories[i - 1].id + "_" + homeworkCategories[i - 1].val);
                 }
 
                 var summariesSelect = document.getElementById('summaries');
@@ -116,7 +117,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 summariesSelect.options[0].disabled = true;
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= summariesCategories.length; i++) {
-                    summariesSelect.options[i] = new Option(summariesCategories[i - 1].val, summariesCategories[i - 1].id);
+                    summariesSelect.options[i] = new Option(summariesCategories[i - 1].val, summariesCategories[i - 1].id + "_" + summariesCategories[i - 1].val);
                 }
 
                 var examsSelect = document.getElementById('exams');
@@ -124,7 +125,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 examsSelect.options[0].disabled = true;
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= examsCategories.length; i++) {
-                    examsSelect.options[i] = new Option(examsCategories[i - 1].val, examsCategories[i - 1].id);
+                    examsSelect.options[i] = new Option(examsCategories[i - 1].val, examsCategories[i - 1].id + "_" + examsCategories[i - 1].val);
                 }
 
             }
@@ -146,62 +147,74 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
         <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     </head>
-    </div>
 
     <body id="index_body" onLoad="loadCategories()">
-        <div id="heading" style="text-align: center;
+    
+        <div style="text-align: center;
 						 vertical-align: middle;">
-            <h1> <?php echo constant("COURSE_NUM"); ?> </h1>
+            <h1 style="color:#FCFCFC">  <?php echo constant("COURSE_NAME") . " - " . constant("COURSE_NUM"); ?> </h1>
         </div>
+            
+            <div class="mine messages" style="float:right;
+            								width: 40%">
+    <div class="message last" style="direction:rtl;">
+      ברוכים הבאים לעמוד הקורס. כאן ניתן למצוא את כל חומרי הקורס. להתחלה בחרו סוג קובץ או העלו קובץ חדש.
+     </div>
+  </div>
+       <div id="upload_div" style="float:right;
+            	width: 60%">
+			<form action="../../../php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="courseNum" value="<?php echo constant("COURSE_NUM"); ?>">
         <div id="lecturesDiv" style="float:right;
-							 width:15%;
-                             padding: 10px;">
-            <select id='lectures' style="margin-top:40px;
+							 width:25%;
+                             padding: 20px;">
+            <select id='lectures' name='lectures' style="margin-top:40px;
     							 direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="חיפוש" style="margin-top:50px" />
+            <input type="submit" class="button2" name="action" id="upload_submit" value="searchLecture" style="margin-top:50px" />
         </div>
         <div id="tutorialsDiv" style="float:right;
-							  width:15%;
-                              padding: 10px;">
+							  width:25%;
+                              padding: 20px;">
             <select id='tutorials' style="margin-top:40px;
     							  direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="חיפוש" style="margin-top:50px" />
+            <input type="submit" class="button2" name="action" id="upload_submit" value="searchTutorial" style="margin-top:50px" />
         </div>
         <div id="homeworkDiv" style="float:right;
-							 width:15%;
-                             padding: 10px;">
+							 width:25%;
+                             padding: 20px;">
             <select id='homework' style="margin-top:40px;
     							 direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="חיפוש" style="margin-top:50px" />
+            <input type="submit" class="button2" name="action" id="upload_submit" value="searchHomework" style="margin-top:50px" />
         </div>
         <div id="summariesDiv" style="float:right;
-							  width:15%;
-                              padding: 10px;">
+							  width:25%;
+                              padding: 20px;">
             <select id='summaries' style="margin-top:40px;
     							  direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="חיפוש" style="margin-top:50px" />
+            <input type="submit" class="button2" name="action" id="upload_submit" value="searchSummaries" style="margin-top:50px" />
         </div>
         <br>
         <div id="examsDiv" style="float:center;
-						  width:15%;
+						  width:25%;
                           margin: 0 auto;">
             <select id='exams' style="margin-top:40px;
                               direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="חיפוש" style="margin-top:50px" />
+            <input type="submit" class="button2" name="action" id="upload_submit" value="searchExams" style="margin-top:50px" />
+        </div>
+        </form>
         </div>
     </body>
+    <script src="../../../js/jquery-1.11.2.min.js"></script>
     <script src="../../../js/bootstrap.js"></script>
     <script src="../../../js/bootstrap.min.js"></script>
-    <script src="../../../js/jquery-1.11.2.min.js"></script>
     <!-- /#wrapper -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="js/upload_form/upload_form_index.js"></script>
-    </div>
+    <script src="../../../js/upload_form/upload_form_index.js"></script>
 
     </html>
