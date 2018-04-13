@@ -1,3 +1,5 @@
+"use strict";
+
 /////////////// Node ////////////////
 function Node(id, value) {
     this.id = id;
@@ -11,7 +13,8 @@ function Node(id, value) {
 Node.prototype.initVoters = function () {
     this.upvoters = new DoublyList();
     this.downvoters = new DoublyList();
-}
+};
+
 function Question(id, value) {
     Node.call(this, id, value);
     this.initVoters();
@@ -20,13 +23,13 @@ function Question(id, value) {
 
 Question.prototype.addNewAnswer = function(node) {
     this.answers.addToTail(node);
-}
+};
 
 Question.prototype = new Node();
 
 function Answer(id, value) {
     Node.call(this, id, value);
-    this.initVoters()
+    this.initVoters();
 }
 
 Answer.prototype = new Node();
@@ -39,6 +42,7 @@ function DoublyList() {
     this._id_counter = 0;
     this.head = null;
     this.tail = null;
+    this.file = new Node(0, 0);
 }
 
 DoublyList.prototype.addToTail = function(node) {
@@ -61,7 +65,7 @@ DoublyList.prototype.add = function(node) {
 
     var current = null;
 
-    if(this._length == 0) {
+    if(this._length === 0) {
         this.addToTail(node);
         return;
     }
@@ -93,7 +97,7 @@ DoublyList.prototype.add = function(node) {
 
         current = current.next;
     }
-}
+};
 
 DoublyList.prototype.searchNodeById = function(id) {
     var currentNode = this.head,
@@ -110,7 +114,7 @@ DoublyList.prototype.searchNodeById = function(id) {
     // 2nd use-case: a valid position
     while (currentNode) {
         console.log("serching: id = " + id + " currentNode.id = " + currentNode.id);
-        if (id == currentNode.id) {
+        if (id === currentNode.id) {
             console.log("returning currentNode");
             return currentNode;
         }
@@ -175,7 +179,7 @@ DoublyList.prototype.remove = function(node) {
 ////////////// voting ////////////
 
 Node.prototype.upvote = function (userId, userName) {
-    
+
     var node = this.upvoters.searchNodeById(userId);
     if (node === null) {
         node = new Node(userId, userName);
@@ -188,7 +192,7 @@ Node.prototype.upvote = function (userId, userName) {
     }
 
     return;
-}
+};
 
 Node.prototype.downvote = function (userId, userName) {
 
@@ -203,23 +207,42 @@ Node.prototype.downvote = function (userId, userName) {
     }
 
     return;
-}
+};
 
 DoublyList.prototype.upvote = function (nodeId, userId, userName) {
     var node = this.searchNodeById(nodeId);
     node.upvote(userId, userName);
     this.remove(node);
     this.add(node);
-}
+};
 
 DoublyList.prototype.downvote = function (nodeId, userId, userName) {
     var node = this.searchNodeById(nodeId);
     node.downvote(userId, userName);
     this.remove(node);
     this.add(node);
-}
+};
 
 //////////// printing functions ////////////////
+var questions = new DoublyList();
+
+DoublyList.prototype.printFileVotes = function () {
+
+    var myNode = document.getElementById("fileVotes");
+
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+	
+    var fileVotesDiv = document.createElement('div');
+
+    fileVotesDiv.className = 'fileVotes';
+
+    fileVotesDiv.innerHTML =
+        questions.file.votes;
+
+    document.getElementById('fileVotes').appendChild(fileVotesDiv);
+};
 
 DoublyList.prototype.printToConsole  = function (){
     var current = this.head;
@@ -227,7 +250,7 @@ DoublyList.prototype.printToConsole  = function (){
         console.log(" id = " + current.id + ", data = " + current.data);
         current = current.next;
     }
-}
+};
 
 Answer.prototype.printAnswer = function(questionId) {
     var answerDiv = document.createElement('div');
@@ -237,32 +260,32 @@ Answer.prototype.printAnswer = function(questionId) {
     answerDiv.innerHTML =
         '<div class="answer" data-color="gray">\n' +
         '\t\t\t<div class="votes">\n' +
-        '\t\t\t\t<div class="upvote" onclick="upvoteAnswer('
-                                                    + questionId
-                                                    + ',' + this.id
-                                                    + ',' + userId
-                                                    + ', \'' + userName
-                                                    + '\')">\n' +
-    '                </div>\n' +
-    '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
-    '                </div>\n' +
-    '\t\t\t\t<div class="downvote" onclick="downvoteAnswer('
-                                                    + questionId
-                                                    + ',' + this.id
-                                                    + ',' + userId
-                                                    + ', \'' + userName
-                                                    + '\')">\n' +
-    '                </div>\n' +
-    '\t\t\t</div>\n' +
-    '\t\t\t<div class="question-and-answer">\n' +
-    '\t\t\t\t<h2 style="color: #000000; direction: rtl;">' + this.data + '</h2>\n' +
-    '\t\t\t\t<div style="text-align:center;">\n' +
-    '\t\t\t\t</div>\n' +
-    '\t\t\t</div>\n' +
-    '\t\t</div>';
+        '\t\t\t\t<div class="upvote" onclick="upvoteAnswer(' + 
+		questionId +
+		',' + this.id +
+		',' + userId +
+		', \'' + userName +
+		'\')">\n' +
+        '</div>\n' +
+        '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
+        '                </div>\n' +
+        '\t\t\t\t<div class="downvote" onclick="downvoteAnswer(' +
+		questionId +
+		',' + this.id +
+		',' + userId +
+		', \'' + userName +
+		'\')">\n' +
+        '</div>\n' +
+        '\t\t\t</div>\n' +
+        '\t\t\t<div class="question-and-answer">\n' +
+        '\t\t\t\t<h2 style="color: #000000; direction: rtl;">' + this.data + '</h2>\n' +
+        '\t\t\t\t<div style="text-align:center;">\n' +
+        '\t\t\t\t</div>\n' +
+        '\t\t\t</div>\n' +
+        '\t\t</div>';
 
     return answerDiv;
-}
+};
 
 Question.prototype.printAllAnswers = function() {
 
@@ -278,7 +301,7 @@ Question.prototype.printAllAnswers = function() {
     }
 
     return answers;
-}
+};
 
 Question.prototype.printQuestion = function() {
     var questDiv = document.createElement('div');
@@ -288,30 +311,30 @@ Question.prototype.printQuestion = function() {
     questDiv.innerHTML =
         '<div class="question" data-color="gray">\n' +
         '\t\t\t<div class="votes">\n' +
-        '\t\t\t\t<div class="upvote" onclick="upvoteQuestion('
-                                                    + this.id
-                                                    + ',' + userId
-                                                    + ', \'' + userName
-                                                    + '\')">\n' +
-    '                </div>\n' +
-    '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
-    '                </div>\n' +
-    '\t\t\t\t<div class="downvote" onclick="downvoteQuestion('
-                                                    + this.id
-                                                    + ',' + userId
-                                                    + ', \'' + userName
-                                                    + '\')">\n' +
-    '                </div>\n' +
-    '\t\t\t</div>\n' +
-    '\t\t\t<div class="question-and-answer">\n' +
-    '\t\t\t\t<h2 style="color: #000000; direction: rtl;">' + this.data + '</h2>\n' +
-    '\t\t\t\t<div style="text-align:center;">\n' +
-    '\t\t\t\t\t<textarea id="textArea_' + this.id + '" type="answer" placeholder="הגב"></textarea>\n' +
-    '\t\t\t\t\t<br>\n' +
-    '\t\t\t\t\t<input type="submit" class="button2" name="action" id="upload_submit" value="answer" onClick="answerQuestion('+ this.id + ')"/>\n' +
-    '\t\t\t\t</div>\n' +
-    '\t\t\t</div>\n' +
-    '\t\t</div>';
+        '\t\t\t\t<div class="upvote" onclick="upvoteQuestion(' +
+		this.id +
+		',' + userId +
+		', \'' + userName +
+		'\')">\n' +
+        '</div>\n' +
+        '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
+        '                </div>\n' +
+        '\t\t\t\t<div class="downvote" onclick="downvoteQuestion(' +
+		this.id +
+		',' + userId +
+		', \'' + userName +
+		'\')">\n' +
+        '</div>\n' +
+        '\t\t\t</div>\n' +
+        '\t\t\t<div class="question-and-answer">\n' +
+        '\t\t\t\t<h2 style="color: #000000; direction: rtl;">' + this.data + '</h2>\n' +
+        '\t\t\t\t<div style="text-align:center;">\n' +
+        '\t\t\t\t\t<textarea id="textArea_' + this.id + '" type="answer" placeholder="הגב"></textarea>\n' +
+        '\t\t\t\t\t<br>\n' +
+        '\t\t\t\t\t<input type="submit" class="button2" name="action" id="upload_submit" value="answer" onClick="answerQuestion('+ this.id + ')"/>\n' +
+        '\t\t\t\t</div>\n' +
+        '\t\t\t</div>\n' +
+        '\t\t</div>';
 
     var answers = this.printAllAnswers();
 
@@ -319,7 +342,7 @@ Question.prototype.printQuestion = function() {
     document.getElementById('questions').appendChild(questDiv);
 
     return questDiv;
-}
+};
 
 DoublyList.prototype.printAllNodes = function() {
 
@@ -335,7 +358,9 @@ DoublyList.prototype.printAllNodes = function() {
         current.printQuestion();
         current = current.next;
     }
-}
+	
+	this.printFileVotes();
+};
 
 
 function QuestionsList() {
@@ -346,7 +371,6 @@ QuestionsList.prototype = new DoublyList();
 
 
 //////////// In page functions ///////////
-questions = new DoublyList();
 
 function askQuestion() {
     var textArea = document.getElementById("questionText");
@@ -381,6 +405,39 @@ function downvoteAnswer(questionId, answerId, userId, userName) {
     var question = questions.searchNodeById(questionId);
     question.answers.downvote(answerId, userId, userName);
     questions.printAllNodes();
+}
+
+function upvoteFile(){
+	if (questions.file.upvoters === null) {
+		questions.file.upvoters = new DoublyList();
+	}
+	
+	if (questions.file.downvoters === null) {
+		questions.file.downvoters = new DoublyList();
+	}
+	
+    questions.file.upvote();
+	questions.printFileVotes();
+}
+
+function downvoteFile() {
+	if (questions.file.upvoters === null) {
+		questions.file.upvoters = new DoublyList();
+	}
+	
+	if (questions.file.downvoters === null) {
+		questions.file.downvoters = new DoublyList();
+	}
+
+    questions.file.downvote();
+	questions.printFileVotes();
+}
+
+function getFileVotes() {
+    if (questions)
+        return questions.file.votes;
+
+    return 0;
 }
 
 /////////// Parse functions /////////////
@@ -433,7 +490,7 @@ function parseAnswer(jsonAnswer) {
     if (jsonAnswer.upvoters !== null) {
         answer.upvoters = parseVotersList(jsonAnswer.upvoters);
     } else {
-        answer.upvoters = new DoublyList;
+        answer.upvoters = new DoublyList();
     }
 
     if (jsonAnswer.downvoters !== null) {
@@ -504,6 +561,7 @@ function parseJson(json) {
         tempQuestions.head = parseQuestion(json.head);
     }
     tempQuestions.tail = json.tail;
+    tempQuestions.file = parseVotersList(json.file);
 
     return tempQuestions;
 }
@@ -515,28 +573,28 @@ function saveForum(){
 
     var loc = window.location.pathname;
     var dir = loc.substring(0, loc.lastIndexOf('/'));
-    path = "../.." + dir.toString();
+    var path = "../.." + dir.toString();
 
     $.ajax({
         url     : '../../../../../php/savejson.php',
         method  : 'post',
         data    : {'myJson' : myJson, 'path' : path},
         success : function( response ) {
+			console.log(response);
         },
         error: function(xhr,textStatus,err) {
-            alert("error: " + xhr);
-            alert("error: " + textStatus);
-            alert("error: " + err);
+            console.log("Forum not saved");
+			console.log(xhr + textStatus + err);
         }
     });
 }
 
 function loadForum(){
 
-    var loc = window.location.pathname;
-    var dir = loc.substring(0, loc.lastIndexOf('/'));
+    //var loc = window.location.pathname;
+    //var dir = loc.substring(0, loc.lastIndexOf('/'));
 
-    var path = "../../../.." + dir.toString();
+    //var path = "../../../.." + dir.toString();
 
     $.ajax({
         type: 'GET',
@@ -550,12 +608,11 @@ function loadForum(){
             questions = newQuestions;
         },
         error: function(xhr,textStatus,err) {
-            alert("error: " + xhr);
-            alert("error: " + textStatus);
-            alert("error: " + err);
+            console.log("No forum found");
+			console.log(xhr + textStatus + err);
             questions = new DoublyList();
         }
     });
-
+	
     questions.printAllNodes();
 }

@@ -34,7 +34,7 @@ if (login_check($mysqli) == true) {
   <div id="upload_div">  
     <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data" accept-charset="utf-8">
       <!-- user title -->
-      <select name="faculty" id="faculty" placeholder="xx">
+      <select name="faculty" id="faculty" placeholder="xx" required>
         <option value="" disabled selected>בחר/י פקולטה</option>
         <option value="Ezrachit"	>הפקולטה להנדסה אזרחית וסביבתית</option>
         <option value="Mechonot"	>הפקולטה להנדסת מכונות</option>
@@ -57,10 +57,10 @@ if (login_check($mysqli) == true) {
         </select>
       
       <!-- first name -->
-      <input type="upload_text" name="courseNum" id="courseNum" placeholder="מספר קורס"></input>
+      <input type="upload_text" name="courseNum" id="courseNum" placeholder="מספר קורס" required></input>
       
       <!-- last name -->
-      <input type="upload_text" name="courseName" id="courseName" placeholder="שם הקורס"></input>
+      <input type="upload_text" name="courseName" id="courseName" placeholder="שם הקורס" required></input>
       
       <!-- <CTA></CTA> -->
       <input type="submit" class="button2" name="action" id="upload_submit" value="create" />

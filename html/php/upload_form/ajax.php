@@ -201,9 +201,11 @@ function upload($courseNum, $courseName, $type) {
 		define("FILE_PATH", "' . $file_path . '");
 		define("FILE", "' .basename($_FILES["fileToUpload"]["name"]) . '");
 		define("FILE_NAME", "' . $file_name . '");
-	define("WEEK_NUM", "' . $week_num . '");
-	define("COURSE_NUM", "' . $courseNum . '");
-	define("COURSE_NAME", "' . $courseName . '");
+		define("WEEK_NUM", "' . $week_num . '");
+		define("COURSE_NUM", "' . $courseNum . '");
+		define("COURSE_NAME", "' . $courseName . '");
+		define("SEMESTER", "' . $semester . '");
+		define("YEAR", "' . $year . '");
 ?>';
         fwrite($myfile, $txt);
         fclose($myfile);

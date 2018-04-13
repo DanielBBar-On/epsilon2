@@ -176,7 +176,7 @@ define("FILE_TYPE", "lectures");
                     <div id="upload_div">
                         <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
                             <!-- user title -->
-                            <select name="faculty" id="faculty">
+                            <select name="faculty" id="faculty" required>
                                 <option value="" disabled selected>בחר/י פקולטה</option>
                                 <option value="Ezrachit">הפקולטה להנדסה אזרחית וסביבתית</option>
                                 <option value="Mechonot">הפקולטה להנדסת מכונות</option>
@@ -198,7 +198,7 @@ define("FILE_TYPE", "lectures");
                                 <option value="Biomed">הפקולטה להנדסה ביורפואית</option>
                             </select>
 
-                            <select id='course' name="courseNum">
+                            <select id='course' name="courseNum" required>
                                 <option value="" disabled selected>בחר/י קורס</option>
                             </select>
 
@@ -209,9 +209,9 @@ define("FILE_TYPE", "lectures");
                             <input type="upload_text" name="<?php echo FILE_TYPE ?>Name" id="num" placeholder="נושא ההרצאה"></input>
 
                             <!-- year -->
-                            <select id="year" name="year"></select>
+                            <select id="year" name="year" required></select>
 
-                            <select name="semester" id="semester">
+                            <select name="semester" id="semester" required>
                                 <option value="" disabled selected>בחר/י סמסטר</option>
                                 <option value='winter'>חורף</option>
                                 <option value='spring'>אביב</option>
@@ -222,7 +222,7 @@ define("FILE_TYPE", "lectures");
                             <input type="hidden" name="type" value="<?php echo FILE_TYPE ?>">
 
                             <!-- <CTA></CTA> -->
-                            <input type="file" name="fileToUpload" id="fileToUpload">
+                            <input type="file" name="fileToUpload" id="fileToUpload" required>
                             <input type="submit" class="button2" name="action" id="upload_submit" value="upload" />
                         </form>
 
