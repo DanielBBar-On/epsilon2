@@ -6,7 +6,7 @@ include_once '../includes/secure_login/functions.php';
 
 	// login functions
 	sec_session_start();
-	if (login_check($mysqli) == true) {
+	if (login_check($loginsqli) == true) {
 		$logged = 'in';
 	} else {
 		$logged = 'out';
@@ -45,7 +45,7 @@ include_once '../includes/secure_login/functions.php';
 				<p style="color:#FCFCFC;">דף הבית</p>
 				</span>
             <?php
-			if (login_check($mysqli) == false) { ?>
+			if (login_check($loginsqli) == false) { ?>
                 <span class="container-fluid" style="float:left;
 												">
 			<a  href="registrationFull.php">
@@ -67,7 +67,7 @@ include_once '../includes/secure_login/functions.php';
 				<p style="color:#FCFCFC;">התנתקות</p>
 					</span>
                     <?php } 
-			if (login_check($mysqli) == true) { ?>
+			if (login_check($loginsqli) == true) { ?>
                         <span class="container-fluid" style="float:left;">
 			<a  href="createCourse.php">
 			<i class="fa fa-graduation-cap" style="font-size:36px;
@@ -79,9 +79,9 @@ include_once '../includes/secure_login/functions.php';
 			</span>
                         <?php }?>
                             <?php
-			if (login_check($mysqli) == true) { ?>
+			if (login_check($loginsqli) == true) { ?>
                                 <span class="container-fluid" style="float:left;">
-			<a  href="uploadLecture.php">
+			<a  href="uploadFile.php">
 			<i class="fa fa-book" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;

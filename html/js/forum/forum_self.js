@@ -182,6 +182,37 @@ DoublyList.prototype.remove = function(node) {
 };
 
 ////////////// voting ////////////
+function upvoteAjax() {
+    console.log("sending Ajax");
+      $.ajax({
+           type: "POST",
+           url: '../../../../../php/upload_form/ajax.php',
+           data:{action:'upvoteFile', courseNum: courseNum, type: type, ID: ID},
+           success:function(html) {
+             //alert(html);
+           },
+           error: function(xhr,textStatus,err) {
+            console.log("Error sending ajax");
+            console.log(xhr + textStatus + err);
+           }
+      });
+ }
+ 
+ function downvoteAjax() {
+    console.log("sending Ajax");
+      $.ajax({
+           type: "POST",
+           url: '../../../../../php/upload_form/ajax.php',
+           data:{action:'downvoteFile', courseNum: courseNum, type: type, ID: ID},
+           success:function(html) {
+             //alert(html);
+           },
+           error: function(xhr,textStatus,err) {
+            console.log("Error sending ajax");
+            console.log(xhr + textStatus + err);
+           }
+      });
+ }
 
 Node.prototype.upvote = function (userId, userName) {
 
@@ -189,6 +220,7 @@ Node.prototype.upvote = function (userId, userName) {
     if (node === null) {
         node = new Node(userId, userName);
         this.votes++;
+		upvoteAjax();
         if (this.downvoters.remove(node) === null) {
             this.upvoters.addToTail(node);
         }
@@ -205,7 +237,8 @@ Node.prototype.downvote = function (userId, userName) {
     if (node === null) {
         node = new Node(userId, userName);
         this.votes--;
-        if (this.upvoters.remove(node) === null) {
+		downvoteAjax();
+		if (this.upvoters.remove(node) === null) {
             this.downvoters.addToTail(node);
         }
     } else {
@@ -292,6 +325,7 @@ Answer.prototype.printAnswer = function(questionId) {
         '\t\t\t</div>\n' +
         '\t\t</div>';
 
+
     return answerDiv;
 };
 
@@ -332,7 +366,7 @@ Question.prototype.printQuestion = function() {
         ',' + userId +
         ', \'' + userName +
         '\')">\n' +
-        '</div>\n' +
+'</div>\n' +
         '\t\t\t</div>\n' +
         '\t\t\t<div class="question-and-answer">\n' +
         '\t\t\t\t<h2 style="color: #000000; direction: rtl;">' + this.data + '</h2>\n' +

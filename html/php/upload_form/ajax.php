@@ -23,6 +23,7 @@ if (isset($_POST['action'])) {
 		case 'search':
 			searchCourse();
 			break;
+		// search files cases //	
 		case 'searchLecture':
 			$type = 'lectures';
 			$file = explode("_",$_POST['lectures']);
@@ -60,6 +61,20 @@ if (isset($_POST['action'])) {
 			break;
 		case 'searchByPath':
 			searchFileByPath($_POST['path']);
+			break;
+		// end search files cases //
+		
+		case 'upvoteFile':
+			$num = ($_POST['courseNum']);
+			$type = ($_POST['type']);
+			$ID = ($_POST['ID']);
+			doUpvote($num, $type, $ID);
+			break;	
+		case 'downvoteFile':
+			$num = ($_POST['courseNum']);
+			$type = ($_POST['type']);
+			$ID = ($_POST['ID']);
+			doDownvote($num, $type, $ID);
 			break;
     }
 }
@@ -195,12 +210,19 @@ function upload($courseNum, $courseName, $type) {
 		die_nicely("failed to create directory for file");
 	}
 	
-	$myfile = fopen("$target_dir/file_info.php", "w");
+	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+		$id = -2;
+		$id = insert_lecture_to_DB($courseNum, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+					$pos_votes, $neg_votes, $tot_votes, $year, $semester);	
+		
+		$myfile = fopen("$target_dir/file_info.php", "w");
         $txt = '<?php
 		define("FILE_DIR", "' . $file_dir . '");
 		define("FILE_PATH", "' . $file_path . '");
 		define("FILE", "' .basename($_FILES["fileToUpload"]["name"]) . '");
 		define("FILE_NAME", "' . $file_name . '");
+		define("FILE_TYPE", "' . $type . '");
+		define("ID", "' . $id . '");
 		define("WEEK_NUM", "' . $week_num . '");
 		define("COURSE_NUM", "' . $courseNum . '");
 		define("COURSE_NAME", "' . $courseName . '");
@@ -209,10 +231,6 @@ function upload($courseNum, $courseName, $type) {
 ?>';
         fwrite($myfile, $txt);
         fclose($myfile);
-	
-	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		insert_lecture_to_DB($courseNum, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
-					$pos_votes, $neg_votes, $tot_votes, $year, $semester);
 					
 		create_new_file_html($target_dir, $file_name);
 		header("Location: ". $target_dir . $file_name . ".php");
@@ -273,5 +291,13 @@ function searchFile ($courseNum, $file_name, $type) {
 
 function searchFileByPath ($path) {
 	header("Location: ". $path);
+}
+
+function doUpvote($num, $type, $ID) {
+	upvoteFile($num, $type, $ID);
+}
+
+function doDownvote($num, $type, $ID) {
+	downvoteFile($num, $type, $ID);
 }
 ?>

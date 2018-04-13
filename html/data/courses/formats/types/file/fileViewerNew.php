@@ -22,12 +22,17 @@ include_once 'file_info.php';
        $db = new mysqli(constant("COURSES_HOST"), constant("COURSES_USER"), 
                          constant("COURSES_PASSWORD"), constant("COURSE_NUM")); //connect to course database
 
-        $query = "SELECT * FROM lectures WHERE num = " . constant("WEEK_NUM") .
+        $query = "SELECT * FROM " . constant("FILE_TYPE") . " WHERE num = " . constant("WEEK_NUM") .
 				" AND semester = " . "'" . constant("SEMESTER") . "'" . 
 				" AND year = " . constant("YEAR") .
-				" ORDER BY tot_votes"; // get all lecture that are from the same week.
+				" ORDER BY cast(tot_votes as int) DESC"; // get all lecture that are from the same week.
 
         $result = $db->query($query);
+		/*if ($result === TRUE) {
+				echo "Successfully connected to DB";
+		} else {
+				echo "Error: " . $query . "<br>" . $db->error;
+		}*/
 
         $categories = NULL;
 
@@ -38,8 +43,13 @@ include_once 'file_info.php';
         }
 
         $jsonCats = json_encode($categories);
-
+        $jsonCourseNum = json_encode(constant("COURSE_NUM"));
+        $jsonType = json_encode(constant("FILE_TYPE"));
+        $jsonID = json_encode(constant("ID"));
+		
+		$db->close();
 ?>
+
     <!doctype html>
     <html>
 
@@ -47,7 +57,7 @@ include_once 'file_info.php';
         <meta charset="utf-8">
         <title>Epsilon</title>
         <link rel="stylesheet" href="../../../../../css/bootstrap.css">
-        <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
         <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="../../../../..//css/sidebar/sidebar_style.css">
         <link href="../../../../../css/flat_ui.min.css" rel="stylesheet" type="text/css">
@@ -62,7 +72,7 @@ include_once 'file_info.php';
         <?php
                 echo "var categories = $jsonCats; \n";
             ?>
-
+	
         function loadCategories() {
             var select = document.getElementById("course");
 			select.options[0] = new Option('גרסאות קודמות');
@@ -123,7 +133,7 @@ include_once 'file_info.php';
                             <?php
 			if (login_check($loginsqli) == true) { ?>
                                 <span class="container-fluid" style="float:left;">
-			<a  href="../../../../../uploadLecture.php">
+			<a  href="../../../../../uploadFile.php">
 			<i class="fa fa-book" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
@@ -135,15 +145,21 @@ include_once 'file_info.php';
 
         </div>
         <br>
+        
         <script type='text/javascript'>
             <?php
         echo "var userId = $jsonUserId; \n";
         echo "var userName = $jsonUserName; \n";
+		echo "var courseNum = $jsonCourseNum; \n";
+        echo "var type = $jsonType; \n";
+        echo "var ID = $jsonID; \n";
       ?>
 
             console.log("userId = " + userId +
                 " userName = " + userName);
         </script>
+        
+        
         <div id="main">
             <div class="row" id="main" style="text-align: center;">
                 <div style="text-align: center;
@@ -179,7 +195,7 @@ include_once 'file_info.php';
                                     margin: 2%;">
             <div class="upvote" style="font-size: 36px;
             						color:#FCFCFC;">
-                <a style="cursor:pointer;" onclick="upvoteFile()">
+                <a style="cursor:pointer;" onclick="upvoteFile();">
                     <i class="fa fa-thumbs-up" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
