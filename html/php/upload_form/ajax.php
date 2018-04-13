@@ -26,38 +26,28 @@ if (isset($_POST['action'])) {
 		// search files cases //	
 		case 'searchLecture':
 			$type = 'lectures';
-			$file = explode("_",$_POST['lectures']);
-			$file_name = $file[0];
-			$courseNum = ($_POST['courseNum']);
-			searchFile($courseNum, $file_name, $type);
+			$path = ($_POST['lectures']);
+			searchFileByPath($path);
 			break;
 		case 'searchTutorial':
 			$type = 'tutorials';
-			$file = explode("_",$_POST['tutorials']);
-			$file_name = $file[0];
-			$courseNum = ($_POST['courseNum']);
-			searchFile($courseNum, $file_name, $type);
+			$path = ($_POST['tutorials']);
+			searchFileByPath($path);;
 			break;
 		case 'searchHomework':
 			$type = 'homework';
-			$file = explode("_",$_POST['homework']);
-			$file_name = $file[0];
-			$courseNum = ($_POST['courseNum']);
-			searchFile($courseNum, $file_name, $type);
+			$path = ($_POST['homework']);
+			searchFileByPath($path);
 			break;
 		case 'searchSummaries':
 			$type = 'summaries';
-			$file = explode("_",$_POST['summaries']);
-			$file_name = $file[0];
-			$courseNum = ($_POST['courseNum']);
-			searchFile($courseNum, $file_name, $type);
+			$path = ($_POST['summaries']);
+			searchFileByPath($path);
 			break;
 		case 'searchExams':
 			$type = 'exams';
-			$file = explode("_",$_POST['exams']);
-			$file_name = $file[0];
-			$courseNum = ($_POST['courseNum']);
-			searchFile($courseNum, $file_name, $type);
+			$path = ($_POST['exams']);
+			searchFileByPath($path);
 			break;
 		case 'searchByPath':
 			searchFileByPath($_POST['path']);
@@ -186,7 +176,7 @@ function upload($courseNum, $courseName, $type) {
 	$week_num = $_POST[$type . 'Num'];
 	$name = $_POST[$type . 'Name'];
 	$ADDED_BY_ID = $_POST['id'];
-	$ADDED_BY_EMAIL = '@';
+	$ADDED_BY_EMAIL = $_POST['username'];
 	$path = $target_dir . $file_name . ".php";
 	$pos_votes = 0;
 	$neg_votes = 0;

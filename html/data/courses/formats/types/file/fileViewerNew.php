@@ -23,8 +23,8 @@ include_once 'file_info.php';
                          constant("COURSES_PASSWORD"), constant("COURSE_NUM")); //connect to course database
 
         $query = "SELECT * FROM " . constant("FILE_TYPE") . " WHERE num = " . constant("WEEK_NUM") .
-				" AND semester = " . "'" . constant("SEMESTER") . "'" . 
-				" AND year = " . constant("YEAR") .
+				//" AND semester = " . "'" . constant("SEMESTER") . "'" . 
+				//" AND year = " . constant("YEAR") .
 				" ORDER BY cast(tot_votes as int) DESC"; // get all lecture that are from the same week.
 
         $result = $db->query($query);

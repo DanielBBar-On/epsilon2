@@ -219,7 +219,10 @@ define("FILE_TYPE", "lectures");
                                 <option value='summer'>קיץ</option>
                             </select>
 
-                            <input type="hidden" name="id" value=< ?php echo '"' . $_SESSION[ 'user_id'] . '"' ?>
+                            <input type="hidden" name="id" value="<?php echo $_SESSION[ 'user_id'] ?>">
+                            <input type="hidden" name="username" value="<?php echo $_SESSION[ 'username'] ?>">
+                            <?php echo '" 111 ' . $_SESSION[ 'user_id'] . '"' ?>
+                            <?php echo '"222 ' . $_SESSION[ 'username'] . '"' ?>
                             <input type="hidden" name="type" value="<?php echo FILE_TYPE ?>">
 
                             <!-- <CTA></CTA> -->

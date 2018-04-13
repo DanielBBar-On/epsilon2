@@ -23,14 +23,25 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
 	//set your database handler 
 
 	function select($table, $db) {
-		$query = "SELECT num, name FROM " . $table; //SELECT id,cat FROM cat
+		//$query = "SELECT num, name FROM " . $table; //SELECT id,cat FROM cat
+		$query = "SELECT tt.num, tt.* 
+				FROM " . $table . " tt
+				INNER JOIN (
+					SELECT num, MAX(tot_votes) AS MaxTotVotes
+					FROM lectures
+					GROUP BY num) groupedtt
+					ON tt.num = groupedtt.num
+					AND tt.tot_votes = groupedtt.MaxTotVotes
+					GROUP BY tt.num";
+					
 		$result = $db->query($query);
 
 		$categories = array();
 
 		if (!empty($result)) {
 			while ($row = $result->fetch_assoc()){
-				$categories[] = array("id" => $row['num'], "val" => $row['name']);
+				$categories[] = array("id" => $row['path'], "val" => "שבוע מס' " . $row['num'] . " - " . $row['name']);
+                echo $row['path'];
 			}
 		}
 
@@ -92,12 +103,9 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 lecturesSelect.options[0].disabled = true;
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= lecturesCategories.length; i++) {
-                    /*alert("i is:");
-                    alert(i);
-                    alert(lecturesCategories[i].id);*/
                     lecturesSelect.options[i] = new Option(
-						"שבוע מס\' " + lecturesCategories[i - 1].id + " - " + lecturesCategories[i - 1].val,
-						lecturesCategories[i - 1].id + "_" + lecturesCategories[i - 1].val);
+						lecturesCategories[i - 1].val,
+						lecturesCategories[i - 1].id);
                 }
 
                 var tutorialsSelect = document.getElementById('tutorials');
@@ -106,8 +114,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= tutorialsCategories.length; i++) {
                     tutorialsSelect.options[i] = new Option(
-						"שבוע מס\' " + tutorialsCategories[i - 1].id + " - " + tutorialsCategories[i - 1].val,
-						tutorialsCategories[i - 1].id + "_" + tutorialsCategories[i - 1].val);
+						tutorialsCategories[i - 1].val,
+						tutorialsCategories[i - 1].id);
                 }
 
                 var homeworkSelect = document.getElementById('homework');
@@ -116,8 +124,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= homeworkCategories.length; i++) {
 					homeworkSelect.options[i] = new Option(
-                    	"שבוע מס\' " + homeworkCategories[i - 1].id + " - " + homeworkCategories[i - 1].val,
-						homeworkCategories[i - 1].id + "_" + homeworkCategories[i - 1].val);
+						homeworkCategories[i - 1].val,
+						homeworkCategories[i - 1].id);
                 }
 
                 var summariesSelect = document.getElementById('summaries');
@@ -126,8 +134,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= summariesCategories.length; i++) {
 					summariesSelect.options[i] = new Option(
-                    	"שבוע מס\' " + summariesCategories[i - 1].id + " - " + summariesCategories[i - 1].val,
-						summariesCategories[i - 1].id + "_" + summariesCategories[i - 1].val);
+						summariesCategories[i - 1].val,
+						summariesCategories[i - 1].id);
                 }
 
                 var examsSelect = document.getElementById('exams');
@@ -136,8 +144,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= examsCategories.length; i++) {
                     examsSelect.options[i] = new Option(
-						"שבוע מס\' " + examsCategories[i - 1].id + " - " + examsCategories[i - 1].val,
-						examsCategories[i - 1].id + "_" + examsCategories[i - 1].val);
+						examsCategories[i - 1].val,
+						examsCategories[i - 1].id);
                 }
 
             }
