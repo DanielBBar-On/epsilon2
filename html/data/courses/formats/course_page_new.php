@@ -9,9 +9,10 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
 	// login functions
 	sec_session_start();
 
-	if (login_check($mysqli) == true) {
+	if (login_check($loginsqli) == true) {
 		$logged = 'in';
 	} else {
+		header("Location: ../../../../../registrationFull.php");
 		$logged = 'out';
 	}
 
@@ -72,6 +73,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
         <link rel="stylesheet" href="../../../css/upload_form/upload_form_style.css">
         <link rel="stylesheet" href="../../../css/ios/ios_style.css">
         <link rel="stylesheet" href="../../../css/text_divider/text_divider_style.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- Javascripts -->
         <script type='text/javascript'>
@@ -93,7 +95,9 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                     /*alert("i is:");
                     alert(i);
                     alert(lecturesCategories[i].id);*/
-                    lecturesSelect.options[i] = new Option(lecturesCategories[i - 1].val, lecturesCategories[i - 1].id + "_" + lecturesCategories[i - 1].val);
+                    lecturesSelect.options[i] = new Option(
+						"שבוע מס\' " + lecturesCategories[i - 1].id + " - " + lecturesCategories[i - 1].val,
+						lecturesCategories[i - 1].id + "_" + lecturesCategories[i - 1].val);
                 }
 
                 var tutorialsSelect = document.getElementById('tutorials');
@@ -101,7 +105,9 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 tutorialsSelect.options[0].disabled = true;
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= tutorialsCategories.length; i++) {
-                    tutorialsSelect.options[i] = new Option(tutorialsCategories[i - 1].val, tutorialsCategories[i - 1].id + "_" + tutorialsCategories[i - 1].val);
+                    tutorialsSelect.options[i] = new Option(
+						"שבוע מס\' " + tutorialsCategories[i - 1].id + " - " + tutorialsCategories[i - 1].val,
+						tutorialsCategories[i - 1].id + "_" + tutorialsCategories[i - 1].val);
                 }
 
                 var homeworkSelect = document.getElementById('homework');
@@ -109,7 +115,9 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 homeworkSelect.options[0].disabled = true;
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= homeworkCategories.length; i++) {
-                    homeworkSelect.options[i] = new Option(homeworkCategories[i - 1].val, homeworkCategories[i - 1].id + "_" + homeworkCategories[i - 1].val);
+					homeworkSelect.options[i] = new Option(
+                    	"שבוע מס\' " + homeworkCategories[i - 1].id + " - " + homeworkCategories[i - 1].val,
+						homeworkCategories[i - 1].id + "_" + homeworkCategories[i - 1].val);
                 }
 
                 var summariesSelect = document.getElementById('summaries');
@@ -117,7 +125,9 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 summariesSelect.options[0].disabled = true;
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= summariesCategories.length; i++) {
-                    summariesSelect.options[i] = new Option(summariesCategories[i - 1].val, summariesCategories[i - 1].id + "_" + summariesCategories[i - 1].val);
+					summariesSelect.options[i] = new Option(
+                    	"שבוע מס\' " + summariesCategories[i - 1].id + " - " + summariesCategories[i - 1].val,
+						summariesCategories[i - 1].id + "_" + summariesCategories[i - 1].val);
                 }
 
                 var examsSelect = document.getElementById('exams');
@@ -125,7 +135,9 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                 examsSelect.options[0].disabled = true;
                 //select.onchange = updatesubcats;
                 for (var i = 1; i <= examsCategories.length; i++) {
-                    examsSelect.options[i] = new Option(examsCategories[i - 1].val, examsCategories[i - 1].id + "_" + examsCategories[i - 1].val);
+                    examsSelect.options[i] = new Option(
+						"שבוע מס\' " + examsCategories[i - 1].id + " - " + examsCategories[i - 1].val,
+						examsCategories[i - 1].id + "_" + examsCategories[i - 1].val);
                 }
 
             }
@@ -149,7 +161,68 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
     </head>
 
     <body id="index_body" onLoad="loadCategories()">
-    
+            <div style="width: 100%;
+				text-align:center;">
+            <span class="container-fluid" style="float:left;
+										margin-top:5px;">
+			<a  href="../../../index.php">
+			<img src="../../../images/logo-white.png" style="width:39.5px;
+												height:auto;
+												padding:10px;">
+												</a>
+				<p style="color:#FCFCFC;">דף הבית</p>
+				</span>
+            <?php
+			if (login_check($loginsqli) == false) { ?>
+                <span class="container-fluid" style="float:left;
+												">
+			<a  href="../../../registrationFull.php">
+			<i class="fa fa-sign-in" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"></i>
+												</a>
+				<p style="color:#FCFCFC;">התחברות/הרשמה</p>
+				</span>
+                <?php } else { ?>
+                    <span class="container-fluid" style="float:left;">
+		<a  href="../../../includes/logout.php">
+			<i class="fa fa-sign-out" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"></i>
+												</a>
+				<p style="color:#FCFCFC;">התנתקות</p>
+					</span>
+                    <?php } 
+			if (login_check($loginsqli) == true) { ?>
+                        <span class="container-fluid" style="float:left;">
+			<a  href="../../../createCourse.php">
+			<i class="fa fa-graduation-cap" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+												</a>
+				<p style="color:#FCFCFC;">הוספת קורס</p>
+			</span>
+                        <?php }?>
+                            <?php
+			if (login_check($loginsqli) == true) { ?>
+                                <span class="container-fluid" style="float:left;">
+			<a  href="../../../uploadLecture.php">
+			<i class="fa fa-book" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+												</a>
+				<p style="color:#FCFCFC;">העלאת קובץ</p>
+			</span>
+                                <?php }?>
+
+        </div>
+        <br>
+        <div style="width:100%;">
+        </div>
         <div style="text-align: center;
 						 vertical-align: middle;">
             <h1 style="color:#FCFCFC">  <?php echo constant("COURSE_NAME") . " - " . constant("COURSE_NUM"); ?> </h1>
@@ -171,7 +244,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
             <select id='lectures' name='lectures' style="margin-top:40px;
     							 direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="searchLecture" style="margin-top:50px" />
+            <button type="submit" class="button2" name="action" id="upload_submit" value="searchLecture" style="margin-top:50px;
+						direction:rtl;" />מצא</button>
         </div>
         <div id="tutorialsDiv" style="float:right;
 							  width:25%;
@@ -179,7 +253,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
             <select id='tutorials' style="margin-top:40px;
     							  direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="searchTutorial" style="margin-top:50px" />
+			<button type="submit" class="button2" name="action" id="upload_submit" value="searchTutorial" style="margin-top:50px;
+						direction:rtl;" />מצא</button>
         </div>
         <div id="homeworkDiv" style="float:right;
 							 width:25%;
@@ -187,7 +262,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
             <select id='homework' style="margin-top:40px;
     							 direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="searchHomework" style="margin-top:50px" />
+			<button type="submit" class="button2" name="action" id="upload_submit" value="searchHomework" style="margin-top:50px;
+						direction:rtl;" />מצא</button>
         </div>
         <div id="summariesDiv" style="float:right;
 							  width:25%;
@@ -195,7 +271,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
             <select id='summaries' style="margin-top:40px;
     							  direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="searchSummaries" style="margin-top:50px" />
+			<button type="submit" class="button2" name="action" id="upload_submit" value="searchSummaries" style="margin-top:50px;
+						direction:rtl;" />מצא</button>
         </div>
         <br>
         <div id="examsDiv" style="float:center;
@@ -204,7 +281,8 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
             <select id='exams' style="margin-top:40px;
                               direction: rtl;">
             </select>
-            <input type="submit" class="button2" name="action" id="upload_submit" value="searchExams" style="margin-top:50px" />
+			<button type="submit" class="button2" name="action" id="upload_submit" value="searchSummaries" style="margin-top:50px;
+						direction:rtl;" />מצא</button>
         </div>
         </form>
         </div>

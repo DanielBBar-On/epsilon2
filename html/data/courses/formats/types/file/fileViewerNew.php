@@ -8,12 +8,12 @@ include_once 'file_info.php';
 	// login functions
 	sec_session_start();
 
-	if (login_check($mysqli) == true) {
+	if (login_check($loginsqli) == true) {
   		$jsonUserId = json_encode($_SESSION['user_id']);
   		$jsonUserName = json_encode($_SESSION['username']);
 		$logged = 'in';
 	} else {
-		header("Location: registrationFull.php");
+		header("Location: ../../../../../../registrationFull.php");
 		$logged = 'out';
 	}
 
@@ -65,19 +65,21 @@ include_once 'file_info.php';
 
         function loadCategories() {
             var select = document.getElementById("course");
-            for (var i = 0; i < categories.length; i++) {
-                select.options[i] = new Option(categories[i].val, categories[i].id);
+			select.options[0] = new Option('גרסאות קודמות');
+            select.options[0].disabled = true;
+            for (var i = 1; i <= categories.length; i++) {
+                select.options[i] = new Option(categories[i - 1].val, categories[i - 1].id);
             }
         }
     </script>
     <!--end javascript-->
 
     <body id="index_body" onLoad="loadForum(); loadCategories();" style="margin-top:5%;">
-        <div style="width: 100%;
+        <div class="row" style="width: 100%;
 				text-align:center;">
             <span class="container-fluid" style="float:left;
 										margin-top:5px;">
-			<a  href="index.php">
+			<a  href="../../../../../index.php">
 			<img src="../../../../../images/logo-white.png" style="width:39.5px;
 												height:auto;
 												padding:10px;">
@@ -85,10 +87,10 @@ include_once 'file_info.php';
 				<p style="color:#FCFCFC;">דף הבית</p>
 				</span>
             <?php
-			if (login_check($mysqli) == false) { ?>
+			if (login_check($loginsqli) == false) { ?>
                 <span class="container-fluid" style="float:left;
 												">
-			<a  href="registrationFull.php">
+			<a  href="../../../../../registrationFull.php">
 			<i class="fa fa-sign-in" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
@@ -98,7 +100,7 @@ include_once 'file_info.php';
 				</span>
                 <?php } else { ?>
                     <span class="container-fluid" style="float:left;">
-		<a  href="includes/logout.php">
+		<a  href="../../../../../includes/logout.php">
 			<i class="fa fa-sign-out" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
@@ -107,9 +109,9 @@ include_once 'file_info.php';
 				<p style="color:#FCFCFC;">התנתקות</p>
 					</span>
                     <?php } 
-			if (login_check($mysqli) == true) { ?>
+			if (login_check($loginsqli) == true) { ?>
                         <span class="container-fluid" style="float:left;">
-			<a  href="createCourse.php">
+			<a  href="../../../../../createCourse.php">
 			<i class="fa fa-graduation-cap" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
@@ -119,9 +121,9 @@ include_once 'file_info.php';
 			</span>
                         <?php }?>
                             <?php
-			if (login_check($mysqli) == true) { ?>
+			if (login_check($loginsqli) == true) { ?>
                                 <span class="container-fluid" style="float:left;">
-			<a  href="uploadLecture.php">
+			<a  href="../../../../../uploadLecture.php">
 			<i class="fa fa-book" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
@@ -138,94 +140,85 @@ include_once 'file_info.php';
         echo "var userId = $jsonUserId; \n";
         echo "var userName = $jsonUserName; \n";
       ?>
+
+            console.log("userId = " + userId +
+                " userName = " + userName);
         </script>
         <div id="main">
-            <div style="text-align: center;
+            <div class="row" id="main" style="text-align: center;">
+                <div style="text-align: center;
 						 vertical-align: middle;
-                         margin-right: 20%">
-                <h1 style="color:#FCFCFC">  <?php echo constant("COURSE_NAME") ?> </h1>
-                <h1 style="color:#FCFCFC;
+                         ">
+                    <a href= "<?php echo "../../../../../data/courses/" . constant("COURSE_NUM") . "/" . constant("COURSE_NUM") . ".php" ?>">
+                    <h1 style="color:#FCFCFC;
+                            text-align: center;
+                            text-decoration:underline;">  <?php echo constant("COURSE_NAME") ?> </h1>
+                            </a>
+                    <h1 style="color:#FCFCFC;
+                            text-align: center;
             			"> הרצאה של שבוע מס' <?php echo htmlentities(constant("WEEK_NUM")) ?> </h1>
-            </div>
-            <div class="row">
-                <div class="col-md-12" id="question" style="float:right; margin-top: 5%;" align="center">
-                    <script type="text/javascript">
-                        function hasClass(ele, cls) {
-                            return ele.className.match(new RegExp('(\\s|^)' + cls + '(\\s|$)'));
-                        }
-
-                        function changeClass() {
-                            if (hasClass(document.getElementById("question"), "col-md-6")) {
-                                document.getElementById("question").className = "col-md-12";
-                            } else {
-                                document.getElementById("question").className = "col-md-6";
-                            }
-                        }
-                    </script>
-                    <!-- responsive iframe -->
-                    <!-- ============== -->
-                    <div id="Iframe-Cicis-Menu-To-Go-Question" class="set-margin-cicis-menu-to-go set-padding-cicis-menu-to-go set-border-cicis-menu-to-go set-box-shadow-cicis-menu-to-go center-block-horiz">
-                        <div class="responsive-wrapper 
-     responsive-wrapper-padding-bottom-90pct" style="-webkit-overflow-scrolling: touch; overflow: auto;">
-                            <iframe src="<?php echo FILE ?>">
-                                <p style="font-size: 110%;"><em><strong>ERROR: </strong> An &#105;frame should be displayed here but your brow	ser version does not support &#105;frames.</em> Please update your browser to its most recent version and try again, or access the file
-                                    <a href="https://drive.google.com/file/d/0BxrMaW3xINrsR3h2cWx0OUlwRms/preview"></a>
-                                </p>
-                            </iframe>
-                        </div>
-                    </div>
-        <div class="upvote">
-        	<a onclick="upvoteFile()">
-            	<i class="fa fa-thumbs-up" style="font-size:36px;
-												color:#FCFCFC;
-												margin:auto;
-												padding: 10px;">
-				</i>
-			</a>
-        </div>
-        <div id='fileVotes' class="number-of-votes">
-        </div>
-        <div class="downvote">
-        	<a href="" onclick="downvoteFile()">
-        		<i class="fa fa-thumbs-down" style="font-size:36px;
-												color:#FCFCFC;
-												margin:auto;
-												padding: 10px;">
-				</i>
-            </a>
-        </div>
-        </div>
-            </div>
-            <div style="text-align:center;">
-                <div style="float: right">
-                    <form action="../../../../../php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
+                                            <form action="../../../../../php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
                         <select id='course' name="path">
-                            <option value="" disabled selected>בחר/י קורס</option>
+                            <option value="" disabled selected>בחרו גרסא קודמת</option>
                         </select>
+<button type="submit" class="button2" name="action" id="upload_submit" value="searchByPath" style="margin-top:50px;
+						direction:rtl;" />מצא</button>
                     </form>
                 </div>
-                <div style="float: right;">
-                    <input type="submit" class="button2" name="action" id="upload_submit" value="searchByPath" />
-
-                    <textarea id="questionText" type="ask_question" placeholder="שאל שאלה"></textarea>
-                    <br>
-                    <input type="submit" class="button2" name="action" id="upload_submit" value="ask" onClick="askQuestion()" />
-                    <input type="hidden" name="file_path" value="data\courses\formats">
-                    <input type="submit" class="button2" name="action" id="upload_submit" value="send_json" onClick="saveForum()" />
-                </div>
             </div>
-            <div class="vue-wrapper">
-                <div id="vue">
-                    <div class="search-area">
-                        <h1>דיונים</h1>
-                        <div class="input-wrapper"> <i class="fa fa-search"></i>
-                            <input v-model="searchString" type="text" placeholder="Have a question? Search for answers with keywords" />
-                        </div>
-                        <button @click="resetSearch()">נקה</button>
+            <br>
+            <div class="row">
+                <object data="<?php echo FILE ?>" type="application/pdf" 
+                		width="85%" height="800px" style="text-align: center;
+                        							margin-right: 5%;
+                                                    float: right;">
+                    <p>It appears you don't have a PDF plugin for this browser. No biggie... you can <a href="resume.pdf">click here to
+  download the PDF file.</a></p>
+                </object>
+			<div id="votes" style="float:right;
+                                    margin: 2%;">
+            <div class="upvote" style="font-size: 36px;
+            						color:#FCFCFC;">
+                <a style="cursor:pointer;" onclick="upvoteFile()">
+                    <i class="fa fa-thumbs-up" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;">
+				</i>
+                </a>
+            </div>
+            <div id='fileVotes' class="number-of-votes" style="margin-right: 15px;"> 
+            </div>
+            <div class="downvote">
+                <a style="cursor: pointer;" onclick="downvoteFile()">
+                    <i class="fa fa-thumbs-down" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;">
+				</i>
+                </a>
+            </div>
+            </div>
+            </div>
+            <div style="text-align:center;">
+                <textarea id="questionText" type="ask_question" placeholder="שאל שאלה"></textarea>
+                <br>
+                <input type="submit" class="button2" name="action" id="upload_submit" value="ask" onClick="askQuestion()" />
+                <input type="hidden" name="file_path" value="data\courses\formats">
+                <input type="submit" class="button2" name="action" id="upload_submit" value="send_json" onClick="saveForum()" />
+            </div>
+        <div class="vue-wrapper">
+            <div id="vue">
+                <div class="search-area">
+                    <h1>דיונים</h1>
+                    <div class="input-wrapper"> <i class="fa fa-search"></i>
+                        <input v-model="searchString" type="text" placeholder="Have a question? Search for answers with keywords" />
                     </div>
-                    <div id="questions"> </div>
+                    <button @click="resetSearch()">נקה</button>
                 </div>
+                <div id="questions"> </div>
             </div>
+        </div>
         </div>
     </body>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

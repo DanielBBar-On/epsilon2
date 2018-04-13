@@ -9,7 +9,7 @@ define("FILE_TYPE", "lectures");
 	// login functions
 	sec_session_start();
 
-	if (login_check($mysqli) == true) {
+	if (login_check($loginsqli) == true) {
 		$logged = 'in';
 	} else {
 		header("registrationFull.php");
@@ -58,6 +58,7 @@ define("FILE_TYPE", "lectures");
         <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/sidebar/sidebar_style.css">
         <link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
         <!-- Javascripts -->
         <script type='text/javascript'>
@@ -120,7 +121,7 @@ define("FILE_TYPE", "lectures");
 				<p style="color:#FCFCFC;">דף הבית</p>
 				</span>
             <?php
-			if (login_check($mysqli) == false) { ?>
+			if (login_check($loginsqli) == false) { ?>
                 <span class="container-fluid" style="float:left;
 												">
 			<a  href="registrationFull.php">
@@ -142,7 +143,7 @@ define("FILE_TYPE", "lectures");
 				<p style="color:#FCFCFC;">התנתקות</p>
 					</span>
                     <?php } 
-			if (login_check($mysqli) == true) { ?>
+			if (login_check($loginsqli) == true) { ?>
                         <span class="container-fluid" style="float:left;">
 			<a  href="createCourse.php">
 			<i class="fa fa-graduation-cap" style="font-size:36px;
@@ -154,7 +155,7 @@ define("FILE_TYPE", "lectures");
 			</span>
                         <?php }?>
                             <?php
-			if (login_check($mysqli) == true) { ?>
+			if (login_check($loginsqli) == true) { ?>
                                 <span class="container-fluid" style="float:left;">
 			<a  href="uploadLecture.php">
 			<i class="fa fa-book" style="font-size:36px;
@@ -218,7 +219,7 @@ define("FILE_TYPE", "lectures");
                                 <option value='summer'>קיץ</option>
                             </select>
 
-                            <input type="hidden" name="id" value=< ?php echo '"' . $_SESSION[ 'user_id'] . '"' ?> >
+                            <input type="hidden" name="id" value=< ?php echo '"' . $_SESSION[ 'user_id'] . '"' ?>
                             <input type="hidden" name="type" value="<?php echo FILE_TYPE ?>">
 
                             <!-- <CTA></CTA> -->

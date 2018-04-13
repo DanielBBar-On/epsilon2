@@ -26,35 +26,35 @@ if (isset($_POST['action'])) {
 		case 'searchLecture':
 			$type = 'lectures';
 			$file = explode("_",$_POST['lectures']);
-			$file_name = $file[1];
+			$file_name = $file[0];
 			$courseNum = ($_POST['courseNum']);
 			searchFile($courseNum, $file_name, $type);
 			break;
 		case 'searchTutorial':
 			$type = 'tutorials';
 			$file = explode("_",$_POST['tutorials']);
-			$file_name = $file[1];
+			$file_name = $file[0];
 			$courseNum = ($_POST['courseNum']);
 			searchFile($courseNum, $file_name, $type);
 			break;
 		case 'searchHomework':
 			$type = 'homework';
 			$file = explode("_",$_POST['homework']);
-			$file_name = $file[1];
+			$file_name = $file[0];
 			$courseNum = ($_POST['courseNum']);
 			searchFile($courseNum, $file_name, $type);
 			break;
 		case 'searchSummaries':
 			$type = 'summaries';
 			$file = explode("_",$_POST['summaries']);
-			$file_name = $file[1];
+			$file_name = $file[0];
 			$courseNum = ($_POST['courseNum']);
 			searchFile($courseNum, $file_name, $type);
 			break;
 		case 'searchExams':
 			$type = 'exams';
 			$file = explode("_",$_POST['exams']);
-			$file_name = $file[1];
+			$file_name = $file[0];
 			$courseNum = ($_POST['courseNum']);
 			searchFile($courseNum, $file_name, $type);
 			break;

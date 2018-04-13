@@ -57,6 +57,7 @@ DoublyList.prototype.addToTail = function(node) {
     this._id_counter++;
     this._length++;
 
+    console.log("Add: length = " + this._length);
     console.log("add new node to upvoters. username = " + node.data);
     return node;
 };
@@ -105,8 +106,9 @@ DoublyList.prototype.searchNodeById = function(id) {
         count = 1,
         message = {failure: 'Could not find node in list'};
 
+        console.log("search: length = " + this._length);
     // 1st use-case: an invalid position
-    if (length === 0 || id < 0) {
+    if (this._length === 0 || id < 0) {
         console.log(message.failure);
         return null;
     }
@@ -134,10 +136,11 @@ DoublyList.prototype.remove = function(node) {
         nodeToDelete = null,
         deletedNode = null;
 
+    console.log("remove node " + node.id);
     // 1st use-case: an invalid position
     if (length === 0 || node.id < 0) {
         console.log(message.failure);
-        return message.failure;
+        return null;
     }
 
     // 2nd use-case: the first node is removed
@@ -149,6 +152,7 @@ DoublyList.prototype.remove = function(node) {
             this.tail = currentNode.next;
         }
         this.head = currentNode.next;
+        deletedNode = node;
 
     } else {
         beforeNodeToDelete = currentNode;
@@ -173,7 +177,8 @@ DoublyList.prototype.remove = function(node) {
 
     this._length--;
 
-    return message.success;
+    console.log("Successfully removed node id = " + deletedNode.id);
+    return deletedNode;
 };
 
 ////////////// voting ////////////
@@ -184,9 +189,9 @@ Node.prototype.upvote = function (userId, userName) {
     if (node === null) {
         node = new Node(userId, userName);
         this.votes++;
-        this.upvoters.addToTail(node);
-        this.upvoters.printToConsole();
-        this.downvoters.remove(node);
+        if (this.downvoters.remove(node) === null) {
+            this.upvoters.addToTail(node);
+        }
     } else {
         alert("You already upvoted this");
     }
@@ -200,8 +205,9 @@ Node.prototype.downvote = function (userId, userName) {
     if (node === null) {
         node = new Node(userId, userName);
         this.votes--;
-        this.downvoters.addToTail(node);
-        this.upvoters.remove(node);
+        if (this.upvoters.remove(node) === null) {
+            this.downvoters.addToTail(node);
+        }
     } else {
         alert("You already downvoted this");
     }
@@ -233,13 +239,16 @@ DoublyList.prototype.printFileVotes = function () {
     while (myNode.firstChild) {
         myNode.removeChild(myNode.firstChild);
     }
-	
+    
     var fileVotesDiv = document.createElement('div');
 
     fileVotesDiv.className = 'fileVotes';
 
     fileVotesDiv.innerHTML =
         questions.file.votes;
+
+    fileVotesDiv.style.fontSize = "36px";
+    fileVotesDiv.style.color = "#FCFCFC";
 
     document.getElementById('fileVotes').appendChild(fileVotesDiv);
 };
@@ -261,24 +270,23 @@ Answer.prototype.printAnswer = function(questionId) {
         '<div class="answer" data-color="gray">\n' +
         '\t\t\t<div class="votes">\n' +
         '\t\t\t\t<div class="upvote" onclick="upvoteAnswer(' + 
-		questionId +
-		',' + this.id +
-		',' + userId +
-		', \'' + userName +
-		'\')">\n' +
+        questionId +
+        ',' + this.id +
+        ',' + userId +
+        ', \'' + userName +
+        '\')">\n' +
         '</div>\n' +
         '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
         '                </div>\n' +
         '\t\t\t\t<div class="downvote" onclick="downvoteAnswer(' +
-		questionId +
-		',' + this.id +
-		',' + userId +
-		', \'' + userName +
-		'\')">\n' +
+        questionId +
+        ',' + this.id +
+        ',' + userId +
+        ', \'' + userName +
+        '\')">\n' +
         '</div>\n' +
         '\t\t\t</div>\n' +
-        '\t\t\t<div class="question-and-answer">\n' +
-        '\t\t\t\t<h2 style="color: #000000; direction: rtl;">' + this.data + '</h2>\n' +
+        '\t\t\t<div class="question-and-answer">\n' +        '\t\t\t\t<h2 style="color: #000000; direction: rtl;">' + this.data + '</h2>\n' +
         '\t\t\t\t<div style="text-align:center;">\n' +
         '\t\t\t\t</div>\n' +
         '\t\t\t</div>\n' +
@@ -312,18 +320,18 @@ Question.prototype.printQuestion = function() {
         '<div class="question" data-color="gray">\n' +
         '\t\t\t<div class="votes">\n' +
         '\t\t\t\t<div class="upvote" onclick="upvoteQuestion(' +
-		this.id +
-		',' + userId +
-		', \'' + userName +
-		'\')">\n' +
+        this.id +
+        ',' + userId +
+        ', \'' + userName +
+        '\')">\n' +
         '</div>\n' +
         '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
         '                </div>\n' +
         '\t\t\t\t<div class="downvote" onclick="downvoteQuestion(' +
-		this.id +
-		',' + userId +
-		', \'' + userName +
-		'\')">\n' +
+        this.id +
+        ',' + userId +
+        ', \'' + userName +
+        '\')">\n' +
         '</div>\n' +
         '\t\t\t</div>\n' +
         '\t\t\t<div class="question-and-answer">\n' +
@@ -358,8 +366,8 @@ DoublyList.prototype.printAllNodes = function() {
         current.printQuestion();
         current = current.next;
     }
-	
-	this.printFileVotes();
+    
+    this.printFileVotes();
 };
 
 
@@ -408,29 +416,29 @@ function downvoteAnswer(questionId, answerId, userId, userName) {
 }
 
 function upvoteFile(){
-	if (questions.file.upvoters === null) {
-		questions.file.upvoters = new DoublyList();
-	}
-	
-	if (questions.file.downvoters === null) {
-		questions.file.downvoters = new DoublyList();
-	}
-	
-    questions.file.upvote();
-	questions.printFileVotes();
+    if (questions.file.upvoters === null) {
+        questions.file.upvoters = new DoublyList();
+    }
+    
+    if (questions.file.downvoters === null) {
+        questions.file.downvoters = new DoublyList();
+    }
+    
+    questions.file.upvote(userId, userName);
+    questions.printFileVotes();
 }
 
 function downvoteFile() {
-	if (questions.file.upvoters === null) {
-		questions.file.upvoters = new DoublyList();
-	}
-	
-	if (questions.file.downvoters === null) {
-		questions.file.downvoters = new DoublyList();
-	}
+    if (questions.file.upvoters === null) {
+        questions.file.upvoters = new DoublyList();
+    }
+    
+    if (questions.file.downvoters === null) {
+        questions.file.downvoters = new DoublyList();
+    }
 
-    questions.file.downvote();
-	questions.printFileVotes();
+    questions.file.downvote(userId, userName);
+    questions.printFileVotes();
 }
 
 function getFileVotes() {
@@ -561,7 +569,7 @@ function parseJson(json) {
         tempQuestions.head = parseQuestion(json.head);
     }
     tempQuestions.tail = json.tail;
-    tempQuestions.file = parseVotersList(json.file);
+    tempQuestions.file = parseAnswer(json.file); // file behaves like an answer. 
 
     return tempQuestions;
 }
@@ -580,11 +588,11 @@ function saveForum(){
         method  : 'post',
         data    : {'myJson' : myJson, 'path' : path},
         success : function( response ) {
-			console.log(response);
+            console.log(response);
         },
         error: function(xhr,textStatus,err) {
             console.log("Forum not saved");
-			console.log(xhr + textStatus + err);
+            console.log(xhr + textStatus + err);
         }
     });
 }
@@ -609,10 +617,10 @@ function loadForum(){
         },
         error: function(xhr,textStatus,err) {
             console.log("No forum found");
-			console.log(xhr + textStatus + err);
+            console.log(xhr + textStatus + err);
             questions = new DoublyList();
         }
     });
-	
+    
     questions.printAllNodes();
 }

@@ -5,9 +5,10 @@ include_once '../includes/secure_login/functions.php';
 
 sec_session_start();
  
-if (login_check($mysqli) == true) {
+if (login_check($loginsqli) == true) {
     $logged = 'in';
 } else {
+	header("LocationregistrationFull.php");
     $logged = 'out';
 }
 
@@ -28,7 +29,70 @@ if (login_check($mysqli) == true) {
 </head>
 
 <body id="index_body">
-<h1 style="text-align:center;">הוספת קורס</h1>
+        <div style="width: 100%;
+				text-align:center;">
+            <span class="container-fluid" style="float:left;
+										margin-top:5px;">
+			<a  href="index.php">
+			<img src="images/logo-white.png" style="width:39.5px;
+												height:auto;
+												padding:10px;">
+												</a>
+				<p style="color:#FCFCFC;">דף הבית</p>
+				</span>
+            <?php
+			if (login_check($loginsqli) == false) { ?>
+                <span class="container-fluid" style="float:left;
+												">
+			<a  href="registrationFull.php">
+			<i class="fa fa-sign-in" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"></i>
+												</a>
+				<p style="color:#FCFCFC;">התחברות/הרשמה</p>
+				</span>
+                <?php } else { ?>
+                    <span class="container-fluid" style="float:left;">
+		<a  href="includes/logout.php">
+			<i class="fa fa-sign-out" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"></i>
+												</a>
+				<p style="color:#FCFCFC;">התנתקות</p>
+					</span>
+                    <?php } 
+			if (login_check($loginsqli) == true) { ?>
+                        <span class="container-fluid" style="float:left;">
+			<a  href="createCourse.php">
+			<i class="fa fa-graduation-cap" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+												</a>
+				<p style="color:#FCFCFC;">הוספת קורס</p>
+			</span>
+                        <?php }?>
+                            <?php
+			if (login_check($loginsqli) == true) { ?>
+                                <span class="container-fluid" style="float:left;">
+			<a  href="uploadLecture.php">
+			<i class="fa fa-book" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+												</a>
+				<p style="color:#FCFCFC;">העלאת קובץ</p>
+			</span>
+                                <?php }?>
+
+        </div>
+        <br>
+        <div style="width:100%;">
+        </div>
+<h1 style="text-align:center;
+			margin-right: 30%;">הוספת קורס</h1>
 <div id="upload_body">
   
   <div id="upload_div">  
