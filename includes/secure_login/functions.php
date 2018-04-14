@@ -182,4 +182,24 @@ function esc_url($url) {
         return $url;
     }
 }
+
+function addPointToUser($username, $mysqli) {
+
+    $query = 'UPDATE members SET point = point + 1 WHERE username = "' . $username . '"';
+    $result = $mysqli->query($query);
+
+    if ($result !== TRUE) {
+        echo "Error: " . $query . "<br>" . $db->error;
+    }
+}
+
+function removePointToUser($username, $mysqli) {
+
+    $query = 'UPDATE members SET point = point - 1 WHERE username = "' . $username . '"';
+    $result = $mysqli->query($query);
+
+    if ($result !== TRUE) {
+        echo "Error: " . $query . "<br>" . $db->error;
+    }
+}
 ?>

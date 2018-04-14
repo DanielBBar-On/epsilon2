@@ -127,7 +127,8 @@ if (login_check($mysqli) == true) {
       <input type="upload_text" name="courseName" id="courseName" placeholder="שם הקורס" required></input>
       
       <!-- <CTA></CTA> -->
-      <input type="submit" class="button2" name="action" id="upload_submit" value="create" />
+      			<button type="submit" class="button2" name="action" id="upload_submit" value="create" style="margin-top:50px;
+						direction:rtl;" />הוסיפו קורס</button>
       <!-- <CTA></CTA> -->
       <input type="submit" class="button2" name="action" id="upload_submit" value="remove" />
       </form>

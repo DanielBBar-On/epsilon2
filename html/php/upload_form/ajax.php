@@ -1,5 +1,7 @@
 <?php
 include_once 'includes/courses/functions.php';
+include_once 'includes/secure_login/db_connect.php';
+include_once 'includes/secure_login/functions.php';
 
 var_dump($_POST);
 
@@ -176,7 +178,7 @@ function upload($courseNum, $courseName, $type) {
 	$week_num = $_POST[$type . 'Num'];
 	$name = $_POST[$type . 'Name'];
 	$ADDED_BY_ID = $_POST['id'];
-	$ADDED_BY_EMAIL = $_POST['username'];
+	$ADDED_BY_EMAIL = $_POST['username']; //Note: This is actually username
 	$path = $target_dir . $file_name . ".php";
 	$pos_votes = 0;
 	$neg_votes = 0;
@@ -201,9 +203,10 @@ function upload($courseNum, $courseName, $type) {
 	}
 	
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		$id = -2;
-		$id = insert_lecture_to_DB($courseNum, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+		insert_lecture_to_DB($courseNum, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 					$pos_votes, $neg_votes, $tot_votes, $year, $semester);	
+		
+		addPointToUser($ADDED_BY_EMAIL, $mysqli);
 		
 		$myfile = fopen("$target_dir/file_info.php", "w");
         $txt = '<?php

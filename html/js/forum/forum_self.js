@@ -373,7 +373,7 @@ Question.prototype.printQuestion = function() {
         '\t\t\t<div class="question-and-answer">\n' +
         '\t\t\t\t<p style="color: #000000; direction: rtl;">' + this.data + '</p>\n' +
         '\t\t\t\t<div style="text-align:center;">\n' +
-        '\t\t\t\t\t<textarea id="textArea_' + this.id + '" type="answer" placeholder="הגב"></textarea>\n' +
+        '\t\t\t\t\t<textarea id="textArea_' + this.id + '" type="answer" placeholder="הגב" style="width:60%;"></textarea>\n' +
         '\t\t\t\t\t<br>\n' +
         '\t\t\t\t\t<input type="submit" class="button2" name="action" id="upload_submit" value="answer" onClick="answerQuestion('+ this.id + ')"/>\n' +
         '\t\t\t\t</div>\n' +

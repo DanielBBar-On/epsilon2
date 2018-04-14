@@ -168,7 +168,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
     </head>
 
     <body id="index_body" onLoad="loadCategories()">
-            <div style="width: 100%;
+            <div class="row" style="width: 100%;
 				text-align:center;">
             <span class="container-fluid" style="float:left;
 										margin-top:5px;">
@@ -230,14 +230,15 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
         <br>
         <div style="width:100%;">
         </div>
-        <div style="text-align: center;
+        <div class="row" style="text-align: center;
 						 vertical-align: middle;">
             <h1 style="color:#FCFCFC">  <?php echo constant("COURSE_NAME") . " - " . constant("COURSE_NUM"); ?> </h1>
         </div>
             
             <div class="mine messages" style="float:right;
             								width: 40%">
-    <div class="message last" style="direction:rtl;">
+    <div class="message last" style="direction:rtl;
+    								font-size:24px;">
       ברוכים הבאים לעמוד הקורס. כאן ניתן למצוא את כל חומרי הקורס. להתחלה בחרו סוג קובץ או העלו קובץ חדש.
      </div>
   </div>
