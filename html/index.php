@@ -29,6 +29,7 @@
 	  $subcatsName = NULL;
 
 	  while($row = $result->fetch_assoc()){
+		echo $row['faculty'];
 		$subcatsNum[$row['faculty']][] = array("id" => $row['num'], "val" => $row['num']);
 		$subcatsName[$row['faculty']][] = array("id" => $row['num'], "val" => $row['name']);
 	  }

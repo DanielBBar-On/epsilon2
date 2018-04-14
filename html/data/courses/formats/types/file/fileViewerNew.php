@@ -22,11 +22,8 @@ include_once 'file_info.php';
        $db = new mysqli(constant("COURSES_HOST"), constant("COURSES_USER"), 
                          constant("COURSES_PASSWORD"), constant("COURSE_NUM")); //connect to course database
 
-        $query = "SELECT * FROM " . constant("FILE_TYPE") . " WHERE num = " . constant("WEEK_NUM") .
-				//" AND semester = " . "'" . constant("SEMESTER") . "'" . 
-				//" AND year = " . constant("YEAR") .
-				" ORDER BY cast(tot_votes as int) DESC"; // get all lecture that are from the same week.
-
+	$query = "SELECT * FROM " . constant("FILE_TYPE") . " WHERE num = " . constant("WEEK_NUM") .
+                                " ORDER BY tot_votes DESC";
         $result = $db->query($query);
 		/*if ($result === TRUE) {
 				echo "Successfully connected to DB";
@@ -39,8 +36,8 @@ include_once 'file_info.php';
 		$jsonPoints = json_encode(0);
         while($row = $result->fetch_assoc()){
 			$categories[] = array("id" => $row['path'], "val" => $row['semester'] . " " .
-																$row['year'] . " - " .
-																$row['tot_votes'] . " votes");
+									     $row['year'] . " - " .
+									     $row['tot_votes'] . " votes");
         }
 
 		// get file id

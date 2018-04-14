@@ -1,7 +1,13 @@
 <?php
-include_once 'includes/courses/functions.php';
-include_once 'includes/secure_login/db_connect.php';
-include_once 'includes/secure_login/functions.php';
+include(__DIR__ . '/../../../includes/courses/functions.php');
+include(__DIR__ . '/../../../includes/secure_login/db_connect.php');
+include(__DIR__ . '/../../../includes/secure_login/functions.php');
+//include_once 'includes/courses/functions.php';
+//include_once 'includes/secure_login/db_connect.php';
+//include_once 'includes/secure_login/functions.php';
+
+ini_set('display_errors', true);
+error_reporting(E_ALL);
 
 var_dump($_POST);
 
@@ -102,19 +108,22 @@ function create() {
         if($success) {
             echo "course creation success" . "<br>";
         } else {
-            echo "course creation failure" . "<br>";
+            echo "course creation failure" . $success ."<br>";
             exit;
         }
 		
         $myfile = fopen("$dataPath/course_info.php", "w");
+    	chmod("$dataPath/course_info.php", 0755);
+    	chown("$dataPath/course_info.php", "www-data");
         $txt = '<?php
 	define("COURSE_NUM", "' . ($_POST['courseNum']) . '");
 	define("COURSE_NAME", "' . $courseName . '");
 ?>';
         fwrite($myfile, $txt);
         fclose($myfile);
-		
+	echo "inserting to DB";
 		$success = insert_to_courses_DB($faculty, $courseNum, $courseName);
+		echo "course inserted with ret = ";
 		if (!$success) {
 			header("Location: ". $dataPath . "/". $_POST['courseNum']. ".php?error=" . $success);
 		}
@@ -132,12 +141,16 @@ function create() {
 function create_new_course_html($path) {
     $course_page = file_get_contents('../../data/courses/formats/course_page_new.php', FILE_USE_INCLUDE_PATH);
     $myfile = fopen($path . "/" . $_POST['courseNum']. ".php", "w");
+    chmod($path . "/" . $_POST['courseNum']. ".php", 0755);
+    chown($path . "/" . $_POST['courseNum']. ".php", "www-data");
     fwrite($myfile, $course_page);
     fclose($myfile);
 }
 
 function create_new_psl_config($path) {
     $myfile = fopen($path . "/psl-config.php", "w");
+    chmod($path . "/psl-config.php", 0755);
+    chown($path . "/psl-config.php", "www-data");
     fwrite($myfile, 
 					'<?php
 	/**
@@ -160,6 +173,8 @@ function create_new_psl_config($path) {
 
 function create_new_db_connect($path) {
 	$myfile = fopen($path . "/db_connect.php", "w");
+    	chmod($path . "/db_connect.php", 0755);
+    	chown($path . "/db_connect.php", "www-data");
 	fwrite($myfile,
 					"<?php
 	include_once 'psl-config.php';   // As functions.php is not included
@@ -170,6 +185,8 @@ function create_new_db_connect($path) {
 function create_new_file_html($target_dir, $file_name) {
     $file_page = file_get_contents('../../data/courses/formats/types/file/fileViewerNew.php', FILE_USE_INCLUDE_PATH);
     $myfile = fopen($target_dir . $file_name . ".php", "w");
+    chmod($target_dir . $file_name . ".php", 0755);
+    chown($target_dir . $file_name . ".php", "www-data");
     fwrite($myfile, $file_page);
     fclose($myfile);
 }
@@ -220,6 +237,8 @@ function upload($courseNum, $courseName, $type, $mysqli) {
 		addPointToUser($ADDED_BY_EMAIL, $mysqli);
 		
 		$myfile = fopen("$target_dir/file_info.php", "w");
+    		chmod("$target_dir/file_info.php", 0755);
+    		chown("$target_dir/file_info.php", "www-data");
         $txt = '<?php
 		define("FILE_DIR", "' . $file_dir . '");
 		define("FILE_PATH", "' . $file_path . '");

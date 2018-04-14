@@ -21,19 +21,11 @@ function insert_to_courses_DB($faculty, $num, $name) {
 	$conn = new mysqli($servername, $username, $password, $dbname);
 	// Check connection
 	if ($conn->connect_error) {
-		die("Connection failed: " . $conn->connect_error);
+		//die_nicely("Connection failed: " . $conn->connect_error);
 	} 
 
-	/*$sql = "BEGIN
-				IF NOT EXISTS (SELECT num FROM courses 
-								WHERE num = '$num')
-					BEGIN
-						INSERT INTO courses (faculty, num, name)
-						VALUES ('$faculty', '$num', '$name')
-					END
-			END";*/
-	$sql = "INSERT INTO courses (faculty, num, name)
-			VALUES ('$faculty', '$num', '$name')";
+	$sql = "INSERT INTO courses (faculty, num, name, ADDED_BY)
+			VALUES ('$faculty', '$num', '$name', '0')";
 
 	if ($conn->query($sql) === TRUE) {
 		echo "New record created successfully";
