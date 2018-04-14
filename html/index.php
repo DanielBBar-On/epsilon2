@@ -33,6 +33,7 @@
 		$subcatsName[$row['faculty']][] = array("id" => $row['num'], "val" => $row['name']);
 	  }
 
+	$jsonPoints = json_encode(0);
 	if($logged == 'in') {
 	  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
 

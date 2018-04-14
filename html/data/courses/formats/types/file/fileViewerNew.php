@@ -36,6 +36,7 @@ include_once 'file_info.php';
 
         $categories = NULL;
 
+		$jsonPoints = json_encode(0);
         while($row = $result->fetch_assoc()){
 			$categories[] = array("id" => $row['path'], "val" => $row['semester'] . " " .
 																$row['year'] . " - " .

@@ -11,7 +11,7 @@ if (login_check($mysqli) == true) {
 	header("LocationregistrationFull.php");
     $logged = 'out';
 }
-
+	$jsonPoints = json_encode(0);
 	if($logged == 'in') {
 	  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
 

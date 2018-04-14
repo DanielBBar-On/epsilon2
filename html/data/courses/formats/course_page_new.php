@@ -22,6 +22,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
 
 	//set your database handler 
 
+	$jsonPoints = json_encode(0);
 	if($logged == 'in') {
 	  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
 
