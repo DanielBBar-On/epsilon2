@@ -77,7 +77,7 @@ if (isset($_POST['username'], $_POST['email'], $_POST['p'])) {
         $password = password_hash($password, PASSWORD_BCRYPT);
  
         // Insert the new user into the database 
-        if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password) VALUES (?, ?, ?)")) {
+        if ($insert_stmt = $mysqli->prepare("INSERT INTO members (username, email, password, point) VALUES (?, ?, ?, 0)")) {
             $insert_stmt->bind_param('sss', $username, $email, $password);
             // Execute the prepared query.
             if (! $insert_stmt->execute()) {
