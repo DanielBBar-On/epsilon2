@@ -39,6 +39,17 @@ define("FILE_TYPE", "lectures");
 	$subcatsName[$row['faculty']][] = array("id" => $row['num'], "val" => $row['name']);
   }
 
+	  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
+
+	  $points = -1;
+
+	  $result = $mysqli->query($query);
+
+	  while($row = $result->fetch_assoc()){
+		  $points = $row['point'];
+	  }
+
+	  $jsonPoints = json_encode($points);
   $jsonCats = json_encode($categories);
   $jsonsubcatsNum = json_encode($subcatsNum);
   $jsonsubcatsName = json_encode($subcatsName);
@@ -66,6 +77,7 @@ define("FILE_TYPE", "lectures");
         echo "var categories = $jsonCats; \n";
         echo "var subcatsNum = $jsonsubcatsNum; \n";
 		echo "var subcatsName = $jsonsubcatsName; \n";
+		echo "var userPoints = $jsonPoints; \n";
       ?>
 
             function getYear() {
@@ -97,7 +109,7 @@ define("FILE_TYPE", "lectures");
                 subcatselect.options[0] = new Option('בחר/י קורס');
                 subcatselect.options[0].disabled = true;
                 for (var i = 1; i <= subcatsNum[faculty].length; i++) {
-					var name = subcatsName[faculty][i - 1].val;
+                    var name = subcatsName[faculty][i - 1].val;
                     subcatselect.options[i] = new Option(subcatsNum[faculty][i - 1].val + '-' +
                         name.replace(/&quot;/g, '\"'),
                         subcatsNum[faculty][i - 1].id + '_' + name.replace(/&quot;/g, '\"'));
@@ -109,7 +121,7 @@ define("FILE_TYPE", "lectures");
     </head>
 
     <body id="index_body" onLoad="loadCategories(); getYear()" onLoad="getYear()">
-    <div id="icons" style="width: 100%;
+        <div id="icons" style="width: 100%;
 			text-align:center;">
             <span class="container-fluid" style="float:left;
 										margin-top:5px;">
@@ -166,6 +178,20 @@ define("FILE_TYPE", "lectures");
 				<p style="color:#FCFCFC;">העלאת קובץ</p>
 			</span>
                                 <?php }?>
+                                    <?php
+			if (login_check($mysqli) == true) { ?>
+                                        <span class="container-fluid" style="float:left;">
+			<i class="fa fa-user" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+				<p style="color:#FCFCFC;"> 
+
+                        <script> document.write("(" + userPoints + " נקודות)") </script>
+                        <?php echo $_SESSION['username']; ?> 
+                        </p>
+			</span>
+                                        <?php }?>
 
         </div>
         <br>
@@ -204,10 +230,10 @@ define("FILE_TYPE", "lectures");
                             </select>
 
                             <!-- file num -->
-                            <input type="upload_text" name="<?php echo FILE_TYPE ?>Num" id="num" placeholder="שבוע מספר" required></input>
+                            <input type="upload_text" name="<?php echo FILE_TYPE ?>Num" id="num" placeholder="שבוע מספר" required>
 
                             <!-- file num -->
-                            <input type="upload_text" name="<?php echo FILE_TYPE ?>Name" id="num" placeholder="נושא ההרצאה"></input>
+                            <input type="upload_text" name="<?php echo FILE_TYPE ?>Name" id="num" placeholder="נושא ההרצאה">
 
                             <!-- year -->
                             <select id="year" name="year" required></select>
@@ -225,7 +251,7 @@ define("FILE_TYPE", "lectures");
 
                             <!-- <CTA></CTA> -->
                             <input type="file" name="fileToUpload" id="fileToUpload" required>
-                            <input type="submit" class="button2" name="action" id="upload_submit" value="upload" />
+                            <input type="submit" class="button2" name="action" id="upload_submit" value="upload">
                         </form>
 
                     </div>
@@ -242,6 +268,5 @@ define("FILE_TYPE", "lectures");
     <script src="js/bootstrap.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/jquery-1.11.2.min.js"></script>
-    </div>
 
     </html>

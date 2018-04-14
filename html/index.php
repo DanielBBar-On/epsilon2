@@ -32,6 +32,19 @@
 		$subcatsNum[$row['faculty']][] = array("id" => $row['num'], "val" => $row['num']);
 		$subcatsName[$row['faculty']][] = array("id" => $row['num'], "val" => $row['name']);
 	  }
+
+	  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
+
+	  $points = -1;
+
+	  $result = $mysqli->query($query);
+
+	  while($row = $result->fetch_assoc()){
+		  $points = $row['point'];
+	  }
+
+	  $jsonPoints = json_encode($points);
+
 	  $jsonCats = json_encode($categories);
 	  $jsonsubcatsNum = json_encode($subcatsNum);
 	  $jsonsubcatsName = json_encode($subcatsName);
@@ -47,6 +60,10 @@
         <link rel="stylesheet" href="css/upload_form/upload_form_style.css">
         <link rel="stylesheet" href="css/text_divider/text_divider_style.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
 
         <!-- Javascripts -->
         <script type='text/javascript'>
@@ -54,6 +71,7 @@
 			echo "var categories = $jsonCats; \n";
 			echo "var subcatsNum = $jsonsubcatsNum; \n";
 			echo "var subcatsName = $jsonsubcatsName; \n";
+			echo "var userPoints = $jsonPoints; \n";
 		  ?>
 
             function loadCategories() {
@@ -80,10 +98,6 @@
             }
         </script>
         <!-- End Javascripts -->
-        <link rel="stylesheet" href="css/bootstrap.css">
-        <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-        <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-        <link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
     </head>
 
     <body id="index_body" onload='loadCategories();'>
@@ -144,6 +158,20 @@
 				<p style="color:#FCFCFC;">העלאת קובץ</p>
 			</span>
                                 <?php }?>
+                                    <?php
+			if (login_check($mysqli) == true) { ?>
+                                        <span class="container-fluid" style="float:left;">
+			<i class="fa fa-user" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+				<p style="color:#FCFCFC;"> 
+
+                        <script> document.write("(" + userPoints + " נקודות)") </script>
+                        <?php echo $_SESSION['username']; ?> 
+                        </p>
+			</span>
+                                        <?php }?>
 
         </div>
         <br>
@@ -198,7 +226,7 @@
                         <option value="" disabled selected>בחר/י קורס</option>
                     </select>
                     <button type="submit" class="button2" name="action" id="upload_submit" value="search" style="margin-top:50px;
-						direction:rtl;" />חיפוש</button>
+						direction:rtl;">חיפוש</button>
                 </form>
             </div>
         </div>

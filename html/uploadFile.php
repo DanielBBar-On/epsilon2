@@ -11,29 +11,48 @@ include_once '../includes/secure_login/functions.php';
 	} else {
 		$logged = 'out';
 	}
+
+		  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
+
+	  $points = -1;
+
+	  $result = $mysqli->query($query);
+
+	  while($row = $result->fetch_assoc()){
+		  $points = $row['point'];
+	  }
+
+	  $jsonPoints = json_encode($points);
+
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Epsilon</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet" href="css/upload_form/upload_form_style.css">
-<link rel="stylesheet" href="css/text_divider/text_divider_style.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!DOCTYPE html>
+    <html>
 
-<!-- Javascripts --> 
+    <head>
+        <meta charset="UTF-8">
+        <title>Epsilon</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet" href="css/upload_form/upload_form_style.css">
+        <link rel="stylesheet" href="css/text_divider/text_divider_style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- End Javascripts --> 
-<link rel="stylesheet" href="css/bootstrap.css">
-<!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-<link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
-</head>
+        <!-- Javascripts -->
 
-<body id="index_body">
-<div id="icons" style="width: 100%;
+        <!-- End Javascripts -->
+        <link rel="stylesheet" href="css/bootstrap.css">
+        <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
+        <script type="text/javascript">
+            <?php
+	echo "var userPoints = $jsonPoints; \n";
+	?>
+        </script>
+    </head>
+
+    <body id="index_body">
+        <div id="icons" style="width: 100%;
 			text-align:center;">
             <span class="container-fluid" style="float:left;
 										margin-top:5px;">
@@ -90,23 +109,37 @@ include_once '../includes/secure_login/functions.php';
 				<p style="color:#FCFCFC;">העלאת קובץ</p>
 			</span>
                                 <?php }?>
+                                    <?php
+			if (login_check($mysqli) == true) { ?>
+                                        <span class="container-fluid" style="float:left;">
+			<i class="fa fa-user" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+				<p style="color:#FCFCFC;"> 
+
+                        <script> document.write("(" + userPoints + " נקודות)") </script>
+                        <?php echo $_SESSION['username']; ?> 
+                        </p>
+			</span>
+                                        <?php }?>
 
         </div>
         <br>
-	<div id='file_types' style="vertical-align:central;
+        <div id='file_types' style="vertical-align:central;
     							text-align:center;
                                 margin: 15% 23%;">
-		<span class="container-fluid" style="float:right;">
+            <span class="container-fluid" style="float:right;">
         	<a  href="uploadLecture.php">
 				<i class="fa fa-calendar-check-o" style="font-size:84px;
 												color:#FCFCFC;
 												margin:auto;
 												padding:10px;"> </i>
-                                                
+
 			</a>
 			<p style="color:#FCFCFC;">העלאת הרצאה</p>
         </span>
-        <span class="container-fluid" style="float:right;">
+            <span class="container-fluid" style="float:right;">
         	<a  href="uploadTuorial.php">
 				<i class="fa fa-group" style="font-size:84px;
 												color:#FCFCFC;
@@ -115,7 +148,7 @@ include_once '../includes/secure_login/functions.php';
 			</a>
 			<p style="color:#FCFCFC;">העלאת תרגול</p>
         </span>
-        <span class="container-fluid" style="float:right;">
+            <span class="container-fluid" style="float:right;">
         	<a  href="uploadHomework.php">
 				<i class="fa fa-clipboard" style="font-size:84px;
 												color:#FCFCFC;
@@ -124,7 +157,7 @@ include_once '../includes/secure_login/functions.php';
 			</a>
 			<p style="color:#FCFCFC;">העלאת שיעורי בית</p>
         </span>
-        <span class="container-fluid" style="float:right;">
+            <span class="container-fluid" style="float:right;">
         	<a  href="uploadSummary.php">
 				<i class="fa fa-file-o" style="font-size:84px;
 												color:#FCFCFC;
@@ -133,7 +166,7 @@ include_once '../includes/secure_login/functions.php';
 			</a>
 			<p style="color:#FCFCFC;">העלאת סיכום</p>
         </span>
-        <span class="container-fluid" style="float:right;">
+            <span class="container-fluid" style="float:right;">
         	<a  href="uploadExan.php">
 				<i class="fa fa-leanpub" style="font-size:84px;
 												color:#FCFCFC;
@@ -142,17 +175,18 @@ include_once '../includes/secure_login/functions.php';
 			</a>
 			<p style="color:#FCFCFC;">העלאת בחינה</p>
         </span>
-    </div>
+        </div>
 
-</body>
-  <script src="js/jquery-1.11.2.min.js"></script>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
-  <script src="js/upload_form/upload_form_index.js"></script>
+    </body>
+    <script src="js/jquery-1.11.2.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="js/upload_form/upload_form_index.js"></script>
 
-  <!-- /#wrapper --> 
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> 
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script> 
-  <script src="js/bootstrap.js"></script> 
-  <script src="js/bootstrap.min.js"></script> 
-  <script src="js/jquery-1.11.2.min.js"></script> 
-</html>
+    <!-- /#wrapper -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery-1.11.2.min.js"></script>
+
+    </html>
