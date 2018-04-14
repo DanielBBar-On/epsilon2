@@ -54,17 +54,19 @@ include_once 'file_info.php';
 			$id = $row['id'];
 		}
 
-		$query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
+	if($logged == 'in') {
+	  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
 
-	$points = -1;
+	  $points = -1;
 
-	$result = $mysqli->query($query);
+	  $result = $mysqli->query($query);
 
-	while($row = $result->fetch_assoc()){
-	  $points = $row['point'];
+	  while($row = $result->fetch_assoc()){
+		  $points = $row['point'];
+	  }
+
+	  $jsonPoints = json_encode($points);
 	}
-
-	$jsonPoints = json_encode($points);
         $jsonCats = json_encode($categories);
         $jsonCourseNum = json_encode(constant("COURSE_NUM"));
 		$jsonFileId = json_encode($id);
