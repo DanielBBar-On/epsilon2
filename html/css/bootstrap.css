@@ -5,10 +5,23 @@
  */
 
 /*! normalize.css v3.0.2 | MIT License | git.io/normalize */
+
 html {
   font-family: sans-serif;
+  display: table;
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  direction: rtl;
   -webkit-text-size-adjust: 100%;
       -ms-text-size-adjust: 100%;
+}
+
+html, body {
+	min-height: 100%;
+	min-width: 100%;
+	/* align all pages vertically */
+    /*height: 100%;*/
 }
 
 article,
@@ -1092,6 +1105,8 @@ body {
 	line-height: 1.42857143;
 	color: #333;
 	background-color: #ffffff;
+	display: table-cell;
+    /*vertical-align: middle;*/
 }
 input,
 button,
@@ -6635,8 +6650,15 @@ button.close {
 #index_body {
 	background: url(../images/general/notebook-natural-laptop-macbook-162605%20-%20Copy.jpeg) no-repeat fixed;
 	background-size: cover;
-	width: 100%;
-	height: 100%;
+}
+
+.main {
+    display: table;
+}
+.wrapper {
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
 }
 
 span.clear { clear: left; display: block; }
@@ -6655,6 +6677,7 @@ span.clear { clear: left; display: block; }
      height: 100%;
  }
  
+
 /*.dropdown-submenu {
 	direction: rtl;
     position: relative;

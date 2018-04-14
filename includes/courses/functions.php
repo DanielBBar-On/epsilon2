@@ -8,6 +8,8 @@ END;
     exit;
 }
 
+////////////// create new course //////////////////////
+
 function insert_to_courses_DB($faculty, $num, $name) {
 	$servername = constant("COURSES_HOST");
 	$username = constant("COURSES_USER");
@@ -124,7 +126,7 @@ function create_course_DB($faculty, $num, $name) {
 	}
 
 		//create homework table
-	$sql = "CREATE TABLE `homeowrk` (
+	$sql = "CREATE TABLE `homework` (
 									 `id` int(11) NOT NULL AUTO_INCREMENT,
 									 `num` int(11) NOT NULL,
 									 `name` text NOT NULL,
@@ -180,8 +182,10 @@ function create_course_DB($faculty, $num, $name) {
 	return 0;
 }
 
+//////////////////// Add files to course //////////////////////////////////
 
-function insert_lecture_to_DB($num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+
+function insert_lecture_to_DB($type, $num, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 					$pos_votes, $neg_votes, $tot_votes, $year, $semester) {
 	//use the courses defines since we are not in the specific course folder (workaround).
 	$servername = constant("COURSES_HOST");
@@ -197,18 +201,22 @@ function insert_lecture_to_DB($num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 		die_nicely("Connection failed: " . $conn->connect_error);
 	} 
 
-	$sql = "INSERT INTO lectures (num, name, ADDED_BY_ID, ADDED_BY_EMAIL, path,
+	$sql = "INSERT INTO " . $type ." (num, name, ADDED_BY_ID, ADDED_BY_EMAIL, path,
 								 pos_votes, neg_votes, tot_votes, year, semester)
-			VALUES ('$num', '$name', '$ADDED_BY_ID', '$ADDED_BY_EMAIL', '$path',
+			VALUES ('$week_num', '$name', '$ADDED_BY_ID', '$ADDED_BY_EMAIL', '$path',
 					'$pos_votes', '$neg_votes', '$tot_votes', $year, '$semester')";
 
 	if ($conn->query($sql) === TRUE) {
+		$id = $conn->insert_id;
 		echo "New record created successfully";
 	} else {
 		echo "Error: " . $sql . "<br>" . $conn->error;
 	}
 
 	$conn->close();
+
+	return $id;
+
 }
 
 function remove_course_DB($faculty, $num, $name) {
@@ -253,6 +261,51 @@ function remove_course_DB($faculty, $num, $name) {
 
 	$conn->close();
 }
+
+//////////////// File voting functions ///////////////
+function upvoteFile($num, $type, $ID) {
+	$servername = constant("COURSES_HOST");
+	$username = constant("COURSES_USER");
+	$password = constant("COURSES_PASSWORD");
+	$dbname = $num;
+
+	$db = new mysqli($servername, $username, 
+                 $password, $dbname); //connect to course database
+				 
+	$query = "UPDATE `" . $type . "` SET `tot_votes` = `tot_votes` + 1 WHERE `id` = "
+				. $ID;
+				
+	if ($db->query($query) === TRUE) {
+		echo "New record created successfully";
+	} else {
+		echo "Error: " . $query . "<br>" . $db->error;
+	}
+
+	$db->close();
+}
+
+function downvoteFile($num, $type, $ID) {
+	$servername = constant("COURSES_HOST");
+	$username = constant("COURSES_USER");
+	$password = constant("COURSES_PASSWORD");
+	$dbname = $num;
+
+	$db = new mysqli($servername, $username, 
+                 $password, $dbname); //connect to course database
+				 
+	$query = "UPDATE `" . $type . "` SET `tot_votes` = `tot_votes` - 1 WHERE `id` = "
+				. $ID;
+				
+	if ($db->query($query) === TRUE) {
+		echo "New record created successfully";
+	} else {
+		echo "Error: " . $query . "<br>" . $db->error;
+	}
+
+	$db->close();
+}
+
+
 /**
  * @param string $name of the select field
  * @param string $value of the select field

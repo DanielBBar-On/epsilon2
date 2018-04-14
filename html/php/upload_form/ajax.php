@@ -1,5 +1,7 @@
 <?php
 include_once 'includes/courses/functions.php';
+include_once 'includes/secure_login/db_connect.php';
+include_once 'includes/secure_login/functions.php';
 
 var_dump($_POST);
 
@@ -12,11 +14,71 @@ if (isset($_POST['action'])) {
             create();
             break;
 		case 'upload':
-			upload(($_POST['courseNum']), ($_POST['type']));
+			$course = explode("_",$_POST['courseNum']);
+			$courseNum = $course[0];
+			$courseName = htmlentities($course[1]);
+			upload($courseNum, $courseName, ($_POST['type']), $mysqli);
 			break;
 		case 'remove':
 			remove();
 			break;
+		case 'search':
+			searchCourse();
+			break;
+		// search files cases //	
+		case 'searchLecture':
+			$type = 'lectures';
+			$path = ($_POST['lectures']);
+			searchFileByPath($path);
+			break;
+		case 'searchTutorial':
+			$type = 'tutorials';
+			$path = ($_POST['tutorials']);
+			searchFileByPath($path);;
+			break;
+		case 'searchHomework':
+			$type = 'homework';
+			$path = ($_POST['homework']);
+			searchFileByPath($path);
+			break;
+		case 'searchSummaries':
+			$type = 'summaries';
+			$path = ($_POST['summaries']);
+			searchFileByPath($path);
+			break;
+		case 'searchExams':
+			$type = 'exams';
+			$path = ($_POST['exams']);
+			searchFileByPath($path);
+			break;
+		case 'searchByPath':
+			searchFileByPath($_POST['path']);
+			break;
+		// end search files cases //
+		
+		// voting and points //
+		case 'upvoteFile':
+			$num = ($_POST['courseNum']);
+			$type = ($_POST['type']);
+			$ID = ($_POST['fileId']);
+			doUpvote($num, $type, $ID, $mysqli);
+			break;
+		case 'downvoteFile':
+			$num = ($_POST['courseNum']);
+			$type = ($_POST['type']);
+			$ID = ($_POST['fileId']);
+			doDownvote($num, $type, $ID, $mysqli);
+			break;
+		case 'addPointToUser':
+			$ADDED_BY_EMAIL = ($_POST['ADDED_BY_EMAIL']);
+			addPointToUser($ADDED_BY_EMAIL, $mysqli);
+			break;
+		case 'removePointToUser':
+			$ADDED_BY_EMAIL = ($_POST['ADDED_BY_EMAIL']);
+			removePointToUser($ADDED_BY_EMAIL, $mysqli);
+			break;
+		// end of voting and points //
+		
     }
 }
 
@@ -24,7 +86,7 @@ if (isset($_POST['action'])) {
 function create() {
 	$faculty = ($_POST['faculty']);
 	$courseNum = ($_POST['courseNum']);
-	$courseName = ($_POST['courseName']);
+	$courseName = htmlentities(($_POST["courseName"]));
 	echo "<br>The create function is called.<br><br><br>";
 	$dataPath ="../../data/courses/" . ($_POST['courseNum']);
 	$includesPath = "../../../includes/courses/" . ($_POST['courseNum']);
@@ -35,8 +97,8 @@ function create() {
 		$success = mkdir($dataPath, 0755, true);
         $success = mkdir("$dataPath/lectures", 0755, true);
         $success = mkdir("$dataPath/tutorials", 0755, true);
-        $success = mkdir("$dataPath/hw", 0755, true);
-        $success = mkdir("$dataPath/past_exams", 0755, true);
+        $success = mkdir("$dataPath/homework", 0755, true);
+        $success = mkdir("$dataPath/exams", 0755, true);
         if($success) {
             echo "course creation success" . "<br>";
         } else {
@@ -47,7 +109,7 @@ function create() {
         $myfile = fopen("$dataPath/course_info.php", "w");
         $txt = '<?php
 	define("COURSE_NUM", "' . ($_POST['courseNum']) . '");
-	define("COURSE_NAME", "' . ($_POST['courseName']) . '");
+	define("COURSE_NAME", "' . $courseName . '");
 ?>';
         fwrite($myfile, $txt);
         fclose($myfile);
@@ -105,18 +167,30 @@ function create_new_db_connect($path) {
 ?>");
 }
 
-function upload($courseNum, $type) {
-	$target_dir = "../../data/courses/" . $courseNum . "/" . $type . "/";
+function create_new_file_html($target_dir, $file_name) {
+    $file_page = file_get_contents('../../data/courses/formats/types/file/fileViewerNew.php', FILE_USE_INCLUDE_PATH);
+    $myfile = fopen($target_dir . $file_name . ".php", "w");
+    fwrite($myfile, $file_page);
+    fclose($myfile);
+}
+
+///////// file upload //////////////////////
+
+function upload($courseNum, $courseName, $type, $mysqli) {
+	$file_name = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_FILENAME);
+	$file_dir = "data/courses/" . $courseNum . "/" . $type . "/" . $file_name . "/";
+	$file_path = $file_dir . basename($_FILES["fileToUpload"]["name"]);
+	$target_dir = "../../data/courses/" . $courseNum . "/" . $type . "/" . $file_name . "/";
 	$target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
 	$uploadOk = 1;
 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 	
 	$faculty = $_POST['faculty'];
-	$num = $_POST['lectureNum'];
-	$name = $_POST['lectureName'];
+	$week_num = $_POST[$type . 'Num'];
+	$name = $_POST[$type . 'Name'];
 	$ADDED_BY_ID = $_POST['id'];
-	$ADDED_BY_EMAIL = '@';
-	$path = $target_file;
+	$ADDED_BY_EMAIL = $_POST['username']; //Note: This is actually username
+	$path = $target_dir . $file_name . ".php";
 	$pos_votes = 0;
 	$neg_votes = 0;
 	$tot_votes = $pos_votes - $neg_votes;
@@ -132,9 +206,39 @@ function upload($courseNum, $type) {
 		$uploadOk = 0;
 	}
 	
+	echo "<br>" . $target_dir . "<br>";
+	
+	$success = mkdir($target_dir , 0755, true);
+	if(!$success) {
+		die_nicely("failed to create directory for file");
+	}
+	
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		insert_lecture_to_DB($num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
-					$pos_votes, $neg_votes, $tot_votes, $year, $semester);
+		$id = insert_lecture_to_DB($type, $courseNum, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+					$pos_votes, $neg_votes, $tot_votes, $year, $semester);	
+		
+		addPointToUser($ADDED_BY_EMAIL, $mysqli);
+		
+		$myfile = fopen("$target_dir/file_info.php", "w");
+        $txt = '<?php
+		define("FILE_DIR", "' . $file_dir . '");
+		define("FILE_PATH", "' . $file_path . '");
+		define("FILE", "' .basename($_FILES["fileToUpload"]["name"]) . '");
+		define("FILE_NAME", "' . $file_name . '");
+		define("FILE_TYPE", "' . $type . '");
+		define("FILE_ID", "' . $ID . '");
+		define("ADDED_BY_USERNAME", "' . $ADDED_BY_EMAIL . '");
+		define("WEEK_NUM", "' . $week_num . '");
+		define("COURSE_NUM", "' . $courseNum . '");
+		define("COURSE_NAME", "' . $courseName . '");
+		define("SEMESTER", "' . $semester . '");
+		define("YEAR", "' . $year . '");
+?>';
+        fwrite($myfile, $txt);
+        fclose($myfile);
+					
+		create_new_file_html($target_dir, $file_name);
+		header("Location: ". $target_dir . $file_name . ".php");
         echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
     } else {
         echo "Sorry, there was an error uploading your file.";
@@ -180,4 +284,25 @@ function remove() {
 	remove_course_DB($faculty, $courseNum, $courseName);
 }
 
+function searchCourse () {
+	$dataPath ="../../data/courses/" . ($_POST['courseNum']);
+	header("Location: ". $dataPath . "/". $_POST['courseNum']. ".php");
+}
+
+function searchFile ($courseNum, $file_name, $type) {
+	$dataPath ="../../data/courses/" . $courseNum;
+	header("Location: ". $dataPath . "/". $type . "/" . $file_name . "/" . $file_name . ".php");
+}
+
+function searchFileByPath ($path) {
+	header("Location: ". $path);
+}
+
+function doUpvote($num, $type, $ID, $mysqli) {
+	upvoteFile($num, $type, $ID);
+}
+
+function doDownvote($num, $type, $ID, $mysqli) {
+	downvoteFile($num, $type, $ID);
+}
 ?>
