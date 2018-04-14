@@ -45,21 +45,32 @@ include_once 'file_info.php';
 		// get file id
 		$query = "SELECT * FROM " . constant("FILE_TYPE") . " WHERE path = \"../../" .
                     constant("FILE_DIR")  . constant("FILE_NAME") . ".php" . "\"";
-		
+
 		$result = $db->query($query);
-		
+
 		$id = -1;
-		
+
 		while ($row = $result->fetch_assoc()){
 			$id = $row['id'];
 		}
-		
+
+		$query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
+
+	$points = -1;
+
+	$result = $mysqli->query($query);
+
+	while($row = $result->fetch_assoc()){
+	  $points = $row['point'];
+	}
+
+	$jsonPoints = json_encode($points);
         $jsonCats = json_encode($categories);
         $jsonCourseNum = json_encode(constant("COURSE_NUM"));
 		$jsonFileId = json_encode($id);
         $jsonType = json_encode(constant("FILE_TYPE"));
 		$jsonADDED_BY_EMAIL = json_encode(constant("ADDED_BY_USERNAME"));
-		
+
 		$db->close();
 ?>
 
@@ -78,6 +89,23 @@ include_once 'file_info.php';
         <link rel="stylesheet" href="../../../../../css/show_hide_button/show_hide_style.css">
         <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
         <link rel="stylesheet" href="../../../../../css/forum/forum_style.css">
+
+        <script type='text/javascript'>
+            <?php
+        echo "var userId = $jsonUserId; \n"; //voter
+        echo "var userName = $jsonUserName; \n"; //voter
+		echo "var fileId = $jsonFileId; \n";
+		echo "var courseNum = $jsonCourseNum; \n";
+        echo "var type = $jsonType; \n";
+		echo "var ADDED_BY_EMAIL = $jsonADDED_BY_EMAIL; \n";
+		echo "var userPoints = $jsonPoints; \n";
+      ?>
+
+            console.log("userId = " + userId +
+                " userName = " + userName +
+                " file id = " + fileId +
+                " ADDED_BY_EMAIL = " + ADDED_BY_EMAIL);
+        </script>
     </head>
 
     <!--javascript-->
@@ -85,10 +113,10 @@ include_once 'file_info.php';
         <?php
                 echo "var categories = $jsonCats; \n";
             ?>
-	
+
         function loadCategories() {
             var select = document.getElementById("course");
-			select.options[0] = new Option('גרסאות קודמות');
+            select.options[0] = new Option('גרסאות קודמות');
             select.options[0].disabled = true;
             for (var i = 1; i <= categories.length; i++) {
                 select.options[i] = new Option(categories[i - 1].val, categories[i - 1].id);
@@ -155,94 +183,127 @@ include_once 'file_info.php';
 				<p style="color:#FCFCFC;">העלאת קובץ</p>
 			</span>
                                 <?php }?>
- 
+                                    <?php
+			if (login_check($mysqli) == true) { ?>
+                                        <span class="container-fluid" style="float:left;">
+			<i class="fa fa-user" style="font-size:36px;
+												color:#FCFCFC;
+												margin:auto;
+												padding: 10px;"> </i>
+				<p style="color:#FCFCFC;"> 
+
+                        <script> document.write("(" + userPoints + " נקודות)") </script>
+                        <?php echo $_SESSION['username']; ?> 
+                        </p>
+			</span>
+                                        <?php }?>
+
         </div>
         <br>
-        
-        <script type='text/javascript'>
-            <?php
-        echo "var userId = $jsonUserId; \n"; //voter
-        echo "var userName = $jsonUserName; \n"; //voter
-		echo "var fileId = $jsonFileId; \n";
-		echo "var courseNum = $jsonCourseNum; \n";
-        echo "var type = $jsonType; \n";
-		echo "var ADDED_BY_EMAIL = $jsonADDED_BY_EMAIL; \n";
-      ?>
 
-            console.log("userId = " + userId +
-                " userName = " + userName +
-				" file id = " + fileId +
-				" ADDED_BY_EMAIL = " + ADDED_BY_EMAIL);
-        </script>
-        
-        
         <div id="main">
             <div class="row" id="main" style="text-align: center;">
                 <div style="text-align: center;
 						 vertical-align: middle;
                          ">
-                    <a href= "<?php echo "../../../../../data/courses/" . constant("COURSE_NUM") . "/" . constant("COURSE_NUM") . ".php" ?>">
-                    <h3 style="color:#FCFCFC;
+                    <a href="<?php echo " ../../../../../data/courses/" . constant("COURSE_NUM") . "/" . constant("COURSE_NUM") . ".php" ?>">
+                        <h3 style="color:#FCFCFC;
                             text-align: center;
                             text-decoration:underline;">  <?php echo constant("COURSE_NAME") ?> </h3>
-                            </a>
+                    </a>
                     <h3 style="color:#FCFCFC;
                             text-align: center;
-            			"> הרצאה של שבוע מס' <?php echo htmlentities(constant("WEEK_NUM")) ?> </h3>
-                                            <form action="../../../../../php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
+            			"> 
+                        <?php
+							switch (constant("FILE_TYPE")) {
+								case "lectures":
+						?>
+                        הרצאה של שבוע מס' <?php echo htmlentities(constant("WEEK_NUM")); ?> </h3>
+                        <?php
+							break;
+						?>
+                        <?php
+								case "tutorials":
+						?>
+                        תרגול של שבוע מס' <?php echo htmlentities(constant("WEEK_NUM")); ?> </h3>
+                        <?php
+							break;
+						?>
+                        <?php
+								case "יhomework":
+						?>
+                        שיעורי בית של שבוע מס' <?php echo htmlentities(constant("WEEK_NUM")); ?> </h3>
+                        <?php
+							break;
+						?>
+                        <?php
+								case "summaries":
+						?>
+                        סיכום שנה <?php echo htmlentities(constant("YEAR")); ?> סמסטר <?php echo htmlentities(constant("SEMESTER")); ?> </h3>
+                        <?php
+							break;
+						?>
+                        <?php
+								case "exams":
+						?>
+                        מבחן שנה <?php echo htmlentities(constant("YEAR")); ?> סמסטר <?php echo htmlentities(constant("SEMESTER")); ?> </h3>
+                        <?php
+							break;
+						}
+						?>
+                    <form action="../../../../../php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
                         <select id='course' name="path">
                             <option value="" disabled selected>בחרו גרסא קודמת</option>
                         </select>
-<button type="submit" class="button2" name="action" id="upload_submit" value="searchByPath" style="margin-top:50px;
-						direction:rtl;" />מצא</button>
+                        <button type="submit" class="button2" name="action" id="upload_submit" value="searchByPath" style="margin-top:50px;
+						direction:rtl;" >מצא</button>
                     </form>
                 </div>
             </div>
             <br>
             <div class="row">
-                <object data="<?php echo FILE ?>" type="application/pdf" 
-                		width="85%" height="800px" style="text-align: center;
+                <object data="<?php echo FILE ?>" type="application/pdf" width="85%" height="800px" style="text-align: center;
                         							margin-right: 5%;
                                                     float: right;">
                     <p>It appears you don't have a PDF plugin for this browser. No biggie... you can <a href="resume.pdf">click here to
   download the PDF file.</a></p>
                 </object>
-			<div id="votes" style="float:right;
+                <div id="votes" style="float:right;
                                     margin: 2%;">
-            <div class="upvote" style="font-size: 36px;
+                    <div class="upvote" style="font-size: 36px;
             						color:#FCFCFC;">
-                <a style="cursor:pointer;" onclick="upvoteFile(ADDED_BY_EMAIL);">
-                    <i class="fa fa-thumbs-up" style="font-size:36px;
+                        <a style="cursor:pointer;" onclick="upvoteFile(ADDED_BY_EMAIL);">
+                            <i class="fa fa-thumbs-up" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
 												padding: 10px;">
 				</i>
-                </a>
-            </div>
-            <div id='fileVotes' class="number-of-votes" style="margin-right: 15px;"> 
-            </div>
-            <div class="downvote">
-                <a style="cursor: pointer;" onclick="downvoteFile(ADDED_BY_EMAIL);">
-                    <i class="fa fa-thumbs-down" style="font-size:36px;
+                        </a>
+                    </div>
+                    <div id='fileVotes' class="number-of-votes" style="margin-right: 15px;">
+                    </div>
+                    <div class="downvote">
+                        <a style="cursor: pointer;" onclick="downvoteFile(ADDED_BY_EMAIL);">
+                            <i class="fa fa-thumbs-down" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
 												padding: 10px;">
 				</i>
-                </a>
+                        </a>
+                    </div>
+                </div>
             </div>
-            </div>
-            </div>
-            <div style="text-align:center;"> 
+            <div style="text-align:center;">
                 <textarea id="questionText" type="ask_question" placeholder="שאל שאלה"></textarea>
                 <br>
                 <input type="submit" class="button2" name="action" id="upload_submit" value="ask" onClick="askQuestion(userName)" />
                 <input type="hidden" name="file_path" value="data\courses\formats">
             </div>
-        <div class="vue-wrapper">
-            <div id="vue"> 
-                <div id="questions"> </div>
+            <div class="vue-wrapper">
+                <div id="vue">
+                    <div id="questions"> </div>
+                </div>
             </div>
-        </div>
         </div>
     </body>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>

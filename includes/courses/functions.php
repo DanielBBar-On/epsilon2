@@ -126,7 +126,7 @@ function create_course_DB($faculty, $num, $name) {
 	}
 
 		//create homework table
-	$sql = "CREATE TABLE `homeowrk` (
+	$sql = "CREATE TABLE `homework` (
 									 `id` int(11) NOT NULL AUTO_INCREMENT,
 									 `num` int(11) NOT NULL,
 									 `name` text NOT NULL,
@@ -185,7 +185,7 @@ function create_course_DB($faculty, $num, $name) {
 //////////////////// Add files to course //////////////////////////////////
 
 
-function insert_lecture_to_DB($num, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+function insert_lecture_to_DB($type, $num, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 					$pos_votes, $neg_votes, $tot_votes, $year, $semester) {
 	//use the courses defines since we are not in the specific course folder (workaround).
 	$servername = constant("COURSES_HOST");
@@ -201,7 +201,7 @@ function insert_lecture_to_DB($num, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EM
 		die_nicely("Connection failed: " . $conn->connect_error);
 	} 
 
-	$sql = "INSERT INTO lectures (num, name, ADDED_BY_ID, ADDED_BY_EMAIL, path,
+	$sql = "INSERT INTO " . $type ." (num, name, ADDED_BY_ID, ADDED_BY_EMAIL, path,
 								 pos_votes, neg_votes, tot_votes, year, semester)
 			VALUES ('$week_num', '$name', '$ADDED_BY_ID', '$ADDED_BY_EMAIL', '$path',
 					'$pos_votes', '$neg_votes', '$tot_votes', $year, '$semester')";

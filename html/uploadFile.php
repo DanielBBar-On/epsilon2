@@ -140,7 +140,7 @@ include_once '../includes/secure_login/functions.php';
 			<p style="color:#FCFCFC;">העלאת הרצאה</p>
         </span>
             <span class="container-fluid" style="float:right;">
-        	<a  href="uploadTuorial.php">
+        	<a  href="uploadTutorial.php">
 				<i class="fa fa-group" style="font-size:84px;
 												color:#FCFCFC;
 												margin:auto;
@@ -158,7 +158,7 @@ include_once '../includes/secure_login/functions.php';
 			<p style="color:#FCFCFC;">העלאת שיעורי בית</p>
         </span>
             <span class="container-fluid" style="float:right;">
-        	<a  href="uploadSummary.php">
+        	<a  href="uploadSummaries.php">
 				<i class="fa fa-file-o" style="font-size:84px;
 												color:#FCFCFC;
 												margin:auto;
@@ -167,7 +167,7 @@ include_once '../includes/secure_login/functions.php';
 			<p style="color:#FCFCFC;">העלאת סיכום</p>
         </span>
             <span class="container-fluid" style="float:right;">
-        	<a  href="uploadExan.php">
+        	<a  href="uploadExams.php">
 				<i class="fa fa-leanpub" style="font-size:84px;
 												color:#FCFCFC;
 												margin:auto;

@@ -199,6 +199,7 @@ define("FILE_TYPE", "lectures");
             <div class="wrapper">
                 <div id="upload_body">
                     <h1>העלאת הרצאה</h1>
+                    	<h4 style="font-size:12px !important;">*בשלב זה ניתן להעלות רק קבצי PDF ששם באותיות אנגליות ומספרים</h4>
 
                     <div id="upload_div">
                         <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
@@ -251,7 +252,8 @@ define("FILE_TYPE", "lectures");
 
                             <!-- <CTA></CTA> -->
                             <input type="file" name="fileToUpload" id="fileToUpload" required>
-                            <input type="submit" class="button2" name="action" id="upload_submit" value="upload">
+                            <button type="submit" class="button2" name="action" id="upload_submit" value="upload" style="margin-top:50px;
+						direction:rtl;">הוסיפו</button>
                         </form>
 
                     </div>

@@ -214,7 +214,7 @@ function upload($courseNum, $courseName, $type, $mysqli) {
 	}
 	
 	if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-		$id = insert_lecture_to_DB($courseNum, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
+		$id = insert_lecture_to_DB($type, $courseNum, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EMAIL, $path,
 					$pos_votes, $neg_votes, $tot_votes, $year, $semester);	
 		
 		addPointToUser($ADDED_BY_EMAIL, $mysqli);
