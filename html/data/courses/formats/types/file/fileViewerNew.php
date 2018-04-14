@@ -42,10 +42,23 @@ include_once 'file_info.php';
 																$row['tot_votes'] . " votes");
         }
 
+		// get file id
+		$query = "SELECT * FROM " . constant("FILE_TYPE") . " WHERE path = \"../../" .
+                    constant("FILE_DIR")  . constant("FILE_NAME") . ".php" . "\"";
+		
+		$result = $db->query($query);
+		
+		$id = -1;
+		
+		while ($row = $result->fetch_assoc()){
+			$id = $row['id'];
+		}
+		
         $jsonCats = json_encode($categories);
         $jsonCourseNum = json_encode(constant("COURSE_NUM"));
+		$jsonFileId = json_encode($id);
         $jsonType = json_encode(constant("FILE_TYPE"));
-        $jsonID = json_encode(constant("ID"));
+		$jsonADDED_BY_EMAIL = json_encode(constant("ADDED_BY_USERNAME"));
 		
 		$db->close();
 ?>
@@ -142,21 +155,24 @@ include_once 'file_info.php';
 				<p style="color:#FCFCFC;">העלאת קובץ</p>
 			</span>
                                 <?php }?>
-
+ 
         </div>
         <br>
         
         <script type='text/javascript'>
             <?php
-        echo "var userId = $jsonUserId; \n";
-        echo "var userName = $jsonUserName; \n";
+        echo "var userId = $jsonUserId; \n"; //voter
+        echo "var userName = $jsonUserName; \n"; //voter
+		echo "var fileId = $jsonFileId; \n";
 		echo "var courseNum = $jsonCourseNum; \n";
         echo "var type = $jsonType; \n";
-        echo "var ID = $jsonID; \n";
+		echo "var ADDED_BY_EMAIL = $jsonADDED_BY_EMAIL; \n";
       ?>
 
             console.log("userId = " + userId +
-                " userName = " + userName);
+                " userName = " + userName +
+				" file id = " + fileId +
+				" ADDED_BY_EMAIL = " + ADDED_BY_EMAIL);
         </script>
         
         
@@ -195,7 +211,7 @@ include_once 'file_info.php';
                                     margin: 2%;">
             <div class="upvote" style="font-size: 36px;
             						color:#FCFCFC;">
-                <a style="cursor:pointer;" onclick="upvoteFile();">
+                <a style="cursor:pointer;" onclick="upvoteFile(ADDED_BY_EMAIL);">
                     <i class="fa fa-thumbs-up" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
@@ -206,7 +222,7 @@ include_once 'file_info.php';
             <div id='fileVotes' class="number-of-votes" style="margin-right: 15px;"> 
             </div>
             <div class="downvote">
-                <a style="cursor: pointer;" onclick="downvoteFile()">
+                <a style="cursor: pointer;" onclick="downvoteFile(ADDED_BY_EMAIL);">
                     <i class="fa fa-thumbs-down" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
@@ -216,10 +232,10 @@ include_once 'file_info.php';
             </div>
             </div>
             </div>
-            <div style="text-align:center;">
+            <div style="text-align:center;"> 
                 <textarea id="questionText" type="ask_question" placeholder="שאל שאלה"></textarea>
                 <br>
-                <input type="submit" class="button2" name="action" id="upload_submit" value="ask" onClick="askQuestion()" />
+                <input type="submit" class="button2" name="action" id="upload_submit" value="ask" onClick="askQuestion(userName)" />
                 <input type="hidden" name="file_path" value="data\courses\formats">
             </div>
         <div class="vue-wrapper">

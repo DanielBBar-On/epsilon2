@@ -1,9 +1,10 @@
 "use strict";
 
 /////////////// Node ////////////////
-function Node(id, value) {
+function Node(id, value, creator) {
     this.id = id;
     this.data = value;
+	this.creator = creator;
     this.votes = 0;
     this.next = null;
     this.upvoters = null;
@@ -15,8 +16,8 @@ Node.prototype.initVoters = function () {
     this.downvoters = new DoublyList();
 };
 
-function Question(id, value) {
-    Node.call(this, id, value);
+function Question(id, value, creator) {
+    Node.call(this, id, value, creator);
     this.initVoters();
     this.answers = new DoublyList();
 }
@@ -27,8 +28,8 @@ Question.prototype.addNewAnswer = function(node) {
 
 Question.prototype = new Node();
 
-function Answer(id, value) {
-    Node.call(this, id, value);
+function Answer(id, value, creator) {
+    Node.call(this, id, value, creator);
     this.initVoters();
 }
 
@@ -42,7 +43,7 @@ function DoublyList() {
     this._id_counter = 0;
     this.head = null;
     this.tail = null;
-    this.file = new Node(0, 0);
+    this.file = new Node(0, 0, null);
 }
 
 DoublyList.prototype.addToTail = function(node) {
@@ -183,15 +184,50 @@ DoublyList.prototype.remove = function(node) {
     return deletedNode;
 };
 
+//////////// Points functions //////////////////
+
+function addPointAjax(username) {
+    console.log("sending Ajax");
+      $.ajax({
+           type: "POST",
+           url: '../../../../../php/upload_form/ajax.php',
+           data:{action:'addPointToUser', ADDED_BY_EMAIL: username},
+           success:function(html) {
+             console.log(html);
+           },
+           error: function(xhr,textStatus,err) {
+            console.log("Error sending ajax");
+            console.log(xhr + textStatus + err);
+           }
+      });
+ }
+ 
+function removePointAjax(username) {
+    console.log("sending Ajax");
+      $.ajax({
+           type: "POST",
+           url: '../../../../../php/upload_form/ajax.php',
+           data:{action:'removePointToUser', ADDED_BY_EMAIL: username},
+           success:function(html) {
+             console.log(html);
+           },
+           error: function(xhr,textStatus,err) {
+            console.log("Error sending ajax");
+            console.log(xhr + textStatus + err);
+           }
+      });
+ }
+ 
 ////////////// voting ////////////
 function upvoteAjax() {
     console.log("sending Ajax");
       $.ajax({
            type: "POST",
            url: '../../../../../php/upload_form/ajax.php',
-           data:{action:'upvoteFile', courseNum: courseNum, type: type, ID: ID},
+           data:{action:'upvoteFile', courseNum: courseNum, type: type, fileId: fileId,
+		   		ADDED_BY_EMAIL: ADDED_BY_EMAIL},
            success:function(html) {
-             //alert(html);
+             console.log(html);
            },
            error: function(xhr,textStatus,err) {
             console.log("Error sending ajax");
@@ -205,9 +241,10 @@ function upvoteAjax() {
       $.ajax({
            type: "POST",
            url: '../../../../../php/upload_form/ajax.php',
-           data:{action:'downvoteFile', courseNum: courseNum, type: type, ID: ID},
+           data:{action:'downvoteFile', courseNum: courseNum, type: type, fileId: fileId,
+		   		ADDED_BY_EMAIL: ADDED_BY_EMAIL},
            success:function(html) {
-             //alert(html);
+             console.log(html);
            },
            error: function(xhr,textStatus,err) {
             console.log("Error sending ajax");
@@ -216,16 +253,26 @@ function upvoteAjax() {
       });
  }
 
-Node.prototype.upvote = function (userId, userName) {
+Node.prototype.upvote = function (userId, userName, ADDED_BY_EMAIL) {
 
     var node = this.upvoters.searchNodeById(userId);
     if (node === null) {
-        node = new Node(userId, userName);
+        node = new Node(userId, userName, userName);
         this.votes++;
+		if (this.creator !== null) { // If creator == null this is a file and 
+									// the uploader shouldn't be credited twice
+			addPointAjax(this.creator); //Add point to node creator
+		}
         upvoteAjax();
         if (this.downvoters.remove(node) === null) {
             this.upvoters.addToTail(node);
-        }
+			addPointAjax(userName); // Add point to voter (we insert new node to list)
+			addPointAjax(ADDED_BY_EMAIL); //Add point to File uploader
+        } else {
+			removePointAjax(userName); // Remove point to voter (user already voted on this,
+										// stop users from voting up and down to get points);
+			addPointAjax(ADDED_BY_EMAIL); //Add point to File uploader
+		}
     } else {
         alert("You already upvoted this");
     }
@@ -233,16 +280,26 @@ Node.prototype.upvote = function (userId, userName) {
     return;
 };
 
-Node.prototype.downvote = function (userId, userName) {
+Node.prototype.downvote = function (userId, userName, ADDED_BY_EMAIL) {
 
     var node = this.downvoters.searchNodeById(userId);
     if (node === null) {
-        node = new Node(userId, userName);
+        node = new Node(userId, userName, userName);
         this.votes--;
+		if (this.creator !== null) { // If creator == null this is a file and 
+									// the uploader shouldn't be credited twice
+			removePointAjax(this.creator); //Remove point to node creator
+		}
         downvoteAjax();
         if (this.upvoters.remove(node) === null) {
             this.downvoters.addToTail(node);
-        }
+			addPointAjax(userName); // Add point to voter (For voting)
+			removePointAjax(ADDED_BY_EMAIL); //Remove point to File uploader
+        } else {
+			removePointAjax(userName); // Remove point to voter (user already voted on this,
+										// stop users from voting up and down to get points);
+			removePointAjax(ADDED_BY_EMAIL); //remove point to File uploader
+		}
     } else {
         alert("You already downvoted this");
     }
@@ -250,20 +307,28 @@ Node.prototype.downvote = function (userId, userName) {
     return;
 };
 
-DoublyList.prototype.upvote = function (nodeId, userId, userName) {
+DoublyList.prototype.upvote = function (nodeId, userId, userName, ADDED_BY_EMAIL) {
     var node = this.searchNodeById(nodeId);
-    node.upvote(userId, userName);
+	if (node === null ) {
+		console.log("Error: could not find node to upvote");
+		return;
+	}
+    node.upvote(userId, userName, ADDED_BY_EMAIL);
     this.remove(node);
     this.add(node);
 };
 
-DoublyList.prototype.downvote = function (nodeId, userId, userName) {
+DoublyList.prototype.downvote = function (nodeId, userId, userName, ADDED_BY_EMAIL) {
     var node = this.searchNodeById(nodeId);
-    node.downvote(userId, userName);
+	if (node === null ) {
+		console.log("Error: could not find node to downvote");
+		return;
+	}
+    node.downvote(userId, userName, ADDED_BY_EMAIL);
     this.remove(node);
     this.add(node);
 };
-
+ 
 //////////// printing functions ////////////////
 var questions = new DoublyList();
 
@@ -308,8 +373,8 @@ Answer.prototype.printAnswer = function(questionId) {
         questionId +
         ',' + this.id +
         ',' + userId +
-        ', \'' + userName +
-        '\')">\n' +
+        ', \'' + userName +'\'' +
+		', \'' + ADDED_BY_EMAIL +'\')">\n' +
         '</div>\n' +
         '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
         '                </div>\n' +
@@ -317,8 +382,8 @@ Answer.prototype.printAnswer = function(questionId) {
         questionId +
         ',' + this.id +
         ',' + userId +
-        ', \'' + userName +
-        '\')">\n' +
+        ', \'' + userName +'\'' +
+		', \'' + ADDED_BY_EMAIL +'\')">\n' +
         '</div>\n' +
         '\t\t\t</div>\n' +
         '\t\t\t<div class="question-and-answer">\n' +        '\t\t\t\t<p style="color: #000000; direction: rtl;">' + this.data + '</p>\n' +
@@ -358,16 +423,16 @@ Question.prototype.printQuestion = function() {
         '\t\t\t\t<div class="upvote" onclick="upvoteQuestion(' +
         this.id +
         ',' + userId +
-        ', \'' + userName +
-        '\')">\n' +
+        ', \'' + userName +'\'' +
+		', \'' + ADDED_BY_EMAIL +'\')">\n' +
         '</div>\n' +
         '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
         '                </div>\n' +
         '\t\t\t\t<div class="downvote" onclick="downvoteQuestion(' +
         this.id +
         ',' + userId +
-        ', \'' + userName +
-        '\')">\n' +
+        ', \'' + userName +'\'' +
+		', \'' + ADDED_BY_EMAIL +'\')">\n' +
 '</div>\n' +
         '\t\t\t</div>\n' +
         '\t\t\t<div class="question-and-answer">\n' +
@@ -375,7 +440,7 @@ Question.prototype.printQuestion = function() {
         '\t\t\t\t<div style="text-align:center;">\n' +
         '\t\t\t\t\t<textarea id="textArea_' + this.id + '" type="answer" placeholder="הגב" style="width:60%;"></textarea>\n' +
         '\t\t\t\t\t<br>\n' +
-        '\t\t\t\t\t<input type="submit" class="button2" name="action" id="upload_submit" value="answer" onClick="answerQuestion('+ this.id + ')"/>\n' +
+        '\t\t\t\t\t<input type="submit" class="button2" name="action" id="upload_submit" value="answer" onClick="answerQuestion('+ this.id + ', ' + userName + ')"/>\n' +
         '\t\t\t\t</div>\n' +
         '\t\t\t</div>\n' +
         '\t\t</div>';
@@ -416,55 +481,54 @@ QuestionsList.prototype = new DoublyList();
 
 //////////// In page functions ///////////
 
-function askQuestion() {
+function askQuestion(userName) {
     var textArea = document.getElementById("questionText");
-    questions.addToTail(new Question(questions._id_counter, textArea.value));
+    questions.addToTail(new Question(questions._id_counter, textArea.value, userName));
     questions.printAllNodes();
     
     saveForum();
 }
 
-function answerQuestion(id){
+function answerQuestion(id, userName){
     var textArea = document.getElementById("textArea_" + id);
     var question = questions.searchNodeById(id);
-    question.answers.addToTail(new Answer(question.answers._id_counter, textArea.value));
+    question.answers.addToTail(new Answer(question.answers._id_counter, textArea.value, userName));
     questions.printAllNodes();
     
     saveForum();
 }
 
-function upvoteQuestion(questionId, userId, userName) {
-    questions.upvote(questionId, userId, userName);
+function upvoteQuestion(questionId, userId, userName, ADDED_BY_EMAIL) {
+    questions.upvote(questionId, userId, userName, ADDED_BY_EMAIL);
+    questions.printAllNodes();
+    saveForum();
+}
+
+function downvoteQuestion(questionId, userId, userName, ADDED_BY_EMAIL) {
+    questions.downvote(questionId, userId, userName, ADDED_BY_EMAIL);
     questions.printAllNodes();
     
     saveForum();
 }
 
-function downvoteQuestion(questionId, userId, userName) {
-    questions.downvote(questionId, userId, userName);
-    questions.printAllNodes();
-    
-    saveForum();
-}
-
-function upvoteAnswer(questionId, answerId, userId, userName) {
+function upvoteAnswer(questionId, answerId, userId, userName, ADDED_BY_EMAIL) {
     var question = questions.searchNodeById(questionId);
-    question.answers.upvote(answerId, userId, userName);
+    question.answers.upvote(answerId, userId, userName, ADDED_BY_EMAIL);
     questions.printAllNodes();
     
     saveForum();
 
 }
 
-function downvoteAnswer(questionId, answerId, userId, userName) {
+function downvoteAnswer(questionId, answerId, userId, userName, ADDED_BY_EMAIL) {
     var question = questions.searchNodeById(questionId);
-    question.answers.downvote(answerId, userId, userName);
+    question.answers.downvote(answerId, userId, userName, ADDED_BY_EMAIL);
     questions.printAllNodes();
     
     saveForum();
 }
 
-function upvoteFile(){
+function upvoteFile(ADDED_BY_EMAIL){
     if (questions.file.upvoters === null) {
         questions.file.upvoters = new DoublyList();
     }
@@ -473,13 +537,13 @@ function upvoteFile(){
         questions.file.downvoters = new DoublyList();
     }
     
-    questions.file.upvote(userId, userName);
+    questions.file.upvote(userId, userName, ADDED_BY_EMAIL);
     questions.printFileVotes();
-    
+	    
     saveForum();
 }
 
-function downvoteFile() {
+function downvoteFile(ADDED_BY_EMAIL) {
     if (questions.file.upvoters === null) {
         questions.file.upvoters = new DoublyList();
     }
@@ -488,8 +552,9 @@ function downvoteFile() {
         questions.file.downvoters = new DoublyList();
     }
 
-    questions.file.downvote(userId, userName);
+    questions.file.downvote(userId, userName, ADDED_BY_EMAIL);
     questions.printFileVotes();
+	
     
     saveForum();
 }
@@ -508,7 +573,7 @@ function parseVoter(jsonVoter) {
         return null;
     }
 
-    var voter = new Node(jsonVoter.id, jsonVoter.data);
+    var voter = new Node(jsonVoter.id, jsonVoter.data, jsonVoter.creator);
     if (jsonVoter.next !== null) {
         voter.next = parseVoter(jsonVoter.next);
     } else {
@@ -542,7 +607,7 @@ function parseAnswer(jsonAnswer) {
         return null;
     }
 
-    var answer = new Answer(jsonAnswer.id, jsonAnswer.data);
+    var answer = new Answer(jsonAnswer.id, jsonAnswer.data, jsonAnswer.creator);
     answer.votes = jsonAnswer.votes;
     if (jsonAnswer.next !== null) {
         answer.next = parseAnswer(jsonAnswer.next);
@@ -583,7 +648,7 @@ function parseQuestion(jsonQuestion, jsonAnswers) {
         return null;
     }
 
-    var question = new Question(jsonQuestion.id, jsonQuestion.data);
+    var question = new Question(jsonQuestion.id, jsonQuestion.data, jsonQuestion.creator);
     question.votes = jsonQuestion.votes;
 
     if (jsonQuestion.next !== null) {

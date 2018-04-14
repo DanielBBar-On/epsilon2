@@ -206,7 +206,6 @@ function insert_lecture_to_DB($num, $week_num, $name, $ADDED_BY_ID, $ADDED_BY_EM
 			VALUES ('$week_num', '$name', '$ADDED_BY_ID', '$ADDED_BY_EMAIL', '$path',
 					'$pos_votes', '$neg_votes', '$tot_votes', $year, '$semester')";
 
-	$id = -1;
 	if ($conn->query($sql) === TRUE) {
 		$id = $conn->insert_id;
 		echo "New record created successfully";
