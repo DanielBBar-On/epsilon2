@@ -9,7 +9,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
 	// login functions
 	sec_session_start();
 
-	if (login_check($loginsqli) == true) {
+	if (login_check($mysqli) == true) {
 		$logged = 'in';
 	} else {
 		header("Location: ../../../../../registrationFull.php");
@@ -181,7 +181,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
 				<p style="color:#FCFCFC;">דף הבית</p>
 				</span>
             <?php
-			if (login_check($loginsqli) == false) { ?>
+			if (login_check($mysqli) == false) { ?>
                 <span class="container-fluid" style="float:left;
 												">
 			<a  href="../../../registrationFull.php">
@@ -203,7 +203,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
 				<p style="color:#FCFCFC;">התנתקות</p>
 					</span>
                     <?php } 
-			if (login_check($loginsqli) == true) { ?>
+			if (login_check($mysqli) == true) { ?>
                         <span class="container-fluid" style="float:left;">
 			<a  href="../../../createCourse.php">
 			<i class="fa fa-graduation-cap" style="font-size:36px;
@@ -215,7 +215,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
 			</span>
                         <?php }?>
                             <?php
-			if (login_check($loginsqli) == true) { ?>
+			if (login_check($mysqli) == true) { ?>
                                 <span class="container-fluid" style="float:left;">
 			<a  href="../../../uploadFile.php">
 			<i class="fa fa-book" style="font-size:36px;

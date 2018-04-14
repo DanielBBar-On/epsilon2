@@ -9,7 +9,7 @@ define("FILE_TYPE", "lectures");
 	// login functions
 	sec_session_start();
 
-	if (login_check($loginsqli) == true) {
+	if (login_check($mysqli) == true) {
 		$logged = 'in';
 	} else {
 		header("registrationFull.php");
@@ -121,7 +121,7 @@ define("FILE_TYPE", "lectures");
 				<p style="color:#FCFCFC;">דף הבית</p>
 				</span>
             <?php
-			if (login_check($loginsqli) == false) { ?>
+			if (login_check($mysqli) == false) { ?>
                 <span class="container-fluid" style="float:left;
 												">
 			<a  href="registrationFull.php">
@@ -143,7 +143,7 @@ define("FILE_TYPE", "lectures");
 				<p style="color:#FCFCFC;">התנתקות</p>
 					</span>
                     <?php } 
-			if (login_check($loginsqli) == true) { ?>
+			if (login_check($mysqli) == true) { ?>
                         <span class="container-fluid" style="float:left;">
 			<a  href="createCourse.php">
 			<i class="fa fa-graduation-cap" style="font-size:36px;
@@ -155,7 +155,7 @@ define("FILE_TYPE", "lectures");
 			</span>
                         <?php }?>
                             <?php
-			if (login_check($loginsqli) == true) { ?>
+			if (login_check($mysqli) == true) { ?>
                                 <span class="container-fluid" style="float:left;">
 			<a  href="uploadFile.php">
 			<i class="fa fa-book" style="font-size:36px;
