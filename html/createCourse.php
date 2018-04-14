@@ -12,6 +12,7 @@ if (login_check($mysqli) == true) {
     $logged = 'out';
 }
 
+	if($logged == 'in') {
 	  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
 
 	  $points = -1;
@@ -23,6 +24,7 @@ if (login_check($mysqli) == true) {
 	  }
 
 	  $jsonPoints = json_encode($points);
+	}
 ?>
 
     <!DOCTYPE html>

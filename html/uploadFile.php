@@ -9,10 +9,12 @@ include_once '../includes/secure_login/functions.php';
 	if (login_check($mysqli) == true) {
 		$logged = 'in';
 	} else {
+		header("LocationregistrationFull.php");
 		$logged = 'out';
 	}
 
-		  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
+	if($logged == 'in') {
+	  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
 
 	  $points = -1;
 
@@ -23,6 +25,7 @@ include_once '../includes/secure_login/functions.php';
 	  }
 
 	  $jsonPoints = json_encode($points);
+	}
 
 ?>
 

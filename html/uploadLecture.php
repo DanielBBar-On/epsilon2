@@ -39,6 +39,7 @@ define("FILE_TYPE", "lectures");
 	$subcatsName[$row['faculty']][] = array("id" => $row['num'], "val" => $row['name']);
   }
 
+	if($logged == 'in') {
 	  $query = "SELECT * FROM members WHERE username = \"" . $_SESSION['username'] . "\"";
 
 	  $points = -1;
@@ -50,6 +51,7 @@ define("FILE_TYPE", "lectures");
 	  }
 
 	  $jsonPoints = json_encode($points);
+	}
   $jsonCats = json_encode($categories);
   $jsonsubcatsNum = json_encode($subcatsNum);
   $jsonsubcatsName = json_encode($subcatsName);
