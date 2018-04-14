@@ -166,13 +166,13 @@ include_once 'file_info.php';
 						 vertical-align: middle;
                          ">
                     <a href= "<?php echo "../../../../../data/courses/" . constant("COURSE_NUM") . "/" . constant("COURSE_NUM") . ".php" ?>">
-                    <h1 style="color:#FCFCFC;
+                    <h3 style="color:#FCFCFC;
                             text-align: center;
-                            text-decoration:underline;">  <?php echo constant("COURSE_NAME") ?> </h1>
+                            text-decoration:underline;">  <?php echo constant("COURSE_NAME") ?> </h3>
                             </a>
-                    <h1 style="color:#FCFCFC;
+                    <h3 style="color:#FCFCFC;
                             text-align: center;
-            			"> הרצאה של שבוע מס' <?php echo htmlentities(constant("WEEK_NUM")) ?> </h1>
+            			"> הרצאה של שבוע מס' <?php echo htmlentities(constant("WEEK_NUM")) ?> </h3>
                                             <form action="../../../../../php/upload_form/ajax.php" method="post" enctype="multipart/form-data">
                         <select id='course' name="path">
                             <option value="" disabled selected>בחרו גרסא קודמת</option>
@@ -221,17 +221,9 @@ include_once 'file_info.php';
                 <br>
                 <input type="submit" class="button2" name="action" id="upload_submit" value="ask" onClick="askQuestion()" />
                 <input type="hidden" name="file_path" value="data\courses\formats">
-                <input type="submit" class="button2" name="action" id="upload_submit" value="send_json" onClick="saveForum()" />
             </div>
         <div class="vue-wrapper">
-            <div id="vue">
-                <div class="search-area">
-                    <h1>דיונים</h1>
-                    <div class="input-wrapper"> <i class="fa fa-search"></i>
-                        <input v-model="searchString" type="text" placeholder="Have a question? Search for answers with keywords" />
-                    </div>
-                    <button @click="resetSearch()">נקה</button>
-                </div>
+            <div id="vue"> 
                 <div id="questions"> </div>
             </div>
         </div>

@@ -147,10 +147,12 @@ DoublyList.prototype.remove = function(node) {
     if (node.id === this.head.id) {
         // 2nd use-case: there is no second node
         if(node.id === this.tail.id) {
-            this.tail = null;
-        } else if (node.next.id === this.tail.id){ //there are only two nodes in the list
-            this.tail = currentNode.next;
-        }
+            this.tail = this.head;
+        } else if (this.head.next !== null) {
+			if (this.head.next.id === this.tail.id) { //there are only two nodes in the list
+            	this.tail = currentNode.next;
+        	}
+		}
         this.head = currentNode.next;
         deletedNode = node;
 
@@ -220,7 +222,7 @@ Node.prototype.upvote = function (userId, userName) {
     if (node === null) {
         node = new Node(userId, userName);
         this.votes++;
-		upvoteAjax();
+        upvoteAjax();
         if (this.downvoters.remove(node) === null) {
             this.upvoters.addToTail(node);
         }
@@ -237,8 +239,8 @@ Node.prototype.downvote = function (userId, userName) {
     if (node === null) {
         node = new Node(userId, userName);
         this.votes--;
-		downvoteAjax();
-		if (this.upvoters.remove(node) === null) {
+        downvoteAjax();
+        if (this.upvoters.remove(node) === null) {
             this.downvoters.addToTail(node);
         }
     } else {
@@ -319,7 +321,7 @@ Answer.prototype.printAnswer = function(questionId) {
         '\')">\n' +
         '</div>\n' +
         '\t\t\t</div>\n' +
-        '\t\t\t<div class="question-and-answer">\n' +        '\t\t\t\t<h2 style="color: #000000; direction: rtl;">' + this.data + '</h2>\n' +
+        '\t\t\t<div class="question-and-answer">\n' +        '\t\t\t\t<p style="color: #000000; direction: rtl;">' + this.data + '</p>\n' +
         '\t\t\t\t<div style="text-align:center;">\n' +
         '\t\t\t\t</div>\n' +
         '\t\t\t</div>\n' +
@@ -369,7 +371,7 @@ Question.prototype.printQuestion = function() {
 '</div>\n' +
         '\t\t\t</div>\n' +
         '\t\t\t<div class="question-and-answer">\n' +
-        '\t\t\t\t<h2 style="color: #000000; direction: rtl;">' + this.data + '</h2>\n' +
+        '\t\t\t\t<p style="color: #000000; direction: rtl;">' + this.data + '</p>\n' +
         '\t\t\t\t<div style="text-align:center;">\n' +
         '\t\t\t\t\t<textarea id="textArea_' + this.id + '" type="answer" placeholder="הגב"></textarea>\n' +
         '\t\t\t\t\t<br>\n' +
@@ -418,6 +420,8 @@ function askQuestion() {
     var textArea = document.getElementById("questionText");
     questions.addToTail(new Question(questions._id_counter, textArea.value));
     questions.printAllNodes();
+    
+    saveForum();
 }
 
 function answerQuestion(id){
@@ -425,28 +429,39 @@ function answerQuestion(id){
     var question = questions.searchNodeById(id);
     question.answers.addToTail(new Answer(question.answers._id_counter, textArea.value));
     questions.printAllNodes();
+    
+    saveForum();
 }
 
 function upvoteQuestion(questionId, userId, userName) {
     questions.upvote(questionId, userId, userName);
     questions.printAllNodes();
+    
+    saveForum();
 }
 
 function downvoteQuestion(questionId, userId, userName) {
     questions.downvote(questionId, userId, userName);
     questions.printAllNodes();
+    
+    saveForum();
 }
 
 function upvoteAnswer(questionId, answerId, userId, userName) {
     var question = questions.searchNodeById(questionId);
     question.answers.upvote(answerId, userId, userName);
     questions.printAllNodes();
+    
+    saveForum();
+
 }
 
 function downvoteAnswer(questionId, answerId, userId, userName) {
     var question = questions.searchNodeById(questionId);
     question.answers.downvote(answerId, userId, userName);
     questions.printAllNodes();
+    
+    saveForum();
 }
 
 function upvoteFile(){
@@ -460,6 +475,8 @@ function upvoteFile(){
     
     questions.file.upvote(userId, userName);
     questions.printFileVotes();
+    
+    saveForum();
 }
 
 function downvoteFile() {
@@ -473,6 +490,8 @@ function downvoteFile() {
 
     questions.file.downvote(userId, userName);
     questions.printFileVotes();
+    
+    saveForum();
 }
 
 function getFileVotes() {
@@ -513,7 +532,7 @@ function parseVotersList(jsonVotersList) {
         votersList.head = null;
     }
 
-    votersList.tail = null;
+    votersList.tail = jsonVotersList;
 
     return votersList;
 }
@@ -538,7 +557,7 @@ function parseAnswer(jsonAnswer) {
     if (jsonAnswer.downvoters !== null) {
         answer.downvoters = parseVotersList(jsonAnswer.downvoters);
     } else {
-        answer.downvoters = DoublyList();
+        answer.downvoters = new DoublyList();
     }
 
     return answer;

@@ -5,7 +5,7 @@ include_once '../includes/secure_login/functions.php';
 
 sec_session_start();
  
-if (login_check($lmysqli) == true) {
+if (login_check($mysqli) == true) {
     $logged = 'in';
 } else {
 	header("LocationregistrationFull.php");

@@ -41,7 +41,6 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
 		if (!empty($result)) {
 			while ($row = $result->fetch_assoc()){
 				$categories[] = array("id" => $row['path'], "val" => "שבוע מס' " . $row['num'] . " - " . $row['name']);
-                echo $row['path'];
 			}
 		}
 
