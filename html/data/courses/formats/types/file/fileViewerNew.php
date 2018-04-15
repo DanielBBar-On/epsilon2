@@ -262,13 +262,14 @@ include_once 'file_info.php';
             </div>
             <br>
             <div class="row">
-                <object data="<?php echo FILE ?>" type="application/pdf" width="85%" height="800px" style="text-align: center;
-                        							margin-right: 5%;
+		<iframe src="<?php echo html_entity_decode(FILE); ?>" allowfullscreen="true" frameborder="0"
+                        width="85%" height="800px" style="text-align: center;
+                                                                                margin-right: 5%;
                                                     float: right;">
                     <p>It appears you don't have a PDF plugin for this browser. No biggie... you can <a href="resume.pdf">click here to
   download the PDF file.</a></p>
-                </object>
-                <div id="votes" style="float:right;
+                </iframe>
+               <div id="votes" style="float:right;
                                     margin: 2%;">
                     <div class="upvote" style="font-size: 36px;
             						color:#FCFCFC;">

@@ -203,7 +203,6 @@ define("FILE_TYPE", "homework");
             <div class="wrapper">	
                 <div id="upload_body">
                     <h1 style="font-size: 48px;">העלאת שיעורי בית</h1>
-                    	<h4 style="font-size:12px !important;">*בשלב זה ניתן להעלות רק קבצי PDF ששם באותיות אנגליות ומספרים</h4>
 
                     <div id="upload_div">
                         <form action="php/upload_form/ajax.php" method="post" enctype="multipart/form-data">

@@ -423,8 +423,8 @@ Question.prototype.printQuestion = function() {
         '\t\t\t\t<div class="upvote" onclick="upvoteQuestion(' +
         this.id +
         ',' + userId +
-        ', \'' + userName +'\'' +
-		', \'' + ADDED_BY_EMAIL +'\')">\n' +
+        ', "' + userName +'"' +
+		', "' + ADDED_BY_EMAIL +'")">\n' +
         '</div>\n' +
         '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
         '                </div>\n' +
@@ -440,7 +440,7 @@ Question.prototype.printQuestion = function() {
         '\t\t\t\t<div style="text-align:center;">\n' +
         '\t\t\t\t\t<textarea id="textArea_' + this.id + '" type="answer" placeholder="הגב" style="width:60%;"></textarea>\n' +
         '\t\t\t\t\t<br>\n' +
-        '\t\t\t\t\t<input type="submit" class="button2" name="action" id="upload_submit" value="answer" onClick="answerQuestion('+ this.id + ', ' + userName + ')"/>\n' +
+        '\t\t\t\t\t<input type="submit" class="button2" name="action" id="upload_submit" value="answer" onClick="answerQuestion('+ this.id + ', \'' + userName + '\')"/>\n' +
         '\t\t\t\t</div>\n' +
         '\t\t\t</div>\n' +
         '\t\t</div>';

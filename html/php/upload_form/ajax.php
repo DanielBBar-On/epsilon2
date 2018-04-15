@@ -194,7 +194,7 @@ function create_new_file_html($target_dir, $file_name) {
 ///////// file upload //////////////////////
 
 function upload($courseNum, $courseName, $type, $mysqli) {
-	$file_name = pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_FILENAME);
+	$file_name = htmlentities(pathinfo($_FILES["fileToUpload"]["name"], PATHINFO_FILENAME));
 	$file_dir = "data/courses/" . $courseNum . "/" . $type . "/" . $file_name . "/";
 	$file_path = $file_dir . basename($_FILES["fileToUpload"]["name"]);
 	$target_dir = "../../data/courses/" . $courseNum . "/" . $type . "/" . $file_name . "/";
