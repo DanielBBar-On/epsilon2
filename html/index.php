@@ -90,7 +90,7 @@
                 var faculty = this.value;
                 var subcatselect = document.getElementById("courseNum");
                 subcatselect.options.length = 0; //delete all options if any present
-                subcatselect.options[0] = new Option('בחר/י קורס');
+                subcatselect.options[0] = new Option('בחר/י קורס', "");
                 subcatselect.options[0].disabled = true;
                 for (var i = 1; i <= subcatsNum[faculty].length; i++) {
                     var name = subcatsName[faculty][i - 1].val;
@@ -225,7 +225,7 @@
 
                     <!-- user title -->
                     <!--style for select is in the select function-->
-                    <select id='courseNum' name='courseNum' style="margin-top:40px">
+                    <select id='courseNum' name='courseNum' style="margin-top:40px" required>
                         <option value="" disabled selected>בחר/י קורס</option>
                     </select>
                     <button type="submit" class="button2" name="action" id="upload_submit" value="search" style="margin-top:50px;

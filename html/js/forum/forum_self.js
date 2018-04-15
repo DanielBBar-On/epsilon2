@@ -701,7 +701,6 @@ function saveForum(){
     var dir = loc.substring(0, loc.lastIndexOf('/'));
     var path = ".." + dir.toString();
 
-    console.log("saving forum " + myJson);
     $.ajax({
         url     : '../../../../../php/savejson.php',
         method  : 'post',

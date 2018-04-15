@@ -68,7 +68,7 @@ define("FILE_TYPE", "tutorials");
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
         <link rel="stylesheet" href="css/upload_form/upload_form_style.css">
         <link rel="stylesheet" href="css/bootstrap.css">
-        <!<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
         <link rel="stylesheet prefetch" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="css/sidebar/sidebar_style.css">
         <link href="css/flat_ui.min.css" rel="stylesheet" type="text/css">
@@ -88,7 +88,7 @@ define("FILE_TYPE", "tutorials");
                     min = max - 20,
                     yearSelect = document.getElementById('year');
                 yearSelect.options.length = 0;
-                yearSelect.options[0] = new Option('בחר/י שנה');
+                yearSelect.options[0] = new Option('בחר/י שנה', "");
                 j = yearSelect.options.length;
                 for (var i = max; i >= min; i--) {
                     yearSelect.options[j] = new Option(i);

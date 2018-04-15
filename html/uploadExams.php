@@ -88,7 +88,7 @@ define("FILE_TYPE", "exams");
                     min = max - 20,
                     yearSelect = document.getElementById('year');
                 yearSelect.options.length = 0;
-                yearSelect.options[0] = new Option('בחר/י שנה');
+                yearSelect.options[0] = new Option('בחר/י שנה', "");
                 j = yearSelect.options.length;
                 for (var i = max; i >= min; i--) {
                     yearSelect.options[j] = new Option(i);
@@ -109,7 +109,7 @@ define("FILE_TYPE", "exams");
                 var faculty = this.value;
                 var subcatselect = document.getElementById("course");
                 subcatselect.options.length = 0; //delete all options if any present
-                subcatselect.options[0] = new Option('בחר/י קורס');
+                subcatselect.options[0] = new Option('בחר/י קורס', "");
                 subcatselect.options[0].disabled = true;
                 for (var i = 1; i <= subcatsNum[faculty].length; i++) {
                     var name = subcatsName[faculty][i - 1].val;
