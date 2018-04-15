@@ -161,7 +161,20 @@ function create_course_DB($faculty, $num, $name) {
 	}
 
 	//create exams table
-	$sql = "CREATE TABLE `exams` ( `id` int(11) NOT NULL AUTO_INCREMENT, `num` int(11) NOT NULL, `name` text NOT NULL, `ADDED_BY_ID` int(11) NOT NULL, `ADDED_BY_EMAIL` text NOT NULL, `path` text not NULL, `pos_votes` int(11) NOT NULL, `neg_votes` int(11) NOT NULL, `tot_votes` int(11) NOT NULL, `year` int(11) NOT NULL, `semester` int(11) NOT NULL, `moed` int(2) NOT NULL, PRIMARY KEY (`id`) ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1";
+	$sql = "CREATE TABLE `exams` (
+									 `id` int(11) NOT NULL AUTO_INCREMENT,
+									 `num` int(11) NOT NULL,
+									 `name` text NOT NULL,
+									 `ADDED_BY_ID` int(11) NOT NULL,
+									 `ADDED_BY_EMAIL` text NOT NULL,
+									 `path` text NOT NULL,
+									 `pos_votes` int(11) NOT NULL,
+									 `neg_votes` int(11) NOT NULL,
+									 `tot_votes` int(11) NOT NULL,
+									 `year` int(11) NOT NULL,
+									 `semester` text NOT NULL,
+									 PRIMARY KEY (`id`)
+									) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1";
 
 	if ($conn->query($sql) === TRUE) {
 		echo "exams table created successfully";

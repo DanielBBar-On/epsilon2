@@ -152,7 +152,7 @@
                             <?php
 			if (login_check($mysqli) == true) { ?>
                                 <span class="container-fluid" style="float:left;">
-			<a  href="uploadLecture.php">
+			<a  href="uploadFile.php">
 			<i class="fa fa-book" style="font-size:36px;
 												color:#FCFCFC;
 												margin:auto;
