@@ -50,7 +50,7 @@ if (login_check($mysqli) == true) {
     </head>
 
     <body id="index_body">
-        <div style="width: 100%;
+        <div class="row" style="width: 100%;
 				text-align:center;">
             <span class="container-fluid" style="float:left;
 										margin-top:5px;">
@@ -165,7 +165,7 @@ if (login_check($mysqli) == true) {
                     <button type="submit" class="button2" name="action" id="upload_submit" value="create" style="margin-top:50px;
 						direction:rtl;">הוסיפו קורס</button>
                     <!-- <CTA></CTA> -->
-                    <!--<input type="hidden" class="button2" name="action" id="upload_submit" value="remove">-->
+                    <!--<input type="submit" class="button2" name="action" id="upload_submit" value="remove">-->
                 </form>
             </div>
 

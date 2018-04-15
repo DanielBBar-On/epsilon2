@@ -423,8 +423,8 @@ Question.prototype.printQuestion = function() {
         '\t\t\t\t<div class="upvote" onclick="upvoteQuestion(' +
         this.id +
         ',' + userId +
-        ', "' + userName +'"' +
-		', "' + ADDED_BY_EMAIL +'")">\n' +
+        ', \'' + userName +'\'' +
+		', \'' + ADDED_BY_EMAIL +'\')">\n' +
         '</div>\n' +
         '\t\t\t\t<div class="number-of-votes">' + this.votes + '\n' +
         '                </div>\n' +
