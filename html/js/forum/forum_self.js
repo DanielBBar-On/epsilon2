@@ -699,14 +699,15 @@ function saveForum(){
 
     var loc = window.location.pathname;
     var dir = loc.substring(0, loc.lastIndexOf('/'));
-    var path = "../.." + dir.toString();
+    var path = ".." + dir.toString();
 
+    console.log("saving forum " + myJson);
     $.ajax({
         url     : '../../../../../php/savejson.php',
         method  : 'post',
         data    : {'myJson' : myJson, 'path' : path},
-        success : function( response ) {
-            console.log(response);
+        success : function(html) {
+            console.log(html);
         },
         error: function(xhr,textStatus,err) {
             console.log("Forum not saved");
