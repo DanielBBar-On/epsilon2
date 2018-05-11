@@ -387,7 +387,7 @@ include_once '../../../../includes/courses/' . constant("COURSE_NUM") .'/db_conn
                     <select id='exams' style="margin-top:40px;
                               direction: rtl;">
                     </select>
-                    <button type="submit" class="button2" name="action" id="upload_submit" value="searchSummaries" style="margin-top:50px;
+                    <button type="submit" class="button2" name="action" id="upload_submit" value="searchExams" style="margin-top:50px;
 						direction:rtl;">מצא</button>
                 </div>
             </form>

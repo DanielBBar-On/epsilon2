@@ -220,6 +220,7 @@ function upload($courseNum, $courseName, $type, $mysqli) {
 	
 	if (file_exists($target_file)) {
 		echo "Sorry, file already exists.";
+		header("Location: ". $target_dir . $file_name . ".php");
 		$uploadOk = 0;
 	}
 	
